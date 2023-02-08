@@ -7,7 +7,8 @@
         {
             "name": "backend",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "program": "bin/backend.dart"
         }
     ]
 }
