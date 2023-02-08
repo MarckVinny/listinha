@@ -2,11 +2,11 @@
 
 (Geralmente é um documento escrito em inglês)
 
-# Objetivo
+## Objetivo
 
 Esse documento tem por objetivo principal organizar o processo de desenvolvimento do software.
 
-# Regras iniciais, limite e Análise
+## Regras iniciais, limite e Análise
 
 Pontos a serem levados em consideração antes de introduzir uma nova feature:
 
@@ -20,18 +20,15 @@ Pontos a serem levados em consideração antes de introduzir uma nova feature:
 - Não é permitido ter uma classe concreta como dependência de uma camada. Só será aceita coesão com classes abstratas ou interfaces. Com exceção da Store.
 - Cada camada deve ter apenas uma responsabilidade.
 
-
-
-# Entidades
+## Entidades
 
 (Será criado pelos alunos da Masterclass Intermediário 1)
 
-# Casos de Uso
+## Casos de Uso
 
 (Será criado pelos alunos da Masterclass Intermediário 1)
 
-
-# Design Patterns
+## Design Patterns
 
 - Repository Pattern: Para acesso a API externa.
 - Service Pattern: Para isolar trechos de códigos com outras responsabilidades.
@@ -41,23 +38,20 @@ Pontos a serem levados em consideração antes de introduzir uma nova feature:
 - Adapter: Converter um objeto em outro.
 - Result: Trabalhar com retorno Múltiplo.
 
-
-# Package externos (Comum)
+## Package externos (Comum)
 
 - uno: Cliente HTTP.
 - result: Retorno múltiplo no formato Failure e Success.
 - Mocktail: Para testes de unidade.
 
-
-# Package externos (App)
+## Package externos (App)
 
 - flutter_modular: Modularização de rotas e injeção de dependências.
 - realm: Base de dados local.
 
-# Package externos (Backend)
+## Package externos (Backend)  
 
 - shelf_modular: Modularização de rotas e injeção de dependências.
 - Shelf: Criação de servidor Web.
 - Postgres: Persistência de dados.
 - Redis: Persistência de dados em memória.
-
