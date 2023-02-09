@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: lightColorScheme,
         appBarTheme: AppBarTheme(
           centerTitle: true,
+          backgroundColor: lightColorScheme.primaryContainer,
         ),
       ),
       darkTheme: ThemeData(
