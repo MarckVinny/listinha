@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: lightColorScheme,
@@ -26,6 +26,10 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: darkColorScheme,
+        appBarTheme: AppBarTheme(
+          centerTitle: true,
+          backgroundColor: darkColorScheme.primaryContainer,
+        ),
       ),
       home: const MyHomePage(title: 'LISTINHA'),
     );
