@@ -11,7 +11,7 @@ class AppWidget extends StatelessWidget {
       themeMode: ThemeMode.light,
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const MyHomePage(title: 'LISTINHA'),
+      home: const HomePage(),
     );
   }
 }
