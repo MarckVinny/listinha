@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'src/shared/themes/themes.dart';
 
 import 'src/shared/themes/color_schemes.g.dart';
 
@@ -14,27 +15,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      themeMode: ThemeMode.light,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: lightColorScheme,
-        appBarTheme: AppBarTheme(
-          centerTitle: true,
-          backgroundColor: lightColorScheme.primaryContainer,
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: lightColorScheme.primary,
-          foregroundColor: Colors.white,
-        ),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: darkColorScheme,
-        appBarTheme: AppBarTheme(
-          centerTitle: true,
-          backgroundColor: darkColorScheme.primaryContainer,
-        ),
-      ),
+      themeMode: ThemeMode.dark,
+      theme: lightTheme,
+      darkTheme: darkTheme,
       home: const MyHomePage(title: 'LISTINHA'),
     );
   }
