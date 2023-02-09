@@ -1,24 +1,10 @@
 import 'package:flutter/material.dart';
-import 'src/shared/themes/themes.dart';
+part './src/shared/app_widget.dart';
+part './src/shared/themes/themes.dart';
+part './src/shared/themes/color_schemes.g.dart';
 
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      themeMode: ThemeMode.dark,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      home: const MyHomePage(title: 'LISTINHA'),
-    );
-  }
+  runApp(const AppWidget());
 }
 
 class MyHomePage extends StatefulWidget {

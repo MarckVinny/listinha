@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-part 'color_schemes.g.dart';
+part of '../../../main.dart';
 
 final lightTheme = ThemeData(
   useMaterial3: true,
