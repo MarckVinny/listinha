@@ -1,4 +1,4 @@
-part of '../../../main.dart';
+part of '../app_widget.dart';
 
 //*todo: aqui estamos trabalhando com a serialização dos dados e isso é bom
 //*todo: deixa o código mais rápido.

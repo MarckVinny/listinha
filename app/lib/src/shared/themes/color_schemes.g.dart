@@ -1,4 +1,4 @@
-part of '../../../main.dart';
+part of '../app_widget.dart';
 
 const _lightColorScheme = ColorScheme(
   brightness: Brightness.light,

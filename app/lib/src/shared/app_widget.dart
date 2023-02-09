@@ -1,4 +1,8 @@
-part of '../../main.dart';
+import 'package:flutter/material.dart';
+import '../home/home_page.dart';
+
+part './themes/themes.dart';
+part './themes/color_schemes.g.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
