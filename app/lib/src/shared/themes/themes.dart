@@ -8,6 +8,7 @@ final lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
     centerTitle: true,
     backgroundColor: _lightColorScheme.primaryContainer,
+    foregroundColor: _lightColorScheme.onPrimaryContainer,
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: _lightColorScheme.primary,
