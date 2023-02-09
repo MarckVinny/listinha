@@ -11,7 +11,7 @@ final lightTheme = ThemeData(
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: _lightColorScheme.primary,
-    foregroundColor: Colors.white,
+    foregroundColor: _lightColorScheme.onPrimary,
   ),
 );
 
@@ -21,9 +21,10 @@ final darkTheme = ThemeData(
   appBarTheme: AppBarTheme(
     centerTitle: true,
     backgroundColor: _darkColorScheme.primary,
+    foregroundColor: _darkColorScheme.onPrimary,
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: _darkColorScheme.primary,
-    foregroundColor: Colors.white,
+    foregroundColor: _darkColorScheme.onPrimary,
   ),
 );

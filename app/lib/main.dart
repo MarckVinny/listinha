@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'src/shared/themes/themes.dart';
 
-import 'src/shared/themes/color_schemes.g.dart';
-
 void main() {
   runApp(const MyApp());
 }
