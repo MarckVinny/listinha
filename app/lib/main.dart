@@ -14,13 +14,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: lightColorScheme,
         appBarTheme: AppBarTheme(
           centerTitle: true,
           backgroundColor: lightColorScheme.primaryContainer,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: lightColorScheme.primary,
+          foregroundColor: Colors.white,
         ),
       ),
       darkTheme: ThemeData(
