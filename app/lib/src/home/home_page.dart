@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../shared/user_image_button.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -8,6 +10,9 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('LISTINHA'),
+        actions: const [
+          UserImageButton(),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.edit),
