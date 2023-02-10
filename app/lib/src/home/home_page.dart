@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../shared/user_image_button.dart';
+import '../shared/widgets/user_image_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
