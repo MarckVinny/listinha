@@ -9,6 +9,11 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('LISTINHA'),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.edit),
+        label: const Text('Nova Lista'),
+        onPressed: () {},
+      ),
     );
   }
 }
