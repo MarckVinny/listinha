@@ -16,7 +16,9 @@ class AppWidget extends StatelessWidget {
       themeMode: ThemeMode.light,
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const HomePage(),
+      routes: {
+        '/': (context) => const HomePage(),
+      },
     );
   }
 }

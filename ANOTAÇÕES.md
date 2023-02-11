@@ -368,3 +368,16 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
       }
     }
     ```
+
+## Aula 05 - Navegação Modular
+
+Um ***Sistema de Rotas*** é essencial em uma aplicação, pois, dependendo da maneira que ele for feito o usuário terá uma sensação de fluidez na aplicação quando estiver clicando entre as ***features*** *"recursos"* como por exemplo: ***modal, drawer, botões, pages, etc.***  
+Como navegação entendemos, que um widget sobrepõe o outro *(no caso do drawer)* ou um widget substituindo outro *(no caso indo de uma página para outra)*.  
+E no ***Flutter*** o ***Sistema de Rodas*** como diversas outras coisas é simples de ser feito.
+
+### Navegação - Sistema de Rotas nativo do Flutter
+
+Agora iremos ver como fazer um **Sistema de Navegação** no ***Flutter*** utilizando as rotas nativas do sistema.  
+
+Vamos começar modificando o arquivo ```app_widget.dart``` dentro de ```lib\src\shared\```, iremos substituir a propriedade ```home: const HomePage(),``` pela propriedade ```routes:``` que conterá um map ```{}``` dentro irá receberá uma rota inicial ```'/' :``` e uma função anônima com um contexto ```(context)``` que irá chamar ```=>``` a página que irá estar trabalhando ```const HomePage()```.  
+
