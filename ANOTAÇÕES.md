@@ -396,3 +396,48 @@ app_widget.dart
 ...
 ```
 
+Agora vamos criar uma nova página ```configuration_page.dart```no caminho ```lib\src\configuration\``` e depois criar um ```StatefulWidget``` através do atalho ```stf```com o nome de ```ConfigurationPage```.  
+Dentro do build iremos retornar ```return``` um ```Scaffold()``` que conterá uma propriedade ```appBar:``` e um componente ```AppBar()``` e que por sua vez, conterá uma propriedade ```title:``` com um ```const Text()``` que conterá o título, mas, como tudo já configurado previamente no ```themes.dart```, a página já será criada com as cores do tema.  
+
+```dart
+configuration_page.dart
+
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+
+class ConfigurationPage extends StatefulWidget {
+  const ConfigurationPage({super.key});
+
+  @override
+  State<ConfigurationPage> createState() => _ConfigurationPageState();
+}
+
+class _ConfigurationPageState extends State<ConfigurationPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('LISTINHA'),
+      ),
+    );
+  }
+}
+```
+
+Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a página que acabamos de criar.
+
+```dart
+app_widget.dart
+
+...
+      themeMode: ThemeMode.light,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      routes: {
+        '/': (context) => const HomePage(),
+>>>>    '/config': (context) => const ConfigurationPage(),
+      },
+    );
+...
+```
