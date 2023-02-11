@@ -134,13 +134,18 @@ Para que ele fique com o circulo pintado precisamos adicionar um ```backgroundCo
     ...  
     ```
 
-- Continuemos, o próximo a ser criado será o seguimento de botões, que será o componente ```Column()``` e dentro dele serão colocados os botões dentro de ```SegmentedButton<int>()``` por enquanto os segmentos serão definidos como inteiros ```<int>``` e o selecionado ```selected:``` terá o valor 0.  
+- O próximo a ser criado será o seguimento de botões, que terá o componente ```Column()``` e em um de seus filhos ```children:``` serão colocados os botões dentro de ```SegmentedButton<int>()``` por enquanto os segmentos serão definidos como inteiros ```<int>``` e o selecionado ```selected:``` terá o valor ```0```.  
 E os segmentos ```segments:``` terá uma lista ```[]``` de ```ButtonSegment()``` contendo ```value:``` e ```label:```.  
-Logo depois serão criadas cópias destes segments criando assim os outros botões que serão: ***Todos, Pendentes, Concluídos e Desativados***.
+Logo depois serão criadas cópias destes segments criando assim os outros botões que serão: ***Todos, Pendentes, Concluídos e Desativados***.  
+Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada nos outros componentes e nem na tela.
 
-    ```dart
-    ...
-          body: Column(
+  ```dart
+  home_page.dart
+
+  ...
+        body: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
             children: [
               SegmentedButton(
                 segments: const [
@@ -162,11 +167,13 @@ Logo depois serão criadas cópias destes segments criando assim os outros botõ
                   ),
                 ],
                 selected: const {0},
+                onSelectionChanged: (values) {},
               ),
             ],
           ),
-    ...
-    ```
+        ),
+  ...
+  ```
 
   Para que o botão possa parecer corretamente selecionado, é preciso colocar uma função que escute a seleção setando o valor selecionado ```values```.
 
@@ -185,3 +192,36 @@ Logo depois serão criadas cópias destes segments criando assim os outros botõ
       ),
     ...
     ```
+
+  O próximo passo será a criação do tema para o ```SegmentedButton()```.  
+  Dentro de themes.dart, iremos adicionar o elemento ```segmentedButtonTheme:``` e adicionaremos o ```SegmentedButtonThemeData()``` e dentro iremos personalizar todos os seus elementos, lembrando, que cada um de seus segmentos é um ```ButtonStyle```.  
+  - ***style: ButtonStyle*** - é o botão de cada segmento e dentro de ***ButtonStyle*** existem diversas propriedades que podem ser utilizadas;
+  - ***textStyle:*** é a propriedade que edita o texto e ele recebe o ```MaterialStateProperty```;
+  - ***MaterialStateProperty*** ele basicamente inicia algo, sempre esperando um ***tipo*** que pode ser ***nulo***, *que em nosso caso é um* ```TextStyle()?```, mas, ele sempre estará esperando que ```MaterialStateProperty``` retorne ```return``` uma função, e que ele tenha um ***Gerenciamento de Estado*** dentro dela, e através deste gerenciamento de estado ele trará as modificações necessárias para o projeto.  
+  - O MaterialStateProperty pede um ```.resolveWith<TextStyle>``` tipado com um ***TextStyle***.  
+  ```((states) => null)``` aqui, entramos no gerenciamento de estado propriamente dito:  
+  Os estados ```states``` é uma lista de coisas que podem acontecer com os botões, que por enquanto, irá retornar somente um ***TextStyle()*** ```return = TextStyle()```.  
+  Se o botão estiver selecionado ```selected``` o ```TextStyle()``` passará a ter o tamanho do texto nove ```fontSize = 9``` e se não estiver selecionado, terá o texto de tamanho onze ```fontSize = 11```.
+
+  ```dart
+  themes.dart
+
+        segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+            (states) {
+              if (states.contains(MaterialState.selected)) {
+                return const TextStyle(
+                  fontSize: 9,
+                );
+              }
+              return const TextStyle(
+                fontSize: 11,
+              );
+            },
+          ),
+        ),
+      ),
+  ```
+
+  > ***Dica:*** para descobrir como os componentes e propriedades do Flutter funcionam, digite no google: flutter mais a propriedade ou componente + api que irá diretamente para a API da documentação do flutter.

@@ -19,31 +19,33 @@ class HomePage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            SegmentedButton(
-              segments: const [
-                ButtonSegment(
-                  value: 0,
-                  label: Text('Todos'),
-                ),
-                ButtonSegment(
-                  value: 1,
-                  label: Text('Pendentes'),
-                ),
-                ButtonSegment(
-                  value: 2,
-                  label: Text('Concluídos'),
-                ),
-                ButtonSegment(
-                  value: 3,
-                  label: Text('Desativados'),
-                ),
-              ],
-              selected: const {0},
-              onSelectionChanged: (values) {},
-            ),
-          ],
+        child: Center(
+          child: Column(
+            children: [
+              SegmentedButton(
+                segments: const [
+                  ButtonSegment(
+                    value: 0,
+                    label: Text('Todos'),
+                  ),
+                  ButtonSegment(
+                    value: 1,
+                    label: Text('Pendentes'),
+                  ),
+                  ButtonSegment(
+                    value: 2,
+                    label: Text('Concluídos'),
+                  ),
+                  ButtonSegment(
+                    value: 3,
+                    label: Text('Desativados'),
+                  ),
+                ],
+                selected: const {0},
+                onSelectionChanged: (values) {},
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
