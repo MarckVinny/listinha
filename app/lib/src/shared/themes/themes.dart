@@ -34,6 +34,7 @@ ThemeData get darkTheme => ThemeData(
       ),
       segmentedButtonTheme: _segmentedButtonTheme,
     );
+
 SegmentedButtonThemeData get _segmentedButtonTheme => SegmentedButtonThemeData(
       style: ButtonStyle(
         textStyle: MaterialStateProperty.resolveWith<TextStyle>(

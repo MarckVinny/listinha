@@ -203,25 +203,75 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
   Os estados ```states``` é uma lista de coisas que podem acontecer com os botões, que por enquanto, irá retornar somente um ***TextStyle()*** ```return = TextStyle()```.  
   Se o botão estiver selecionado ```selected``` o ```TextStyle()``` passará a ter o tamanho do texto nove ```fontSize = 9``` e se não estiver selecionado, terá o texto de tamanho onze ```fontSize = 11```.
 
-  ```dart
-  themes.dart
+    ```dart
+    themes.dart
 
-        segmentedButtonTheme: SegmentedButtonThemeData(
-        style: ButtonStyle(
-          textStyle: MaterialStateProperty.resolveWith<TextStyle>(
-            (states) {
-              if (states.contains(MaterialState.selected)) {
+          segmentedButtonTheme: SegmentedButtonThemeData(
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+              (states) {
+                if (states.contains(MaterialState.selected)) {
+                  return const TextStyle(
+                    fontSize: 9,
+                  );
+                }
                 return const TextStyle(
-                  fontSize: 9,
+                  fontSize: 11,
                 );
-              }
-              return const TextStyle(
-                fontSize: 11,
-              );
-            },
+              },
+            ),
           ),
         ),
+    ```
+    Criar o getter privado do ```_segmentedButtonTheme``` para poder adicionar nos temas light e dark.  
+
+    ```dart
+    themes.dart
+    
+    ...
+    SegmentedButtonThemeData get _segmentedButtonTheme => SegmentedButtonThemeData(
+      style: ButtonStyle(
+        textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+          (states) {
+            if (states.contains(MaterialState.selected)) {
+              return const TextStyle(
+                fontSize: 8,
+              );
+            }
+            return const TextStyle(
+              fontSize: 11,
+            );
+          },
+        ),
       ),
-  ```
+    );
+    ```
+
+    Adicionando no tema light e dark:  
+
+    ```dart
+    tema_light
+
+    ...
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: _lightColorScheme.primary,
+        foregroundColor: _lightColorScheme.onPrimary,
+      ),
+      segmentedButtonTheme: _segmentedButtonTheme,
+    );
+    ...
+    
+    ...
+    tema_dark
+    
+    ...
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: _darkColorScheme.primary,
+        foregroundColor: _darkColorScheme.onPrimary,
+      ),
+      segmentedButtonTheme: _segmentedButtonTheme,
+    );
+    ...
+    ```
 
   > ***Dica:*** para descobrir como os componentes e propriedades do Flutter funcionam, digite no google: flutter mais a propriedade ou componente + api que irá diretamente para a API da documentação do flutter.
