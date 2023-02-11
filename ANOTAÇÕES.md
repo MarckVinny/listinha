@@ -97,7 +97,7 @@ Para que ele fique com o circulo pintado precisamos adicionar um ```backgroundCo
   ```  
 
   E o botão, irá aumentar futuramente com mais componentes ficando assim mais complexo, então, convém que ele seja ***componentizado*** e como este componente será usado em outras partes do app, ele será criado ***globalmente***.  
-Para isso, iremos criar dentro de ```src/shared``` uma pasta chamada ```widgets``` e lá dentro iremos criar um componente chamado ```user_image_button.dart``` que será nosso ***CircleAvatar()***.  
+  Para isso, iremos criar dentro de ```src/shared``` uma pasta chamada ```widgets``` e lá dentro iremos criar um componente chamado ```user_image_button.dart``` que será nosso ***CircleAvatar()***.  
 
     ```dart
     src/shared/widgets/user_image_button.dart
@@ -119,12 +119,27 @@ Para isso, iremos criar dentro de ```src/shared``` uma pasta chamada ```widgets`
       }
     }
     ```
+  
+    E será chamado desta forma no arquivo ***home_page.dart*** e será adicionado um ```padding:``` à direita para que não fique grudado no canto da tela.  
+
+    ```dart
+    ...
+            actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 8),
+    >>>>    child: UserImageButton(),
+          ),
+        ],
+      ),
+    ...  
+    ```
 
 - Continuemos, o próximo a ser criado será o seguimento de botões, que será o componente ```Column()``` e dentro dele serão colocados os botões dentro de ```SegmentedButton<int>()``` por enquanto os segmentos serão definidos como inteiros ```<int>``` e o selecionado ```selected:``` terá o valor 0.  
 E os segmentos ```segments:``` terá uma lista ```[]``` de ```ButtonSegment()``` contendo ```value:``` e ```label:```.  
 Logo depois serão criadas cópias destes segments criando assim os outros botões que serão: ***Todos, Pendentes, Concluídos e Desativados***.
 
     ```dart
+    ...
           body: Column(
             children: [
               SegmentedButton(
@@ -150,10 +165,23 @@ Logo depois serão criadas cópias destes segments criando assim os outros botõ
               ),
             ],
           ),
+    ...
     ```
 
   Para que o botão possa parecer corretamente selecionado, é preciso colocar uma função que escute a seleção setando o valor selecionado ```values```.
 
     ```dart
-    onSelectionChanged: (values) {},
+    ...
+                ButtonSegment(
+                  value: 3,
+                  label: Text('Desativados'),
+                ),
+              ],
+              selected: const {0},
+    >>>>      onSelectionChanged: (values) {},
+            ),
+          ],
+        ),
+      ),
+    ...
     ```
