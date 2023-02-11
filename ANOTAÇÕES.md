@@ -260,7 +260,7 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
       segmentedButtonTheme: _segmentedButtonTheme,
     );
     ...
-    
+
     ...
     tema_dark
     
@@ -274,4 +274,4 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
     ...
     ```
 
-  > ***Dica:*** para descobrir como os componentes e propriedades do Flutter funcionam, digite no google: flutter mais a propriedade ou componente + api que irá diretamente para a API da documentação do flutter.
+    > ***Dica:*** para descobrir como os componentes e propriedades do Flutter funcionam, digite no google: flutter mais a propriedade ou componente + api que irá diretamente para a API da documentação do flutter.
