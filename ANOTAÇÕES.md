@@ -381,3 +381,18 @@ Agora iremos ver como fazer um **Sistema de Navegação** no ***Flutter*** utili
 
 Vamos começar modificando o arquivo ```app_widget.dart``` dentro de ```lib\src\shared\```, iremos substituir a propriedade ```home: const HomePage(),``` pela propriedade ```routes:``` que conterá um map ```{}``` dentro irá receberá uma rota inicial ```'/' :``` e uma função anônima com um contexto ```(context)``` que irá chamar ```=>``` a página que irá estar trabalhando ```const HomePage()```.  
 
+```dart
+app_widget.dart
+
+...
+      themeMode: ThemeMode.light,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+>>>>  routes: {
+        '/': (context) => const HomePage(),
+      },
+    );
+  }
+...
+```
+
