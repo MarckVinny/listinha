@@ -120,7 +120,7 @@ Para que ele fique com o circulo pintado precisamos adicionar um ```backgroundCo
     }
     ```
   
-    E será chamado desta forma no arquivo ***home_page.dart*** e será adicionado um ```padding:``` à direita para que não fique grudado no canto da tela.  
+    E será chamado desta forma no arquivo ***home_page.dart*** foi adicionado um ```padding:``` à direita para que não fique grudado no canto da tela.  
 
     ```dart
     ...
