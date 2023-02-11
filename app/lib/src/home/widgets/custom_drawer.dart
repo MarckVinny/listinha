@@ -8,7 +8,9 @@ class CustomDrawer extends StatelessWidget {
     return NavigationDrawer(
       onDestinationSelected: (index) {
         if (index == 1) {
-          Navigator.of(context).pushNamed('/config');
+          Navigator.popAndPushNamed(context, '/config');
+          //Navigator.of(context).pop();
+          //Navigator.of(context).PushNamed('/config');
         }
       },
       children: [

@@ -462,3 +462,9 @@ Para isso, precisamos fazer com que ```NavigationDrawer()``` *"escute"* quando i
         },
   ...
   ```
+
+  - ***Fechando o Drawer:***  
+  Como o ***Drawer*** também é um Sistema de Navegação, ele pode ser fechado antes de ir para a nossa ROTA, utilizando ```Navigator.of(context).pop();``` antes de ir para a página de Configurações, com isso, estaremos fechando o Drawer.  
+  Consequentemente economizaremos recursos do dispositivo.  
+    > ***DICA:***  
+    Uma outra opção e a que irei deixar de exemplo é ao invés de usar o ***pop()*** e o ***pushNamed()*** separadamente, é usar o método que já vem com as duas opções juntas que é o ```Navigator.popAndPushNamed(context, '/config');``` que já pede o ***contexto*** e a ***ROTA*** no mesmo método.
