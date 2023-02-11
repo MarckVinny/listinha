@@ -287,4 +287,39 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
   - Agora iremos adicionar uma data ao item de sincronização e para isso, iremos cercar o ```Text()``` referente ao item de sincronização com uma ```Row()``` e iremos adicionar mais uma propriedade ```Text()``` contendo a data e a hora.  
   Foi utilizado um ```SizedBox()``` com 10 de largura ```width: 10``` e uma estilização utilizando o método ```.labelSmall``` assim como foi feito no Título.  
   
-Segue abaixo o código com tudo o que foi feito:
+    Segue abaixo o código com tudo o que foi feito:  
+
+    ```dart
+    home_page.dart
+
+    ...
+          drawer: NavigationDrawer(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 28, 16, 16),
+              child: Text(
+                'Opções',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ),
+            NavigationDrawerDestination(
+              icon: const Icon(Icons.sync),
+              label: Row(
+                children: [
+                  const Text('Sincronização'),
+                  const SizedBox(width: 10),
+                  Text(
+                    '11/02/2023 às 16:16h',
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ],
+              ),
+            ),
+            const NavigationDrawerDestination(
+              icon: Icon(Icons.settings),
+              label: Text('Configuração'),
+            ),
+          ],
+        ),
+    ...
+    ```
