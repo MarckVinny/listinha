@@ -223,6 +223,7 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
           ),
         ),
     ```
+
     Criar o getter privado do ```_segmentedButtonTheme``` para poder adicionar nos temas light e dark.  
 
     ```dart
@@ -275,3 +276,15 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
     ```
 
     > ***Dica:*** para descobrir como os componentes e propriedades do Flutter funcionam, digite no google: flutter mais a propriedade ou componente + api que irá diretamente para a API da documentação do flutter.
+
+    Em relação a componentização, esse nosso componente não precisa ser componentizado, pois, ele já é bem descritivo e de fácil leitura do código.  
+    Agora, se o pensamento de componentizar algo for para diminuir linhas de código, é um pensamento errado e vai atrapalhar na manutenção do código mais adiante, então, só use a componentização se o componente estiver muito complexo (um componente dentro do outro) ou se for para utilizar em outro lugar também.
+
+- ***Componente Drawer:*** dentro do componente ```Scaffold()``` definimos a propriedade ```drawer:``` ela precisa de um ```NavigationDrawer()``` e dentro dele definimos a propriedade ```children:``` contendo uma lista ```[]``` e dentro dela teremos um ```Text()``` que será o Título do menu e ainda dentro da lista de ***children: []*** teremos um ```NavigationDrawerDestination()```contendo as propriedades ```icon:``` contendo o ícone e ```label:``` contendo a descrição do item.  
+  - Como o título do menu está colado em todos os cantos, será adicionado um ```Padding()``` no componente ```Text()``` para que fique mais condizente com o mockup e mais harmonioso.  
+  Foi utilizado a propriedade ```padding:``` juntamente com o componente ```EdgeInsets.fromLTRB(16, 28, 16, 16),``` note, que foi utilizado o método ***.fronLTRB*** que são as definições de Left, Top, Right e Bottom, não sendo necessário usar os parâmetros nomeados e inserindo os valores correspondentes aos parâmetros posicionais.  
+  Agora iremos estilizar o Título do Menu deixando ele em negrito, para isso, iremos utilizar a propriedade ```style:``` juntamente com o componente ```Theme.of(context).textTheme.titleSmall,``` onde, o Theme através do método ```.of(context)``` pega o tema do contexto ```.textTheme``` e aplica no título ```.titleSmall```, poderia ser usado diversos outros temas disponíveis.  
+  - Agora iremos adicionar uma data ao item de sincronização e para isso, iremos cercar o ```Text()``` referente ao item de sincronização com uma ```Row()``` e iremos adicionar mais uma propriedade ```Text()``` contendo a data e a hora.  
+  Foi utilizado um ```SizedBox()``` com 10 de largura ```width: 10``` e uma estilização utilizando o método ```.labelSmall``` assim como foi feito no Título.  
+  
+Segue abaixo o código com tudo o que foi feito:
