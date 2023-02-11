@@ -379,65 +379,82 @@ E no ***Flutter*** o ***Sistema de Rodas*** como diversas outras coisas é simpl
 
 Agora iremos ver como fazer um **Sistema de Navegação** no ***Flutter*** utilizando as rotas nativas do sistema.  
 
-Vamos começar modificando o arquivo ```app_widget.dart``` dentro de ```lib\src\shared\```, iremos substituir a propriedade ```home: const HomePage(),``` pela propriedade ```routes:``` que conterá um map ```{}``` dentro irá receberá uma rota inicial ```'/' :``` e uma função anônima com um contexto ```(context)``` que irá chamar ```=>``` a página que irá estar trabalhando ```const HomePage()```.  
+- Vamos começar modificando o arquivo ```app_widget.dart``` dentro de ```lib\src\shared\```, iremos substituir a propriedade ```home: const HomePage(),``` pela propriedade ```routes:``` que conterá um map ```{}``` dentro irá receberá uma rota inicial ```'/' :``` e uma função anônima com um contexto ```(context)``` que irá chamar ```=>``` a página que irá estar trabalhando ```const HomePage()```.  
 
-```dart
-app_widget.dart
+  ```dart
+  app_widget.dart
 
-...
-      themeMode: ThemeMode.light,
-      theme: lightTheme,
-      darkTheme: darkTheme,
->>>>  routes: {
-        '/': (context) => const HomePage(),
-      },
-    );
-  }
-...
-```
+  ...
+        themeMode: ThemeMode.light,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+  >>>>  routes: {
+          '/': (context) => const HomePage(),
+        },
+      );
+    }
+  ...
+  ```
 
-Agora vamos criar uma nova página ```configuration_page.dart```no caminho ```lib\src\configuration\``` e depois criar um ```StatefulWidget``` através do atalho ```stf```com o nome de ```ConfigurationPage```.  
+- Agora vamos criar uma nova página ```configuration_page.dart```no caminho ```lib\src\configuration\``` e depois criar um ```StatefulWidget``` através do atalho ```stf```com o nome de ```ConfigurationPage```.  
 Dentro do build iremos retornar ```return``` um ```Scaffold()``` que conterá uma propriedade ```appBar:``` e um componente ```AppBar()``` e que por sua vez, conterá uma propriedade ```title:``` com um ```const Text()``` que conterá o título, mas, como tudo já configurado previamente no ```themes.dart```, a página já será criada com as cores do tema.  
 
-```dart
-configuration_page.dart
+  ```dart
+  configuration_page.dart
 
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+  import 'package:flutter/material.dart';
+  import 'package:flutter/src/widgets/framework.dart';
+  import 'package:flutter/src/widgets/placeholder.dart';
 
-class ConfigurationPage extends StatefulWidget {
-  const ConfigurationPage({super.key});
+  class ConfigurationPage extends StatefulWidget {
+    const ConfigurationPage({super.key});
 
-  @override
-  State<ConfigurationPage> createState() => _ConfigurationPageState();
-}
-
-class _ConfigurationPageState extends State<ConfigurationPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('LISTINHA'),
-      ),
-    );
+    @override
+    State<ConfigurationPage> createState() => _ConfigurationPageState();
   }
-}
-```
 
-Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a página que acabamos de criar.
+  class _ConfigurationPageState extends State<ConfigurationPage> {
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('LISTINHA'),
+        ),
+      );
+    }
+  }
+  ```
 
-```dart
-app_widget.dart
+- Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a página que acabamos de criar.
 
-...
-      themeMode: ThemeMode.light,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      routes: {
-        '/': (context) => const HomePage(),
->>>>    '/config': (context) => const ConfigurationPage(),
-      },
-    );
-...
-```
+  ```dart
+  app_widget.dart
+
+  ...
+        themeMode: ThemeMode.light,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        routes: {
+          '/': (context) => const HomePage(),
+  >>>>    '/config': (context) => const ConfigurationPage(),
+        },
+      );
+  ...
+  ```
+
+- Para que tudo funcione perfeitamente, precisamos fazer com que o item do Menu drawer Configurações vá para a página de configurações quando for clicado.  
+Para isso, precisamos fazer com que ```NavigationDrawer()``` "escute" quando isso acontecer, através da propriedade ```onDestinationSelected:``` com o valor sendo ```(index){}``` e dentro, verificando ***se*** ```if``` ***index*** é igual a posição ***1*** ```(index == 1)``` *"que é a posição do item na lista"*, ***então*** ```{}```, poderemos acessar o ***sistema de navegação*** ```Navigator``` através do ***contexto*** ```.of(context)``` acessando o método ```.pushNamed``` que colocará a página de configurações imediatamente por cima através da ROTA ```('/config');```.  
+
+  ```dart
+  custom_drawer.dart
+
+  ...
+    Widget build(BuildContext context) {
+      return NavigationDrawer(
+  >>>>  onDestinationSelected: (index) {
+          if (index == 1) {
+            Navigator.of(context).pushNamed('/config');
+          }
+        },
+  ...
+  ```
