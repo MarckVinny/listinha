@@ -30,6 +30,7 @@ ___
     - [Chamando o HomeModule() dentro do App principal](#aula5-ChamandoHomeModuleAppPrincipal)
     - [Escutando todas as Rotas](#aula5-EscutandoTodasRotas)
     - [Setando a Rota inicial do Modular](#aula5-SetandoRotaInicialModular)
+    - [Resolvendo problemas internos na HomePage()](#ResolvendoProblemasInternosHomePage)
 
 ___
 
@@ -760,5 +761,32 @@ Para o Modular escutar e realmente trabalhar dentro de tudo relacionado as ROTAS
           title: 'Flutter Demo',
           themeMode: ThemeMode.light,
   ...
-  ```
-  
+  ```  
+
+[^ Sumário ^](#aula-05)  
+
+- ***Resolvendo problemas internos na HomePage()***<a id="ResolvendoProblemasInternosHomePage"></a>  
+
+  Internamente na home_page.dart pode ocorrer algum problema caso não tenhamos cuidado:  
+
+  O ```/edit```, está fazendo alusão ao ***/edit*** e como estamos dentro do ***módulo home***, precisaríamos colocar ```/home/edit``` para que pudesse funcionar corretamente.  
+
+  Mas o Modular é tão fascinante, que ele consegue perceber que está dentro do módulo, pois, ele conhece a ***Árvore de Widgets*** referente à configuração feita em ***main.dart*** *(cercando o AppWidget() com o ModularApp())*
+
+  ```dart
+  home_page.dart
+
+  ...
+        floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.edit),
+        label: const Text('Nova Lista'),
+        onPressed: () {
+  >>>>    Navigator.of(context).pushNamed('./edit');
+        },
+      ),
+  ...
+  ```  
+
+  Portanto, se estiver dentro do Módulo podemos utilizar o ***posix*** *(Imita o estilo do sistema de arquivos Unix.)*.  
+  Isso significa que, se sabemos que estamos dentro do Módulo, utilizamos o ***PONTO*** ```./edit``` para identificar que estamos dentro do ***Módulo***.  
+  Então, independente do nome que for dado na hora que estiver adicionando a ***Rota*** ```ModuleRoute('/home', module: HomeModule()),``` no ***AppModule()***, irá continuar funcionando perfeitamente.
