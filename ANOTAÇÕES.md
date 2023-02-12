@@ -26,6 +26,8 @@ ___
     - [Criando Ação de click no FloatingButton Nova Lista](#aula5-criando-click-floating-button-nova-lista)
   - [Flutter Modular - Sistema de Rotas](#flutter-modular---sistema-de-rotas)  
     - [Instalando o Flutter Modular](#aula5-InstalandoFlutterModular)
+    - [Chamando o HomeModule() dentro do App principal](#aula5-ChamandoHomeModuleAppPrincipal)
+    - [Escutando todas as Rotas](#aula5-EscutandoTodasRotas)
 
 ___
 
@@ -623,3 +625,36 @@ No widget ```ChildRoute('/', child: (context, args) => const ConfigurationPage()
   - Como falamos antes, as ROTAS ```/``` e ```/edit``` fazem parte do mesmo recurso ***"feature"*** e seria bom se elas estivessem no mesmo lugar.  
   Então, é isso que iremos fazer agora:  
   - Dentro de ```lib\src\home``` crie um arquivo chamado ```home_module.dart``` e crie uma classe ```class``` de nome ```HomeModule``` que estende ```extends``` de ```Module``` que irá sobrescrever ```@override``` a lista ```[]``` de ROTAS ```routes```, que retorna uma uma função ```ChildRoute()``` que é onde iremos configurar nossas ROTAS ```/``` e ```/edit``` isoladamente.
+
+[^ Sumário ^](#aula-05)
+
+- ***Chamando o HomeModule() dentro do App principal***<a id="aula5-ChamandoHomeModuleAppPrincipal"></a>  
+Vamos entender como chamamos o HomeModule() dentro do App principal, pois, essa feature *"recurso"* de HomeModule, pode ser chamado em múltiplos Apps, visto que está totalmente divida, seria como se tivesse um App dentro do outro.  
+Dentro do ```app_module.dart```, iremos fazer a chamada da feature através da função ```ModuleRoute()``` no primeiro argumento se adiciona o ```/``` e em ```module:``` diz com que módulo ele irá concatenar ao aplicativo em questão que em nosso caso é ```HomeModule()```.  
+
+- ***Escutando todas as Rotas***<a id="aula5-EscutandoTodasRotas"></a>  
+Para o Modular escutar e realmente trabalhar dentro de tudo relacionado as ROTAS, é preciso iniciá-no no ```app_widget.dart``` substituindo a propriedade ```routes:``` por outras duas propriedades mas antes, precisamos fazer uma alteração em ***MateriaApp()*** e adicionar um construtor ```.router``` que então acessamos a API nova do Flutter chamada Navigator 2.0 que é onde o Modular se instala:  
+  - routerDelegate: Modular.routerDelegate,
+  - routeInformationParser: Modular.routeInformationParser,  
+
+  Com com essas duas propriedades adicionadas, o Modular está instalado no projeto, mas, para que ele escute toda a aplicação, dando dispose onde for preciso pois ele saberá que módulo está aberto e assim que sair irá desligar tudo, tidos os binds, todas as classes, tudo automaticamente.  
+Então ele precisa ser adicionado na raiz da aplicação, no ```main.dart``` envolvendo a aplicação principal ```AppWidget()``` com um widget e renomeando para ```ModularApp()``` para que possa escutar toda a aplicação.  
+O ```ModularApp()``` recebe dois argumentos, um ```module:``` que em nosso caso é o ```AppModule()``` e o App principal que em nosso caso é o ```AppWidget()```.  
+
+  ```dart
+  main.dart
+
+  import 'package:flutter/material.dart';
+  import 'package:flutter_modular/flutter_modular.dart';
+  import 'src/app_module.dart';
+  import 'src/shared/app_widget.dart';
+
+  void main() {
+    runApp(
+      ModularApp(
+        module: AppModule(),
+        child: const AppWidget(),
+      ),
+    );
+  }
+  ```
