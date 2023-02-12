@@ -1,4 +1,5 @@
 ## SUMÁRIO
+
 ___
 
 #### Aula 01
@@ -8,9 +9,9 @@ ___
 #### Aula 03
 
 #### Aula 04
-- []()
 
 - [Componentização](#aula-04---componentização)
+- [.](.)
 
 #### Aula 05
 
@@ -20,7 +21,7 @@ ___
     - [Criando uma Nova Página](#aula5-criando-nova-pagina)
     - [Adicionando a Página de Configurações à Rota](#aula5-adicionando-pagina-configuracoes-rota)
     - [Item clicável no Menu Drawer](#aula5-item-clicavel-menu-drawer)
-    - [Fechando o Drawer](#fechando-drawer)
+    - [Fechando o Drawer](#aula5-fechando-drawer)
     - [Criando a Página de Edição da Lista](#aula5-criando-pagina-edicao-lista)
     - [Adicionando a Página de Edição da Lista à Rota](#aula5-adicionando-pagina-edicao-lista-rota)
     - [Criando Ação de click no FloatingButton Nova Lista](#aula5-criando-click-floating-button-nova-lista)
@@ -31,7 +32,7 @@ ___
 
 ___
 
-# ANOTAÇÕES
+## ANOTAÇÕES
 
 ___
 
@@ -436,8 +437,8 @@ Vamos começar modificando o arquivo ```app_widget.dart``` dentro de ```lib\src\
       );
     }
   ...
-  ```
-  [^ Sumário ^](#aula-05)
+
+[^ Sumário ^](#aula-05)
 
 - ***Criando uma Nova Página:***<a id='aula5-criando-nova-pagina'></a>  
 Vamos criar uma nova página ```configuration_page.dart```no caminho ```lib\src\configuration\``` e depois criar um ```StatefulWidget``` através do atalho ```stf```com o nome de ```ConfigurationPage```.  
@@ -468,6 +469,7 @@ Dentro do ``build`` iremos retornar ```return``` um ```Scaffold()``` que conter�
     }
   }
   ```
+
   [^ Sumário ^](#aula-05)
 
 - ***Adicionando a Página de Configurações à Rota:***<a id='aula5-adicionando-pagina-configuracoes-rota'></a>  
@@ -524,6 +526,8 @@ Dentro da pasta ```lib\src\home```, crie um arquivo chamado ```edit_task_board_p
 Dentro do ``build`` iremos retornar ```return``` um ```Scaffold()``` que conterá uma propriedade ```appBar:``` e um componente ```AppBar()``` e que por sua vez, conterá uma propriedade ```title:``` com um ```const Text()``` que conterá o título, mas, como tudo já configurado previamente no ```themes.dart```, a página já será criada com as cores do tema automaticamente.
 
   ```dart
+  edit_task_board_page.dart
+
   import 'package:flutter/material.dart';
 
   class EditTaskBoardPage extends StatefulWidget {
@@ -632,10 +636,44 @@ No widget ```ChildRoute('/', child: (context, args) => const ConfigurationPage()
 Vamos entender como chamamos o HomeModule() dentro do App principal, pois, essa feature *"recurso"* de HomeModule, pode ser chamado em múltiplos Apps, visto que está totalmente divida, seria como se tivesse um App dentro do outro.  
 Dentro do ```app_module.dart```, iremos fazer a chamada da feature através da função ```ModuleRoute()``` no primeiro argumento se adiciona o ```/``` e em ```module:``` diz com que módulo ele irá concatenar ao aplicativo em questão que em nosso caso é ```HomeModule()```.  
 
+  ```dart
+  app_module.dart
+  
+  ...
+  class AppModule extends Module {
+    @override
+    List<ModularRoute> get routes => [
+  >>>>    ModuleRoute('/', module: HomeModule()),
+          ChildRoute(
+            '/config',
+            child: (context, args) => const ConfigurationPage(),
+          ),
+        ];
+  }
+  ```
+
 - ***Escutando todas as Rotas***<a id="aula5-EscutandoTodasRotas"></a>  
 Para o Modular escutar e realmente trabalhar dentro de tudo relacionado as ROTAS, é preciso iniciá-no no ```app_widget.dart``` substituindo a propriedade ```routes:``` por outras duas propriedades mas antes, precisamos fazer uma alteração em ***MateriaApp()*** e adicionar um construtor ```.router``` que então acessamos a API nova do Flutter chamada Navigator 2.0 que é onde o Modular se instala:  
   - routerDelegate: Modular.routerDelegate,
   - routeInformationParser: Modular.routeInformationParser,  
+  
+  ```dart
+  app_widget.dart
+
+  ...
+      Widget build(BuildContext context) {
+        return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        themeMode: ThemeMode.light,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+  >>>>  routerDelegate: Modular.routerDelegate,
+  >>>>  routeInformationParser: Modular.routeInformationParser,
+        );
+    }
+  }
+  ```
 
   Com com essas duas propriedades adicionadas, o Modular está instalado no projeto, mas, para que ele escute toda a aplicação, dando dispose onde for preciso pois ele saberá que módulo está aberto e assim que sair irá desligar tudo, tidos os binds, todas as classes, tudo automaticamente.  
 Então ele precisa ser adicionado na raiz da aplicação, no ```main.dart``` envolvendo a aplicação principal ```AppWidget()``` com um widget e renomeando para ```ModularApp()``` para que possa escutar toda a aplicação.  
