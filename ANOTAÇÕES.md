@@ -16,11 +16,16 @@ ___
 
 - [Navegação Modular](#aula-05---navegação-modular)  
   - [Navegação Nativa do Flutter - Sistema de Rotas](#navegação-nativa-do-flutter---sistema-de-rotas)
-    - [Inicio](#aula-05-inicio)
-    - [Criando uma Nova Página](#criando-nova-pagina)
-    - [Adicionando a Página de Configurações à Rota](#adicionando-pagina-configuracoes-rota)
-    - [Item clicável no Menu Drawer](#item-clicavel-menu-drawer)
+    - [Inicio](#aula5-inicio)
+    - [Criando uma Nova Página](#aula5-criando-nova-pagina)
+    - [Adicionando a Página de Configurações à Rota](#aula5-adicionando-pagina-configuracoes-rota)
+    - [Item clicável no Menu Drawer](#aula5-item-clicavel-menu-drawer)
     - [Fechando o Drawer](#fechando-drawer)
+    - [Criando a Página de Edição da Lista](#aula5-criando-pagina-edicao-lista)
+    - [Adicionando a Página de Edição da Lista à Rota](#aula5-adicionando-pagina-edicao-lista-rota)
+    - [Criando Ação de click no FloatingButton Nova Lista](#aula5-criando-click-floating-button-nova-lista)
+  - [Flutter Modular](#flutter-modular)
+
 ___
 
 # ANOTAÇÕES
@@ -406,11 +411,11 @@ E no ***Flutter*** o ***Sistema de Rodas*** como diversas outras coisas é simpl
 
 ### Navegação Nativa do Flutter - Sistema de Rotas
 
-[^ Sumário ^](#sumário)
+[^ Sumário ^](#aula-05)
 
 Agora iremos ver como fazer um **Sistema de Navegação** no ***Flutter*** utilizando as rotas nativas do sistema.  
 
-- ***Início:***<a id="aula-05-inicio"></a>  
+- ***Início:***<a id="aula5-inicio"></a>  
 Vamos começar modificando o arquivo ```app_widget.dart``` dentro de ```lib\src\shared\```, iremos substituir a propriedade ```home: const HomePage(),``` pela propriedade ```routes:``` que conterá um map ```{}``` dentro irá receberá uma rota inicial ```'/' :``` e uma função anônima com um contexto ```(context)``` que irá chamar ```=>``` a página que irá estar trabalhando ```const HomePage()```.  
 
   ```dart
@@ -429,7 +434,7 @@ Vamos começar modificando o arquivo ```app_widget.dart``` dentro de ```lib\src\
   ```
   [^ Sumário ^](#aula-05)
 
-- ***Criando uma Nova Página:***<a id='criando-nova-pagina'></a>  
+- ***Criando uma Nova Página:***<a id='aula5-criando-nova-pagina'></a>  
 Vamos criar uma nova página ```configuration_page.dart```no caminho ```lib\src\configuration\``` e depois criar um ```StatefulWidget``` através do atalho ```stf```com o nome de ```ConfigurationPage```.  
 Dentro do ``build`` iremos retornar ```return``` um ```Scaffold()``` que conterá uma propriedade ```appBar:``` e um componente ```AppBar()``` e que por sua vez, conterá uma propriedade ```title:``` com um ```const Text()``` que conterá o título, mas, como tudo já configurado previamente no ```themes.dart```, a página já será criada com as cores do tema.  
 
@@ -460,7 +465,7 @@ Dentro do ``build`` iremos retornar ```return``` um ```Scaffold()``` que conter�
   ```
   [^ Sumário ^](#aula-05)
 
-- ***Adicionando a Página de Configurações à Rota:***<a id='adicionando-pagina-configuracoes-rota'></a>  
+- ***Adicionando a Página de Configurações à Rota:***<a id='aula5-adicionando-pagina-configuracoes-rota'></a>  
 Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a página que acabamos de criar.
 
   ```dart
@@ -480,7 +485,7 @@ Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a pág
 
   [^ Sumário ^](#aula-05)
 
-- ***Item clicável no Menu Drawer:***<a id='item-clicavel-menu-drawer'></a>  
+- ***Item clicável no Menu Drawer:***<a id='aula5-item-clicavel-menu-drawer'></a>  
 Para que tudo funcione perfeitamente, precisamos fazer com que o ***item*** do Menu drawer ***Configurações*** vá para a página de configurações quando for clicado.  
 Para isso, precisamos fazer com que ```NavigationDrawer()``` *"escute"* quando isso acontecer, através da propriedade ```onDestinationSelected:``` com o valor sendo ```(index){}``` e dentro, verificando ***se*** ```if``` ***index*** é igual a posição ***1*** ```(index == 1)``` *"que é a posição do item na lista"*, ***então*** ```{}```, poderemos acessar o ***sistema de navegação*** ```Navigator``` através do ***contexto*** ```.of(context)``` acessando o método ```.pushNamed``` que colocará a página de configurações imediatamente por cima através da ROTA ```('/config');```.  
 
@@ -500,14 +505,16 @@ Para isso, precisamos fazer com que ```NavigationDrawer()``` *"escute"* quando i
 
   [^ Sumário ^](#aula-05)
 
-  - ***Fechando o Drawer:***<a id='fechando-drawer'></a>  
+  - ***Fechando o Drawer:***<a id='aula5-fechando-drawer'></a>  
   Como o ***Drawer*** também é um Sistema de Navegação, ele pode ser fechado antes de ir para a nossa ROTA, utilizando ```Navigator.of(context).pop();``` antes de ir para a página de Configurações, com isso, estaremos fechando o Drawer.  
   Consequentemente economizaremos recursos do dispositivo.  
 
     > ***DICA:***  
     Uma outra opção e a que irei deixar de exemplo é ao invés de usar o ***pop()*** e o ***pushNamed()*** separadamente, é usar o método que já vem com as duas opções juntas que é o ```Navigator.popAndPushNamed(context, '/config');``` que já pede o ***contexto*** e a ***ROTA*** no mesmo método.
 
-- ***Criando a Página de Edição da Lista:***  
+[^ Sumário ^](#aula-05)
+
+- ***Criando a Página de Edição da Lista:***<a id='aula5-criando-pagina-edicao-lista'></a>  
 Dentro da pasta ```lib\src\home```, crie um arquivo chamado ```edit_task_board_page.dart``` e depois criar um ```StatefulWidget``` através do atalho ```stf```com o nome de ```EditTaskBoardPage```.  
 Dentro do ``build`` iremos retornar ```return``` um ```Scaffold()``` que conterá uma propriedade ```appBar:``` e um componente ```AppBar()``` e que por sua vez, conterá uma propriedade ```title:``` com um ```const Text()``` que conterá o título, mas, como tudo já configurado previamente no ```themes.dart```, a página já será criada com as cores do tema automaticamente.
 
@@ -533,7 +540,9 @@ Dentro do ``build`` iremos retornar ```return``` um ```Scaffold()``` que conter�
   }
   ```
 
-  - ***Adicionando a Página de Edição da Lista à Rota:***  
+[^ Sumário ^](#aula-05)
+
+  - ***Adicionando a Página de Edição da Lista à Rota:***<a id='aula5-adicionando-pagina-edicao-lista-rota'></a>  
 Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a página que acabamos de criar.
 
   ```dart
@@ -551,3 +560,52 @@ Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a pág
       );
   ...
   ```
+
+  [^ Sumário ^](#aula-05)
+
+  - ***Criando Ação de click no FloatingButton Nova Lista***<a id='aula5-criando-click-floating-button-nova-lista'></a>  
+  Primeiramente, precisamos abrir o arquivo ```home_page.dart``` que se encontra no caminho ```lib\src\home```.  
+  Para o botão funcionar, precisamos fazer com que ```FloatingActionButton.extended()``` *"escute"* quando isso acontecer, através da propriedade ```onPressed:``` através de uma função anônima ```()```, ***então*** ```{}```, poderemos acessar o ***sistema de navegação*** ```Navigator``` através do ***contexto*** ```.of(context)``` acessando o método ```.pushNamed``` que colocará a página de edição imediatamente por cima através da ROTA ```('/edit');```  
+
+    ```dart
+    home_page.dart
+
+    ...
+            floatingActionButton: FloatingActionButton.extended(
+            icon: const Icon(Icons.edit),
+            label: const Text('Nova Lista'),
+            onPressed: () {
+    >>>>      Navigator.of(context).pushNamed('/edit');
+            },
+          ),
+        );
+      }
+    }
+    ```
+
+Olhando por um ponto de arquitetura, esse tipo de abordagem pode escalar negativamente, por exemplo neste trecho de código:
+
+```dart
+app_widget.dart
+
+...
+      themeMode: ThemeMode.light,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      routes: {
+>>>>    '/': (context) => const HomePage(),
+>>>>    '/edit': (context) => const EditTaskBoardPage(),
+        '/config': (context) => const ConfigurationPage(),
+      },
+    );
+  }
+}
+```
+
+Essas duas ROTAS fazem parte do mesmo recurso *"feature"* seria bom se pudéssemos colocar essas duas ROTAS no mesmo lugar e esta é a função do Flutter Modular, que veremos a seguir.
+
+> Para projetos pequenos como esta lista que está sendo 
+> criada, o sistema de navegação nativa do Flutter que 
+> acabamos de ver, supre muito bem as necessidades do app.
+
+### Flutter Modular
