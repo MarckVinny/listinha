@@ -29,6 +29,7 @@ ___
     - [Instalando o Flutter Modular](#aula5-InstalandoFlutterModular)
     - [Chamando o HomeModule() dentro do App principal](#aula5-ChamandoHomeModuleAppPrincipal)
     - [Escutando todas as Rotas](#aula5-EscutandoTodasRotas)
+    - [Setando a Rota inicial do Modular](#aula5-SetandoRotaInicialModular)
 
 ___
 
@@ -652,8 +653,6 @@ Dentro do ```app_module.dart```, iremos fazer a chamada da feature através da f
   }
   ```  
 
-  Quando se concatena um módulo a outro projeto, pode-se escolher qual o nome que se dará a este módulo que em nosso caso é o ```/home```. Mas dentro do módulo ```HomeModule()``` não muda nada, continua como estava, porém, o acesso a ele se dará através de um ```/home/``` ou ```/home/edit```, por isso precisamos ter esse cuidado a partir de agora quando se trabalha desta forma.
-
 - ***Escutando todas as Rotas***<a id="aula5-EscutandoTodasRotas"></a>  
 Para o Modular escutar e realmente trabalhar dentro de tudo relacionado as ROTAS, é preciso iniciá-no no ```app_widget.dart``` substituindo a propriedade ```routes:``` por outras duas propriedades mas antes, precisamos fazer uma alteração em ***MateriaApp()*** e adicionar um construtor ```.router``` que então acessamos a API nova do Flutter chamada Navigator 2.0 que é onde o Modular se instala:  
   - routerDelegate: Modular.routerDelegate,
@@ -679,13 +678,6 @@ Para o Modular escutar e realmente trabalhar dentro de tudo relacionado as ROTAS
 
   Com com essas duas propriedades adicionadas, o Modular está instalado no projeto, mas, para que ele escute toda a aplicação, dando dispose onde for preciso, pois, ele saberá que módulo está aberto e assim que sair irá desligar tudo, tidos os binds, todas as classes, tudo automaticamente.  
 
-  Também foi adicionado ao ```AppWidget()``` o ```Modular.setInitialRoute('/home/');``` para setar o valor inicial da rota como sendo:  
-  -  ```/home``` para ele acessar o módulo;  
-  -  ```/``` é referente ao filho de ***home*** que pode ser o ```/edit```.  
-  
-  Mas nesse caso queremos o / mesmo, pois, faz referência ao ***ChildRouter()*** do ***AppModule()***:  
-  ```ChildRoute('/', child: (context, args) => const HomePage()),```
-
   Então ele precisa ser adicionado na raiz da aplicação, no ```main.dart``` envolvendo a aplicação principal ```AppWidget()``` com um widget e renomeando para ```ModularApp()``` para que possa escutar toda a aplicação.  
 
   O ```ModularApp()``` recebe dois argumentos, um ```module:``` que em nosso caso é o ```AppModule()``` e o App principal que em nosso caso é o ```AppWidget()```.  
@@ -707,3 +699,66 @@ Para o Modular escutar e realmente trabalhar dentro de tudo relacionado as ROTAS
     );
   }
   ```  
+
+[^ Sumário ^](#aula-05)
+
+- ***Setando a Rota inicial do Modular***<a id="aula5-SetandoRotaInicialModular"></a>  
+
+  Quando se concatena um módulo a outro projeto, pode-se escolher qual o nome que se dará a este módulo que em nosso caso é o ```/home```.  
+
+  ```dart
+  app_module.dart
+
+  ...
+  class AppModule extends Module {
+  @override
+  List<ModularRoute> get routes => [
+  >>>>  ModuleRoute('/home', module: HomeModule()),
+        ChildRoute(
+          '/config',
+          child: (context, args) => const ConfigurationPage(),
+        ),
+      ];
+  }
+  ```
+
+  Mas, dentro do módulo ```HomeModule()``` não muda nada, continua como estava, porém, o acesso a ele se dará através de um ```/home/``` ou ```/home/edit```, por isso precisamos ter esse cuidado a partir de agora quando se trabalha desta forma.  
+
+  ```dart
+  home_page.dart
+
+  ...
+  class HomeModule extends Module {
+  @override
+  List<ModularRoute> get routes => [
+  >>>>  ChildRoute('/', child: (context, args) => const HomePage()),
+        ChildRoute(
+          '/edit',
+          child: (context, args) => const EditTaskBoardPage(),
+        ),
+      ];
+  }
+  ```
+  
+  Foi adicionado ao ```AppWidget()``` o ```Modular.setInitialRoute('/home/');``` para setar o valor inicial da rota para ***/home/*** sendo quê:  
+  -  ```/home``` para ele acessar o módulo;  
+  -  ```/``` é referente ao filho de ***home*** que poderia ser o ```/edit```.  
+
+  Mas nesse caso queremos o ```/``` mesmo, pois, faz referência ao ***ChildRouter()*** do ***AppModule()***:  
+  ```ChildRoute('/', child: (context, args) => const HomePage()),```  
+
+  ```dart
+  app_widget.dart
+
+  ...
+        @override
+      Widget build(BuildContext context) {
+  >>>>  Modular.setInitialRoute('/home/');
+
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          themeMode: ThemeMode.light,
+  ...
+  ```
+  
