@@ -24,7 +24,8 @@ ___
     - [Criando a Página de Edição da Lista](#aula5-criando-pagina-edicao-lista)
     - [Adicionando a Página de Edição da Lista à Rota](#aula5-adicionando-pagina-edicao-lista-rota)
     - [Criando Ação de click no FloatingButton Nova Lista](#aula5-criando-click-floating-button-nova-lista)
-  - [Flutter Modular](#flutter-modular)
+  - [Flutter Modular - Sistema de Rotas](#flutter-modular---sistema-de-rotas)  
+    - [Instalando o Flutter Modular](#aula5-InstalandoFlutterModular)
 
 ___
 
@@ -403,6 +404,8 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
     }
     ```
 
+[^ Sumário ^](#aula-04)
+
 ## Aula 05 - Navegação Modular
 
 Um ***Sistema de Rotas*** é essencial em uma aplicação, pois, dependendo da maneira que ele for feito o usuário terá uma sensação de fluidez na aplicação quando estiver clicando entre as ***features*** *"recursos"* como por exemplo: ***modal, drawer, botões, pages, etc.***  
@@ -604,8 +607,19 @@ app_widget.dart
 
 Essas duas ROTAS fazem parte do mesmo recurso *"feature"* seria bom se pudéssemos colocar essas duas ROTAS no mesmo lugar e esta é a função do Flutter Modular, que veremos a seguir.
 
-> Para projetos pequenos como esta lista que está sendo 
-> criada, o sistema de navegação nativa do Flutter que 
-> acabamos de ver, supre muito bem as necessidades do app.
+> Para projetos pequenos como esta lista que está sendo  criada, o sistema de navegação nativa do Flutter que  acabamos de ver, supre muito bem as necessidades do app.
 
-### Flutter Modular
+[^ Sumário ^](#aula-05)
+
+### Flutter Modular - Sistema de Rotas
+
+Agora iremos entender como funciona o Sistema de Rotas do Flutter Modular.  
+Primeiramente precisamos instalar o Flutter Modular em nosso projeto:
+
+- ***Instalando o Flutter Modular***<a id="aula5-InstalandoFlutterModular"></a>  
+No caminho ```lib\src``` crie um arquivo de nome ```app_module.dart```, este arquivo será responsável pelas ROTAS e pela injeção de dependências.  
+Depois de criar, abra o mesmo arquivo e crie uma ***classe*** ```class``` chamada de ```AppModule``` que estende ```extends``` de ```Module``` que irá sobrescrever ```@override``` a lista de ROTAS ```routes```, ele funcionará da mesma forma, só que ao invés de usar maps ele é voltado a ***Orientação a Objetos***.  
+No widget ```ChildRoute('/', child: (context, args) => const ConfigurationPage()),``` o "**/**" será somente para leitura e iremos definir o ConfigurationPage() de forma global.  
+  - Como falamos antes, as ROTAS ```/``` e ```/edit``` fazem parte do mesmo recurso ***"feature"*** e seria bom se elas estivessem no mesmo lugar.  
+  Então, é isso que iremos fazer agora:  
+  - Dentro de ```lib\src\home``` crie um arquivo chamado ```home_module.dart``` e crie uma classe ```class``` de nome ```HomeModule``` que estende ```extends``` de ```Module``` que irá sobrescrever ```@override``` a lista ```[]``` de ROTAS ```routes```, que retorna uma uma função ```ChildRoute()``` que é onde iremos configurar nossas ROTAS ```/``` e ```/edit``` isoladamente.
