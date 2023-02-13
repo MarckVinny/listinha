@@ -18,6 +18,14 @@ ThemeData get lightTheme => ThemeData(
         foregroundColor: _lightColorScheme.onPrimary,
       ),
       segmentedButtonTheme: _segmentedButtonTheme,
+      //   textTheme: TextTheme(
+      //     titleLarge: TextStyle(
+      //       color: _lightColorScheme.primary,
+      //     ),
+      //     titleMedium: TextStyle(
+      //       color: _lightColorScheme.primary,
+      //     ),
+      //   ),
     );
 
 ThemeData get darkTheme => ThemeData(
