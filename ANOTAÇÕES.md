@@ -37,11 +37,10 @@ ___
 
 - [Refatoração](#aula-06---refatoração)
   - [Dica - Self Explanatory Variable](#aula6-SelfExplanatoryVariable)
-- []()
-- []()
-- []()
-- []()
-- []()
+
+#### Aula 07
+
+- [Gerenciamento de Estado](#aula7-GerenciamentoEstado)
 
 ___
 
@@ -55,9 +54,9 @@ ___
 
 ## Aula 03 -  
 
-## Aula 04 - Componentização  
-
 [^ Sumário ^](#aula-04)
+
+## Aula 04 - Componentização  
 
 Para se realizar uma componentização, precisamos ver se o componente precisa ou não ser componentizado, pois, isso pode muitas vezes atrapalhar a leitura do código. Usar somente para diminuir o código não é muito viável, mas se for para diminuir a complexidade do componente, aí sim é viável.  
 
@@ -834,7 +833,7 @@ Então, devemos modificar o valor destas propriedades para que fiquem condizente
 
   Como pode ser observado, os valores das propriedades ```backgroundColor:``` e ```foregroundColor:``` foram modificados para usarem o ```.colorScheme``` do Material Design 3 que seria ```Theme.of(context).colorScheme.primary,``` e ```Theme.of(context).colorScheme.onPrimary,``` respectivamente, mas ainda não está da melhor forma, podemos melhorar ainda mais o código.  
 
-> ***DICA:***<a id="aula6-SelfExplanatoryVariable"></a>  
+> ***DICA:***<a id='aula6-SelfExplanatoryVariable'></a>  
 Casos como esse, em que se repete um elemento diversas vezes no código, é interessante o uso de um recurso do ***Clean Code*** chamado ***Self Explanatory Variable*** que significa: Variável de Auto Explicação.  
 
 Criar uma variável ```final theme``` para guardar o valor de ```Theme.of(context)``` e usar a variável ***theme*** em seu lugar.  
@@ -881,3 +880,7 @@ Isto é o que o ***Clean Code*** diz: *seu próprio código dis o que ele faz*, 
 No fim das contas, a técnica de escrita de código é mais para mostrar para o próximo desenvolvedor *"que pode ser vocês mesmo no futuro"*, do quê, ter menos código ou funcionar com menos código.  
 A ideia de funcionar com menos código ou com menos *"boilerplate"* como podem dizer por aí, pode ser uma questão totalmente arquitetural e também de *"Clean Code"*.  
 Ou seja. as pessoas irão ver e entender esse código melhor, mesmo ele tendo um *"boilerplate"* maior.  
+
+[^ Sumário ^](#aula-06)  
+
+## ***Aula 07 - Gerenciamento de Estado*** <a id='aula7-GerenciamentoEstado'></a>
