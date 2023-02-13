@@ -1,8 +1,9 @@
+
 ## SUMÁRIO
 
 ___
 
-#### Aula 01
+#### Aula 01  
 
 #### Aula 02
 
@@ -32,9 +33,19 @@ ___
     - [Setando a Rota inicial do Modular](#aula5-SetandoRotaInicialModular)
     - [Resolvendo problemas internos na HomePage()](#ResolvendoProblemasInternosHomePage)
 
+#### Aula 06  
+
+- [Refatoração](#aula-06---refatoração)
+  - [Dica - Self Explanatory Variable](#aula6-SelfExplanatoryVariable)
+- []()
+- []()
+- []()
+- []()
+- []()
+
 ___
 
-## ANOTAÇÕES
+# ANOTAÇÕES
 
 ___
 
@@ -553,7 +564,7 @@ Dentro do ``build`` iremos retornar ```return``` um ```Scaffold()``` que conter�
 
 [^ Sumário ^](#aula-05)
 
-  - ***Adicionando a Página de Edição da Lista à Rota:***<a id='aula5-adicionando-pagina-edicao-lista-rota'></a>  
+- ***Adicionando a Página de Edição da Lista à Rota:***<a id='aula5-adicionando-pagina-edicao-lista-rota'></a>  
 Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a página que acabamos de criar.
 
   ```dart
@@ -574,25 +585,25 @@ Agora iremos adicionar dentro de ```app_widget.dart```, a ***ROTA*** para a pág
 
   [^ Sumário ^](#aula-05)
 
-  - ***Criando Ação de click no FloatingButton Nova Lista***<a id='aula5-criando-click-floating-button-nova-lista'></a>  
-  Primeiramente, precisamos abrir o arquivo ```home_page.dart``` que se encontra no caminho ```lib\src\home```.  
-  Para o botão funcionar, precisamos fazer com que ```FloatingActionButton.extended()``` *"escute"* quando isso acontecer, através da propriedade ```onPressed:``` através de uma função anônima ```()```, ***então*** ```{}```, poderemos acessar o ***sistema de navegação*** ```Navigator``` através do ***contexto*** ```.of(context)``` acessando o método ```.pushNamed``` que colocará a página de edição imediatamente por cima através da ROTA ```('/edit');```  
+- ***Criando Ação de click no FloatingButton Nova Lista***<a id='aula5-criando-click-floating-button-nova-lista'></a>  
+Primeiramente, precisamos abrir o arquivo ```home_page.dart``` que se encontra no caminho ```lib\src\home```.  
+Para o botão funcionar, precisamos fazer com que ```FloatingActionButton.extended()``` *"escute"* quando isso acontecer, através da propriedade ```onPressed:``` através de uma função anônima ```()```, ***então*** ```{}```, poderemos acessar o ***sistema de navegação*** ```Navigator``` através do ***contexto*** ```.of(context)``` acessando o método ```.pushNamed``` que colocará a página de edição imediatamente por cima através da ROTA ```('/edit');```  
 
-    ```dart
-    home_page.dart
+  ```dart
+  home_page.dart
 
-    ...
-            floatingActionButton: FloatingActionButton.extended(
-            icon: const Icon(Icons.edit),
-            label: const Text('Nova Lista'),
-            onPressed: () {
-    >>>>      Navigator.of(context).pushNamed('/edit');
-            },
-          ),
-        );
-      }
+  ...
+          floatingActionButton: FloatingActionButton.extended(
+          icon: const Icon(Icons.edit),
+          label: const Text('Nova Lista'),
+          onPressed: () {
+  >>>>      Navigator.of(context).pushNamed('/edit');
+          },
+        ),
+      );
     }
-    ```
+  }
+  ```
 
 Olhando por um ponto de arquitetura, esse tipo de abordagem pode escalar negativamente, por exemplo neste trecho de código:
 
@@ -742,8 +753,8 @@ Para o Modular escutar e realmente trabalhar dentro de tudo relacionado as ROTAS
   ```
   
   Foi adicionado ao ```AppWidget()``` o ```Modular.setInitialRoute('/home/');``` para setar o valor inicial da rota para ***/home/*** sendo quê:  
-  -  ```/home``` para ele acessar o módulo;  
-  -  ```/``` é referente ao filho de ***home*** que poderia ser o ```/edit```.  
+  - ```/home``` para ele acessar o módulo;  
+  - ```/``` é referente ao filho de ***home*** que poderia ser o ```/edit```.  
 
   Mas nesse caso queremos o ```/``` mesmo, pois, faz referência ao ***ChildRouter()*** do ***AppModule()***:  
   ```ChildRoute('/', child: (context, args) => const HomePage()),```  
@@ -790,3 +801,83 @@ Para o Modular escutar e realmente trabalhar dentro de tudo relacionado as ROTAS
   Portanto, se estiver dentro do Módulo podemos utilizar o ***posix*** *(Imita o estilo do sistema de arquivos Unix.)*.  
   Isso significa que, se sabemos que estamos dentro do Módulo, utilizamos o ***PONTO*** ```./edit``` para identificar que estamos dentro do ***Módulo***.  
   Então, independente do nome que for dado na hora que estiver adicionando a ***Rota*** ```ModuleRoute('/home', module: HomeModule()),``` no ***AppModule()***, irá continuar funcionando perfeitamente.
+
+[^ Sumário ^](#aula-05)  
+
+## Aula 06 - Refatoração
+
+Uma das coisas que desenvolvedor deve fazer depois de criar uma ***feature*** *"recurso"*, é olhar para o código e ver o que precisa ser alterado.  
+Esse processo se chama ***REFATORAÇÃO*** e isso é muito importante para qualquer projeto.  
+O correto, não é só fazer o código funcionar, mas sim, pensar numa manutenção futura no código, então, vamos dar inicio a refatoração.  
+
+O primeiro ponto a ser observado, é refatorar o arquivo ***user_image_button.dart***, pois, precisamos corrigir os valores das propriedades ```backgroundColor:``` e ```foregroundColor:```.  
+
+- O ***Theme.of(context).primaryColor*** é um Componente do Material Design 2 e foi especificado no [README](README.md) do projeto para se utilizar somente Componentes pré-construídos do Material Design 3.  
+Da forma que foi escrito até o presente momento, está funcionando, mas não é a forma que deveria estar escrito.
+Então, devemos modificar o valor destas propriedades para que fiquem condizentes com Material Design 3 e a documentação do Projeto.  
+
+  ```dart
+  user_image_button.dart
+
+  ...
+    @override
+    Widget build(BuildContext context) {
+      return GestureDetector(
+        child: CircleAvatar(
+    >>>>  backgroundColor: Theme.of(context).colorScheme.primary,
+    >>>>  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          child: const Text('A'),
+        ),
+      );
+    }
+  ```
+
+  Como pode ser observado, os valores das propriedades ```backgroundColor:``` e ```foregroundColor:``` foram modificados para usarem o ```.colorScheme``` do Material Design 3 que seria ```Theme.of(context).colorScheme.primary,``` e ```Theme.of(context).colorScheme.onPrimary,``` respectivamente, mas ainda não está da melhor forma, podemos melhorar ainda mais o código.  
+
+> ***DICA:***<a id="aula6-SelfExplanatoryVariable"></a>  
+Casos como esse, em que se repete um elemento diversas vezes no código, é interessante o uso de um recurso do ***Clean Code*** chamado ***Self Explanatory Variable*** que significa: Variável de Auto Explicação.  
+
+Criar uma variável ```final theme``` para guardar o valor de ```Theme.of(context)``` e usar a variável ***theme*** em seu lugar.  
+
+```dart
+user_image_button.dart
+
+...
+      Widget build(BuildContext context) {
+>>>>    final theme = Theme.of(context);
+
+        return GestureDetector(
+          child: CircleAvatar(
+>>>>        backgroundColor: theme.colorScheme.primary,
+>>>>        foregroundColor: theme.colorScheme.onPrimary,
+            child: const Text('A'),
+          ),
+        );
+...
+```  
+
+Ou até mesmo, criar uma variável ```final colorScheme``` e guardar o de ```theme.colorScheme``` e usar a variável ***colorScheme*** em seu lugar.  
+
+```dart
+user_image_button.dart
+
+...
+      Widget build(BuildContext context) {
+        final theme = Theme.of(context);
+>>>>    final colorScheme = theme.colorScheme;
+
+        return GestureDetector(
+          child: CircleAvatar(
+>>>>        backgroundColor: colorScheme.primary,
+>>>>        foregroundColor: colorScheme.onPrimary,
+            child: const Text('A'),
+          ),
+        );
+...
+```  
+
+Mas por qual motivo estamos utilizando duas linhas de código a mais?  
+Isto é o que o ***Clean Code*** diz: *seu próprio código dis o que ele faz*, ***"auto explicativo"***.  
+No fim das contas, a técnica de escrita de código é mais para mostrar para o próximo desenvolvedor *"que pode ser vocês mesmo no futuro"*, do quê, ter menos código ou funcionar com menos código.  
+A ideia de funcionar com menos código ou com menos *"boilerplate"* como podem dizer por aí, pode ser uma questão totalmente arquitetural e também de *"Clean Code"*.  
+Ou seja. as pessoas irão ver e entender esse código melhor, mesmo ele tendo um *"boilerplate"* maior.  
