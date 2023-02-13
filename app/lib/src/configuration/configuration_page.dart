@@ -14,6 +14,14 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       appBar: AppBar(
         title: const Text('LISTINHA'),
       ),
+      body: ListView(
+        children: [
+          Text(
+            'Configurações',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
+      ),
     );
   }
 }

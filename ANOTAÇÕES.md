@@ -883,4 +883,28 @@ Ou seja. as pessoas irão ver e entender esse código melhor, mesmo ele tendo um
 
 [^ Sumário ^](#aula-06)  
 
-## ***Aula 07 - Gerenciamento de Estado*** <a id='aula7-GerenciamentoEstado'></a>
+## ***Aula 07 - Gerenciamento e distribuição de estado*** <a id='aula7-GerenciamentoEstado'></a>
+
+Uma das principais coisas feitas no Flutter, é controlar o Estado ***"State"*** da Tela ***(view, page, etc.)*** por esse motivo, construiremos a ***Tela de Configurações*** ``configuration_page.dart`` onde teremos um Controle de Estado baseado no tema ***theme***.
+
+- O primeiro passo é abrir o aquivo ***configuration_page.dart*** que se encontra no caminho ***lib\src\configuration***.
+- Depois, precisamos adicionar a propriedade ``body:`` para que possamos começar a dar forma ao corpo da Tela em si, pois, no momento ela só possui uma ***AppBar()***.
+- Na definição do body, temos duas opções no momento, usar uma ***Column()*** ou usar um ***ListView()*** *(que nos possibilita ter um scroll)* caso a tela seja pequena, irei optar por usar um ``ListView()``.  
+- Os itens da Lista ``[]`` serão Filhos ``children:`` do ***ListView()***, segue cada um deles:
+  - ***Título da Lista***: adicione um ``Text()`` contendo o texto referente ao ***Título*** ``'Configurações',`` ainda dentro o ***Text()*** iremos definir o ***estilo*** ``style:`` do ***Título*** pegando o ***contexto*** ``Theme.of(context)`` do ***Tema*** ``.textTheme`` e aplicamos o ***estilo*** que queremos ``.titleLarge,`` repita esse procedimento para os outros dois ***Text()***, ***Tema*** e ***Controle de Dados*** respectivamente modificando apenas o estilo.  
+  
+    ```dart
+    configuration_page.dart
+
+    ...
+          body: ListView(
+          children: [
+    >>>>    Text(
+              'Configurações',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ],
+        ),
+    ...
+    ```
+
