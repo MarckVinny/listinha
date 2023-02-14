@@ -931,18 +931,46 @@ Uma das principais coisas feitas no Flutter, é controlar o Estado ***"State"***
   ``onChanged:`` irá receber o ***ThemeMode*** ``(mode) {},`` na hora de mudar.  
   Adicione a propriedade ``title:`` que receberá um ``Text()`` contendo o valor do ***Título*** ``'Sistema',`` em seguida será definido o ***estilo*** ``style:`` do ***Título*** pegando o ***contexto*** ``Theme.of(context)`` do ***Tema*** ``.textTheme`` e aplicamos o ***estilo*** que queremos ``.bodyLarge,``, repita o processo para as outras duas ***Caixas de Seleção*** ``Claro`` e ``Escuro``.  
   
-  ```dart
-  configuration_page.dart
-  
-  ...
-          RadioListTile<ThemeMode>(
-            title: Text(
-              'Sistema',
-              style: Theme.of(context).textTheme.bodyLarge,
+    ```dart
+    configuration_page.dart
+    
+    ...
+            RadioListTile<ThemeMode>(
+              title: Text(
+                'Sistema',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              value: ThemeMode.light,
+              groupValue: ThemeMode.light,
+              onChanged: (mode) {},
             ),
-            value: ThemeMode.light,
-            groupValue: ThemeMode.light,
-            onChanged: (mode) {},
+    ...
+    ```  
+
+    > ***Obs.:*** adicione um ***SizedBox()*** entre o ***Caixa de Seleção*** e o ***Controle de Dados*** e entre o ***Controle de Dados*** e o ***Botão "Apagar Cache e Reiniciar App"***.  
+
+    ```dart
+    configuration_page.dart
+    
+    ...
+        const SizedBox(
+                height: 23,
+              ),
+    ...
+    ```  
+
+  - ***Botão - Apagar cache e reiniciar app***  
+  Logo após o ***Text()*** do ***Controle de Dados***, adicione um Componente chamado ``OutlinedButton()`` ele possui duas propriedades que precisamos definir seus valores:  
+  ``onPressed:`` por enquanto receberá um função anonima.  
+  ``child:`` receberá um ``Text()`` que conterá o texto do botão ``'Apagar Cache e Reiniciar App'``.  
+  
+    ```dart
+    configuration_page.dart
+    
+    ...
+          OutlinedButton(
+            onPressed: () {},
+            child: const Text('Apagar Cache e Reiniciar App'),
           ),
-  ...
-  ```
+    ...
+    ```  

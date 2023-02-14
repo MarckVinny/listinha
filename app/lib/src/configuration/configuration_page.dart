@@ -36,6 +36,10 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             groupValue: ThemeMode.light,
             onChanged: (mode) {},
           ),
+          OutlinedButton(
+            onPressed: () {},
+            child: const Text('Apagar Cache e Reiniciar App'),
+          ),
         ],
       ),
     );
