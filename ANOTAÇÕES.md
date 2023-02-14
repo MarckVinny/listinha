@@ -42,6 +42,10 @@ ___
 
 - [Gerenciamento de Estado](#aula7-GerenciamentoEstado)
   - [Definindo a ListView()](#definindo-a-listview)
+    - [Título da Lista](#aula7-TituloLista)
+    - [Caixa de Seleção](#aula7-CaixaSelecao)
+    - [Botão Apagar Cache e Reiniciar App](#aula7-BotaoApagarCacheReiniciarApp)
+    - [Finalizando o ListView](#aula7-FinalizandoListView)
 
 ___
 
@@ -890,87 +894,181 @@ Uma das principais coisas feitas no Flutter, é controlar o Estado ***"State"***
 
 ### Definindo a ListView()  
 
-- O primeiro passo é abrir o aquivo ***configuration_page.dart*** que se encontra no caminho ***lib\src\configuration***.
-- Depois, precisamos adicionar a propriedade ``body:`` para que possamos começar a dar forma ao corpo da Tela em si, pois, no momento ela só possui uma ***AppBar()***.
+- O primeiro passo é abrir o aquivo ***configuration_page.dart*** que se encontra no caminho ***lib\src\configuration***.  
+
+- Depois, precisamos adicionar a propriedade ``body:`` para que possamos começar a dar forma ao corpo da Tela em si, pois, no momento ela só possui uma ***AppBar()***.  
+
 - Na definição do body, temos duas opções no momento, usar uma ***Column()*** ou usar um ***ListView()*** *(que nos possibilita ter um scroll)* caso a tela seja pequena, irei optar por usar um ``ListView()``.  
+
 - Os itens da ***Lista*** ``[]`` serão **Filhos** ``children:`` do ***ListView()***:  
-  - ***Título da Lista***:  
+
+[^ Sumário ^](#aula-07)
+
+- ***Título da Lista***:<a id='aula7-TituloLista'></a>  
   Adicione um ``Text()`` contendo o texto referente ao ***Título*** ``'Configurações',`` ainda dentro o ***Text()*** iremos definir o ***estilo*** ``style:`` do ***Título*** pegando o ***contexto*** ``Theme.of(context)`` do ***Tema*** ``.textTheme`` e aplicamos o ***estilo*** que queremos ``.titleLarge,`` repita esse procedimento para os outros dois ***Text()***, ***Tema*** e ***Controle de Dados*** respectivamente modificando apenas o estilo.  
   
-    ```dart
-    configuration_page.dart
+  ```dart
+  configuration_page.dart
 
-    ...
-          body: ListView(
-          children: [
-    >>>>    Text(
-              'Configurações',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ],
-        ),
-    ...
-    ```  
+  ...
+        body: ListView(
+        children: [
+  >>>>    Text(
+            'Configurações',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
+      ),
+  ...
+  ```  
 
-    > ***Obs.:*** adicione um ***SizedBox()*** entre o ***Título*** e o ***Tema***.  
+  > ### ***Obs.:*** adicione um ***SizedBox()*** entre o ***Título*** e o ***Tema***  
 
-    ```dart
-    configuration_page.dart
-    
-    ...
-        const SizedBox(
-                height: 23,
-              ),
-    ...
-    ```  
-
-  - ***Caixa de Seleção***:  
-  Adicione um ***Componente de Seleção*** ``RadioListTile<ThemeMode>()`` que será do ***Tipo*** ``ThemeMode``, dentro ele possui 3 propriedades:  
-  ``value:`` por enquanto receberá o ``ThemeMode.light``, mas será modificado mais a frente.  
-  ``groupValue:`` também receberá o ``ThemeMode.light``.  
-  ``onChanged:`` irá receber o ***ThemeMode*** ``(mode) {},`` na hora de mudar.  
-  Adicione a propriedade ``title:`` que receberá um ``Text()`` contendo o valor do ***Título*** ``'Sistema',`` em seguida será definido o ***estilo*** ``style:`` do ***Título*** pegando o ***contexto*** ``Theme.of(context)`` do ***Tema*** ``.textTheme`` e aplicamos o ***estilo*** que queremos ``.bodyLarge,``, repita o processo para as outras duas ***Caixas de Seleção*** ``Claro`` e ``Escuro``.  
+  ```dart
+  configuration_page.dart
   
-    ```dart
-    configuration_page.dart
-    
-    ...
-            RadioListTile<ThemeMode>(
-              title: Text(
-                'Sistema',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              value: ThemeMode.light,
-              groupValue: ThemeMode.light,
-              onChanged: (mode) {},
+  ...
+      const SizedBox(
+              height: 23,
             ),
-    ...
-    ```  
+  ...
+  ```  
 
-    > ***Obs.:*** adicione um ***SizedBox()*** entre o ***Caixa de Seleção*** e o ***Controle de Dados*** e entre o ***Controle de Dados*** e o ***Botão "Apagar Cache e Reiniciar App"***.  
+[^ Sumário ^](#aula-07)
 
-    ```dart
-    configuration_page.dart
-    
-    ...
-        const SizedBox(
-                height: 23,
-              ),
-    ...
-    ```  
+- ***Caixa de Seleção***:<a id='aula7-CaixaSelecao'></a>  
+  Adicione um ***Componente de Seleção*** ``RadioListTile<ThemeMode>()`` que será do ***Tipo*** ``ThemeMode``, dentro ele possui 3 propriedades:  
 
-  - ***Botão - Apagar cache e reiniciar app***  
+  ``value:`` por enquanto receberá o ``ThemeMode.light``, mas será modificado mais a frente.  
+
+  ``groupValue:`` também receberá o ``ThemeMode.light``.  
+
+  ``onChanged:`` irá receber o ***ThemeMode*** ``(mode) {},`` na hora de mudar.  
+
+  Adicione a propriedade ``title:`` que receberá um ``Text()`` contendo o valor do ***Título*** ``'Sistema',`` em seguida será definido o ***estilo*** ``style:`` do ***Título*** pegando o ***contexto*** ``Theme.of(context)`` do ***Tema*** ``.textTheme`` e aplicamos o ***estilo*** que queremos ``.bodyLarge,``, repita o processo para as outras duas ***Caixas de Seleção*** ``Claro`` e ``Escuro``.  
+
+  ```dart
+  configuration_page.dart
+  
+  ...
+          RadioListTile<ThemeMode>(
+            title: Text(
+              'Sistema',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            value: ThemeMode.light,
+            groupValue: ThemeMode.light,
+            onChanged: (mode) {},
+          ),
+  ...
+  ```  
+
+  > ### ***Obs.:*** adicione um ***SizedBox()*** entre o ***Caixa de Seleção*** e o ***Controle de Dados*** e entre o ***Controle de Dados*** e o ***Botão "Apagar Cache e Reiniciar App"***  
+
+  ```dart
+  configuration_page.dart
+  
+  ...
+      const SizedBox(
+              height: 23,
+            ),
+  ...
+  ```  
+
+[^ Sumário ^](#aula-07)
+
+- ***Botão - Apagar cache e reiniciar app***<a id='aula7-BotaoApagarCacheReiniciarApp'></a>  
   Logo após o ***Text()*** do ***Controle de Dados***, adicione um Componente chamado ``OutlinedButton()`` ele possui duas propriedades que precisamos definir seus valores:  
   ``onPressed:`` por enquanto receberá um função anonima.  
   ``child:`` receberá um ``Text()`` que conterá o texto do botão ``'Apagar Cache e Reiniciar App'``.  
+
+  ```dart
+  configuration_page.dart
   
-    ```dart
-    configuration_page.dart
-    
-    ...
-          OutlinedButton(
-            onPressed: () {},
-            child: const Text('Apagar Cache e Reiniciar App'),
+  ...
+        OutlinedButton(
+          onPressed: () {},
+          child: const Text('Apagar Cache e Reiniciar App'),
+        ),
+  ...
+  ```  
+  
+  [^ Sumário ^](#aula-07)
+
+- ***Finalizando o ListView()***<a id='aula7-FinalizandoListView'></a>  
+  Para finalizar, adicionaremos um ***Padding()*** ao ***Componente ListView()*** para que não grude nas laterais.  
+
+  Posicione o cursor encima do ***Componente ListView*** e pressione ***CTRL+PONTO*** que irá abrir o menu suspenso e escolha ``Wrap with Padding`` e na propriedade ``padding:`` defina seu valor para ``const EdgeInsets.all(20),`` para que fique com 20px em todos os lado.  
+
+  Mas se preferir definir valores diferentes para cada lado, pode usar também o método ``const EdgeInsets.fromLTRB(16, 10, 20, 0),`` que utiliza parâmetros posicionais ***LTRB***.  
+
+  Abaixo o código completo do ``body:`` com o ``Padding()`` e o ``ListView()`` com todos os seu ***Filhos*** ``children:``.  
+
+  ```dart
+  configuration_page.dart
+  
+  ...
+          body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: ListView(
+            children: [
+              Text(
+                'Configurações',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 23,
+              ),
+              Text(
+                'Tema',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              RadioListTile<ThemeMode>(
+                title: Text(
+                  'Sistema',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                value: ThemeMode.light,
+                groupValue: ThemeMode.light,
+                onChanged: (mode) {},
+              ),
+              RadioListTile<ThemeMode>(
+                title: Text(
+                  'Claro',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                value: ThemeMode.light,
+                groupValue: ThemeMode.light,
+                onChanged: (mode) {},
+              ),
+              RadioListTile<ThemeMode>(
+                title: Text(
+                  'Escuro',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                value: ThemeMode.light,
+                groupValue: ThemeMode.light,
+                onChanged: (mode) {},
+              ),
+              const SizedBox(
+                height: 23,
+              ),
+              Text(
+                'Controle de Dados',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(
+                height: 23,
+              ),
+              OutlinedButton(
+                onPressed: () {},
+                child: const Text('Apagar Cache e Reiniciar App'),
+              ),
+            ],
           ),
-    ...
-    ```  
+        ),
+      );
+    }
+  }
+  ...
+  ```
