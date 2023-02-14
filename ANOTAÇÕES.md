@@ -41,6 +41,7 @@ ___
 #### Aula 07
 
 - [Gerenciamento de Estado](#aula7-GerenciamentoEstado)
+  - [Definindo a ListView()](#definindo-a-listview)
 
 ___
 
@@ -887,11 +888,14 @@ Ou seja. as pessoas irão ver e entender esse código melhor, mesmo ele tendo um
 
 Uma das principais coisas feitas no Flutter, é controlar o Estado ***"State"*** da Tela ***(view, page, etc.)*** por esse motivo, construiremos a ***Tela de Configurações*** ``configuration_page.dart`` onde teremos um Controle de Estado baseado no tema ***theme***.
 
+### Definindo a ListView()  
+
 - O primeiro passo é abrir o aquivo ***configuration_page.dart*** que se encontra no caminho ***lib\src\configuration***.
 - Depois, precisamos adicionar a propriedade ``body:`` para que possamos começar a dar forma ao corpo da Tela em si, pois, no momento ela só possui uma ***AppBar()***.
 - Na definição do body, temos duas opções no momento, usar uma ***Column()*** ou usar um ***ListView()*** *(que nos possibilita ter um scroll)* caso a tela seja pequena, irei optar por usar um ``ListView()``.  
-- Os itens da Lista ``[]`` serão Filhos ``children:`` do ***ListView()***, segue cada um deles:
-  - ***Título da Lista***: adicione um ``Text()`` contendo o texto referente ao ***Título*** ``'Configurações',`` ainda dentro o ***Text()*** iremos definir o ***estilo*** ``style:`` do ***Título*** pegando o ***contexto*** ``Theme.of(context)`` do ***Tema*** ``.textTheme`` e aplicamos o ***estilo*** que queremos ``.titleLarge,`` repita esse procedimento para os outros dois ***Text()***, ***Tema*** e ***Controle de Dados*** respectivamente modificando apenas o estilo.  
+- Os itens da ***Lista*** ``[]`` serão **Filhos** ``children:`` do ***ListView()***:  
+  - ***Título da Lista***:  
+  Adicione um ``Text()`` contendo o texto referente ao ***Título*** ``'Configurações',`` ainda dentro o ***Text()*** iremos definir o ***estilo*** ``style:`` do ***Título*** pegando o ***contexto*** ``Theme.of(context)`` do ***Tema*** ``.textTheme`` e aplicamos o ***estilo*** que queremos ``.titleLarge,`` repita esse procedimento para os outros dois ***Text()***, ***Tema*** e ***Controle de Dados*** respectivamente modificando apenas o estilo.  
   
     ```dart
     configuration_page.dart
@@ -906,5 +910,39 @@ Uma das principais coisas feitas no Flutter, é controlar o Estado ***"State"***
           ],
         ),
     ...
-    ```
+    ```  
 
+    > ***Obs.:*** adicione um ***SizedBox()*** entre o ***Título*** e o ***Tema***.  
+
+    ```dart
+    configuration_page.dart
+    
+    ...
+        const SizedBox(
+                height: 23,
+              ),
+    ...
+    ```  
+
+  - ***Caixa de Seleção***:  
+  Adicione um ***Componente de Seleção*** ``RadioListTile<ThemeMode>()`` que será do ***Tipo*** ``ThemeMode``, dentro ele possui 3 propriedades:  
+  ``value:`` por enquanto receberá o ``ThemeMode.light``, mas será modificado mais a frente.  
+  ``groupValue:`` também receberá o ``ThemeMode.light``.  
+  ``onChanged:`` irá receber o ***ThemeMode*** ``(mode) {},`` na hora de mudar.  
+  Adicione a propriedade ``title:`` que receberá um ``Text()`` contendo o valor do ***Título*** ``'Sistema',`` em seguida será definido o ***estilo*** ``style:`` do ***Título*** pegando o ***contexto*** ``Theme.of(context)`` do ***Tema*** ``.textTheme`` e aplicamos o ***estilo*** que queremos ``.bodyLarge,``, repita o processo para as outras duas ***Caixas de Seleção*** ``Claro`` e ``Escuro``.  
+  
+  ```dart
+  configuration_page.dart
+  
+  ...
+          RadioListTile<ThemeMode>(
+            title: Text(
+              'Sistema',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            value: ThemeMode.light,
+            groupValue: ThemeMode.light,
+            onChanged: (mode) {},
+          ),
+  ...
+  ```
