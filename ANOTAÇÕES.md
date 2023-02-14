@@ -46,7 +46,9 @@ ___
     - [Caixa de Seleção](#aula7-CaixaSelecao)
     - [Botão Apagar Cache e Reiniciar App](#aula7-BotaoApagarCacheReiniciarApp)
     - [Finalizando o ListView](#aula7-FinalizandoListView)
-
+  - [Criando um Gerenciamento de Estado](#aula7-CriandoGerenciamentoEstado)
+    - [Iniciando o Gerenciamento](#aula7-IniciandoGerenciamento)
+    - [Trasporte e Distribuição do Estado](#aula7-TrasporteDistribuicaoEstado)
 ___
 
 # ANOTAÇÕES
@@ -1072,3 +1074,68 @@ Uma das principais coisas feitas no Flutter, é controlar o Estado ***"State"***
   }
   ...
   ```
+
+[^ Sumário ^](#aula-07)
+
+### ***Criando um Gerenciamento de Estado*** <a id='aula7-CriandoGerenciamentoEstado'></a>  
+
+***Gerenciar um Estado*** ``State``, significa escolher uma ***Classe/Componente*** para salvar o ***Estado da Aplicação***.  
+Um Componente muito utilizado para realizar essa tarefa é o ***Store***.  
+
+- ***Iniciando o Gerenciamento:*** <a id='aula7-IniciandoGerenciamento'></a>  
+  Crie uma pasta chamada ***Store*** no caminho ``lib\src\shared`` e depois crie uma ***Classe*** chamada ``app_store.dart``, pois, ela irá guardar todas as alterações globais de Estado da Aplicação.  
+
+  Com o arquivo aberto, crie a ***Classe*** de nome ``AppStore``, essa será a ***Classe*** responsável pelo ***Gerenciamento de Estado***.  
+
+  Para mudar o Tema, é necessário ter um ***Componente Reativo*** para que quando algo mude, quem estiver escutando este Componente Reativo realize a modificação.  
+
+  Então, para que isso ocorra precisamos adicionar uma ***variável*** ``final themeMode`` que irá receber o ``ValueNotifier()`` que irá receber como valor padrão o ``ThemeMode.system``.  
+  
+    ```dart
+    app_store.dart
+    
+    ...
+    import 'package:flutter/material.dart';
+
+    class AppStore {
+      final themeMode = ValueNotifier(ThemeMode.system);
+    }
+    ...
+    ```  
+
+    De fato só esta ***Classe*** já é o Gerenciamento de Estado, pois, mudou a variável ***themeMode*** mudou o Estado do Tema da aplicação.  
+
+    > ## Assistir [aqui](https://www.youtube.com/watch?v=zV1X9vwYcdI&list=PLlBnICoI-g-eG0eVkHu2IaO48TljxPjPq) as aulas de ValueNotifier()  
+
+[^ Sumário ^](#aula-07)
+
+- ***Trasporte e Distribuição do Estado:*** <a id='aula7-TrasporteDistribuicaoEstado'></a>  
+  Como fazer o transporte e distribuição deste Estado?  
+  Para isso, será utilizado novamente o ***Modular*** onde já foram feitas as ***Rotas*** e dentro teremos os ``Binds`` ***"vínculos"***.  
+  - Abra o ***Modular*** a partir do arquivo ``app_module.dart`` e iremos adicionar os ***Binds***, use o auto-complete escrevendo ``binds`` e apertando **ENTER**.  
+  No código que aparecer, substitua ``super.binds`` por colchetes ``[]`` dentro, podemos adicionar propriedades que irão se ***auto-resolver*** e serem entregues em qualquer parte da Aplicação, principalmente se estiver no ***AppModule***, e cada ***Módulo*** tem seu próprio ***bind***.  
+  - Para registrar o AppStore() no Modular, é preciso adicionar dentro dos colchetes ``[]`` ``Bind`` que implementa um ***método*** ``.singleton(i)`` que ***persiste/entrega*** ``=> AppStore()`` como uma única instancia.  
+  Ele também resolve outros problemas de fabricação da instancia, mas no momento não iremos precisar.  
+  
+    ```dart
+    app_module.dart
+    
+    ...
+    class AppModule extends Module {
+      @override
+      //*todo: implement binds
+      List<Bind<Object>> get binds => [
+            //! Versão antiga
+            // Bind.singleton((i) => AppStore())
+
+            //? Versão nova a partir de março/2023 Flutter_Modular: ^6.0.0-alpha.5
+            AutoBind.singleton(AppStore.new)
+          ];
+    ...
+    ```  
+
+    Utilizando a nova versão ``AutoBind.singleton(AppStore.new)`` ele fica disponível para toda a Aplicação.  
+
+  - Como utilizar o ***Modular*** para ***distribuir a AppStore()*** para toda a ***Aplicação*** e como fazer para ***receber a AppStore*** onde for preciso?  
+    - Será preciso receber a ``AppStore()`` na ***configuration_page.dart*** para poder modificar o Tema e outas informações.  
+    - Será preciso receber a ``AppStore()`` na ***app_widget.dart*** para quando ele for modificado, ele altere a propriedade ``themeMode:``.  
