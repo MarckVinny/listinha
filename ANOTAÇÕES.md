@@ -49,6 +49,7 @@ ___
   - [Criando um Gerenciamento de Estado](#aula7-CriandoGerenciamentoEstado)
     - [Iniciando o Gerenciamento](#aula7-IniciandoGerenciamento)
     - [Trasporte e Distribuição do Estado](#aula7-TrasporteDistribuicaoEstado)
+
 ___
 
 # ANOTAÇÕES
@@ -1185,7 +1186,7 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
     - ***Continuando dentro do configuration_page.dart:***  
       Quando appStore registrar a modificação do Tema, em ``RadioListTile<ThemeMode>()`` a propriedade ``groupValue:`` irá receber o valor selecionado ``appStore.themeMode.value,`` em cada uma das caixas de seleção ***(system, light ou dark)*** que será utilizado.  
-      Agora, para que funcione, precisamos adicionar na propriedade ``onChanged:`` o valor ``(mode) {appStore.themeMode.value`` recebendo ``=`` o mode que pode ser nulo ``mode!;},`` mas que dificilmente fique nulo em nosso caso.  
+      Agora, para que funcione, precisamos adicionar na propriedade ``onChanged:`` o valor ``(mode) {appStore.themeMode.value`` recebendo ``=`` o mode que pode ser nulo ``mode!;},`` mas que dificilmente fique nulo em nosso caso.  <a id='onChanged'></a>
 
       ```dart
       configuration_page.dart
@@ -1204,5 +1205,27 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
     - ***Criando o método changeThemeMode():***  
     Melhorando um pouco a lógica para que, tenha um método para realizar a modificação.  
-    Criando o método sem retorno ***changeThemeMode()*** ``void changeThemeMode(``ele irá receber um ``ThemeMode?`` possivelmente nulo, que terá o nome de ``mode) {``, se ``if`` mode for diferente de nulo ``(mode != null)`` então ``{``o valor do tema ``themeMode.value`` será atribuído ``=`` ao mode ``mode;}`` para ele ativar a reatividade.
+    Criando o método sem retorno ***changeThemeMode()*** ``void changeThemeMode(``ele irá receber um ``ThemeMode?`` possivelmente nulo, que terá o nome de ``mode) {``, se ``if`` mode for diferente de nulo ``(mode != null)`` então ``{``o valor do tema ``themeMode.value`` será atribuído ``=`` ao mode ``mode;}`` para ele ativar a reatividade.  
+
+    ```dart
+    app_store.dart
+    
+    ...
+        class AppStore {
+          final themeMode = ValueNotifier(ThemeMode.system);
+    >>>>  void changeThemeMode(ThemeMode? mode) {
+            if (mode != null) {
+              themeMode.value = mode;
+            }
+          }
+        }
+    ...
+    ```
+
+    Como a Classe AppStore() está sendo distribuída globalmente pelo pelo Modular através do [Bind](#aula7-TrasporteDistribuicaoEstado) feito no inicio, podemos usar o tear-offs no ``onChange:`` e encurtar o código usando o valor ``appStore.changeThemeMode,`` ao invés de usar [esse](#onChanged) no ``configuration_page.dart`` ou em qualquer outro lugar.  
+
+    > ## O guia ***Effective Dart*** também se refere a cortes "tear-offs" e os descreve com menos jargão:
+
+    > ### Se você se referir a um método em um objeto, mas omitir os parênteses, o Dart fornecerá um “corte” tear-off, um fechamento que usa os mesmos parâmetros do método e o invoca quando você o chama.  
+
 

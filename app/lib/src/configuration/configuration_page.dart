@@ -40,9 +40,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               ),
               value: ThemeMode.system,
               groupValue: appStore.themeMode.value,
-              onChanged: (mode) {
-                appStore.themeMode.value = mode!;
-              },
+              onChanged: appStore.changeThemeMode,
             ),
             RadioListTile<ThemeMode>(
               title: Text(
@@ -51,9 +49,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               ),
               value: ThemeMode.light,
               groupValue: appStore.themeMode.value,
-              onChanged: (mode) {
-                appStore.themeMode.value = mode!;
-              },
+              onChanged: appStore.changeThemeMode,
             ),
             RadioListTile<ThemeMode>(
               title: Text(
@@ -62,9 +58,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               ),
               value: ThemeMode.dark,
               groupValue: appStore.themeMode.value,
-              onChanged: (mode) {
-                appStore.themeMode.value = mode!;
-              },
+              onChanged: appStore.changeThemeMode,
             ),
             const SizedBox(
               height: 23,
