@@ -1200,5 +1200,9 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
       ```  
 
       Então, no momento em que a Caixa de Seleção for clicada ``onChanged:``, ``appStore`` irá alterar o valor ``value:`` do mode ``mode!`` que no exemplo acima seria o Tema ``dark``.  
-      Ao alterar o ``mode``, o ``appStore`` modifica a variável dentro da ***Classe*** ``AppStore()`` que irá gerenciar o estado do ``AppWidget()`` realizando as modificações necessárias em toda a aplicação.
+      Ao alterar o ``mode``, o ``appStore`` modifica a variável dentro da ***Classe*** ``AppStore()`` que irá gerenciar o estado do ``AppWidget()`` realizando as modificações necessárias em toda a aplicação.  
+
+    - ***Criando o método changeThemeMode():***  
+    Melhorando um pouco a lógica para que, tenha um método para realizar a modificação.  
+    Criando o método sem retorno ***changeThemeMode()*** ``void changeThemeMode(``ele irá receber um ``ThemeMode?`` possivelmente nulo, que terá o nome de ``mode) {``, se ``if`` mode for diferente de nulo ``(mode != null)`` então ``{``o valor do tema ``themeMode.value`` será atribuído ``=`` ao mode ``mode;}`` para ele ativar a reatividade.
 
