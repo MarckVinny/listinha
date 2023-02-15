@@ -5,6 +5,11 @@ class AppStore {
   void changeThemeMode(ThemeMode? mode) {
     if (mode != null) {
       themeMode.value = mode;
+      save();
     }
+  }
+
+  void save() {
+    //*todo: salvar os dados na base local
   }
 }

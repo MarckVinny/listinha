@@ -49,6 +49,9 @@ ___
   - [Criando um Gerenciamento de Estado](#aula7-CriandoGerenciamentoEstado)
     - [Iniciando o Gerenciamento](#aula7-IniciandoGerenciamento)
     - [Trasporte e Distribuição do Estado](#aula7-TrasporteDistribuicaoEstado)
+    - [Como utilizar o Modular para distribuir a AppStore() para toda a Aplicação](#aula7-ComoUtilizarModularDistribuirAppStore)
+    - [Criando o método changeThemeMode()](#aula7-CriandoMetodoChangeThemeMode)
+    - [Encurtando código com método tear-offs](#aula7-EncurtandoCodigoMetodotear-offs)
 
 ___
 
@@ -1137,74 +1140,80 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
     Utilizando a nova versão ``AutoBind.singleton(AppStore.new)`` ele se ***auto-resolve*** e fica disponível para toda a Aplicação.  
 
-  - Como utilizar o ***Modular*** para ***distribuir a AppStore()*** para toda a ***Aplicação*** e como fazer para ***receber a AppStore*** onde for preciso?  
-    - Será preciso receber a ``AppStore()`` na ***configuration_page.dart*** para poder modificar o ***Tema*** e outas informações.  
-    - Será preciso receber a ``AppStore()`` na ***app_widget.dart*** para quando ele for modificado, ele altere a propriedade ``themeMode:``.  
+  [^ Sumário ^](#aula-07)
 
-      Então para fazer a distribuição da ***AppStor()*** dentro de ***AppWidget()*** prosseguimos da seguinte forma:  
+  - Como utilizar o ***Modular*** para ***distribuir a AppStore()*** para toda a ***Aplicação*** e como fazer para ***receber a AppStore*** onde for preciso?<a id='aula7-ComoUtilizarModularDistribuirAppStore'></a>  
 
-    - Primeiro abrimos o arquivo ***app_widget.dart***.  
-    - Dentro do ``build`` adicione uma ***variável*** ``final`` chamada ``appStore`` que ***receberá*** ``=`` através do ***contexto*** ``context`` o ***valor*** ``.watch<>()`` que ***escutará*** ``<AppStore>`` que está no Modular, da forma que está não irá fazer nada.  
-    - Para que funcione como deve, precisamos modificar o valor da propriedade themeMode: para pegar a ***variável*** que ***escuta*** ``appStore`` as modificações do ***Tema*** ``.themeMode`` e ***atribuir o valor*** do Tema modificado ``.value,``.  
-    - Mas, reativamente aqui não acontece nada, para que ocorra reatividade, precisamos adicionar um filtro que para o ``appStore`` distribuir, somente o que for necessário reativamente, então, dentro dos parenteses ``()`` iremos adicionar a reatividade.  
-    - Adicione um ***seletor*** ``(store) =>`` e nesta store vamos selecionar um ***Objeto Listenable Reativo*** ``.themeMode,`` ou seja, ele irá alterar quando ***themeMode*** for alterado.  
+  - Será preciso receber a ``AppStore()`` na ***configuration_page.dart*** para poder modificar o ***Tema*** e outas informações.  
+  - Será preciso receber a ``AppStore()`` na ***app_widget.dart*** para quando ele for modificado, ele altere a propriedade ``themeMode:``.  
 
-      ```dart
-      app_widget.dart
-      
-      ...
-        class AppWidget extends StatelessWidget {
-          const AppWidget({super.key});
+    Então para fazer a distribuição da ***AppStor()*** dentro de ***AppWidget()*** prosseguimos da seguinte forma:  
 
-          // This widget is the root of your application.
-          @override
-          Widget build(BuildContext context) {
-            Modular.setInitialRoute('/home/');
-      >>>>  final appStore = context.watch<AppStore>(
-              (store) => store.themeMode,
-            );
+  - Primeiro abrimos o arquivo ***app_widget.dart***.  
+  - Dentro do ``build`` adicione uma ***variável*** ``final`` chamada ``appStore`` que ***receberá*** ``=`` através do ***contexto*** ``context`` o ***valor*** ``.watch<>()`` que ***escutará*** ``<AppStore>`` que está no Modular, da forma que está não irá fazer nada.  
+  - Para que funcione como deve, precisamos modificar o valor da propriedade themeMode: para pegar a ***variável*** que ***escuta*** ``appStore`` as modificações do ***Tema*** ``.themeMode`` e ***atribuir o valor*** do Tema modificado ``.value,``.  
+  - Mas, reativamente aqui não acontece nada, para que ocorra reatividade, precisamos adicionar um filtro que para o ``appStore`` distribuir, somente o que for necessário reativamente, então, dentro dos parenteses ``()`` iremos adicionar a reatividade.  
+  - Adicione um ***seletor*** ``(store) =>`` e nesta store vamos selecionar um ***Objeto Listenable Reativo*** ``.themeMode,`` ou seja, ele irá alterar quando ***themeMode*** for alterado.  
 
-            return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
-      >>>>    themeMode: appStore.themeMode.value,
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              routerDelegate: Modular.routerDelegate,
-              routeInformationParser: Modular.routeInformationParser,
-            );
-          }
+    ```dart
+    app_widget.dart
+    
+    ...
+      class AppWidget extends StatelessWidget {
+        const AppWidget({super.key});
+
+        // This widget is the root of your application.
+        @override
+        Widget build(BuildContext context) {
+          Modular.setInitialRoute('/home/');
+    >>>>  final appStore = context.watch<AppStore>(
+            (store) => store.themeMode,
+          );
+
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+    >>>>    themeMode: appStore.themeMode.value,
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            routerDelegate: Modular.routerDelegate,
+            routeInformationParser: Modular.routeInformationParser,
+          );
         }
-      ...
-      ```  
+      }
+    ...
+    ```  
 
-      > ## Se é um StatelessWidget, como que funciona a reatividade?  
-      >
-      > ### Funciona porquê: ``context.watch<AppStore>()`` vai pegar de ``Inherited Widget`` que seria Widget Herdado, é o Inherited Widget que irá fazer o Gerenciamento de Estado que está lá no Modular, igual ao Provider
+    > ## Se é um StatelessWidget, como que funciona a reatividade?  
+    >
+    > ### Funciona porquê: ``context.watch<AppStore>()`` vai pegar de ``Inherited Widget`` que seria Widget Herdado, é o Inherited Widget que irá fazer o Gerenciamento de Estado que está lá no Modular, igual ao Provider
 
-      Então, podemos ter quantas reatividades quisermos dentro da ***classe AppStore()***, pois, lá no ***filtro*** *(que acabamos de ver acima)*, o ***appStore*** irá filtrar só a reatividade que for necessária, que no nosso caso é o ***themeMode***.  
+    Então, podemos ter quantas reatividades quisermos dentro da ***classe AppStore()***, pois, lá no ***filtro*** *(que acabamos de ver acima)*, o ***appStore*** irá filtrar só a reatividade que for necessária, que no nosso caso é o ***themeMode***.  
 
-    - ***Continuando dentro do configuration_page.dart:***  
-      Quando appStore registrar a modificação do Tema, em ``RadioListTile<ThemeMode>()`` a propriedade ``groupValue:`` irá receber o valor selecionado ``appStore.themeMode.value,`` em cada uma das caixas de seleção ***(system, light ou dark)*** que será utilizado.  
-      Agora, para que funcione, precisamos adicionar na propriedade ``onChanged:`` o valor ``(mode) {appStore.themeMode.value`` recebendo ``=`` o mode que pode ser nulo ``mode!;},`` mas que dificilmente fique nulo em nosso caso.  <a id='onChanged'></a>
+  - ***Continuando dentro do configuration_page.dart:***  
+    Quando appStore registrar a modificação do Tema, em ``RadioListTile<ThemeMode>()`` a propriedade ``groupValue:`` irá receber o valor selecionado ``appStore.themeMode.value,`` em cada uma das caixas de seleção ***(system, light ou dark)*** que será utilizado.  
+    Agora, para que funcione, precisamos adicionar na propriedade ``onChanged:`` o valor ``(mode) {appStore.themeMode.value`` recebendo ``=`` o mode que pode ser nulo ``mode!;},`` mas que dificilmente fique nulo em nosso caso.  <a id='onChanged'></a>
 
-      ```dart
-      configuration_page.dart
-      
-      ...
-              value: ThemeMode.dark,
-      >>>>    groupValue: appStore.themeMode.value,
-      >>>>    onChanged: (mode) {
-                appStore.themeMode.value = mode!;
-              },
-      ...
-      ```  
+    ```dart
+    configuration_page.dart
+    
+    ...
+            value: ThemeMode.dark,
+    >>>>    groupValue: appStore.themeMode.value,
+    >>>>    onChanged: (mode) {
+              appStore.themeMode.value = mode!;
+            },
+    ...
+    ```  
 
-      Então, no momento em que a Caixa de Seleção for clicada ``onChanged:``, ``appStore`` irá alterar o valor ``value:`` do mode ``mode!`` que no exemplo acima seria o Tema ``dark``.  
-      Ao alterar o ``mode``, o ``appStore`` modifica a variável dentro da ***Classe*** ``AppStore()`` que irá gerenciar o estado do ``AppWidget()`` realizando as modificações necessárias em toda a aplicação.  
+    Então, no momento em que a Caixa de Seleção for clicada ``onChanged:``, ``appStore`` irá alterar o valor ``value:`` do mode ``mode!`` que no exemplo acima seria o Tema ``dark``.  
+    Ao alterar o ``mode``, o ``appStore`` modifica a variável dentro da ***Classe*** ``AppStore()`` que irá gerenciar o estado do ``AppWidget()`` realizando as modificações necessárias em toda a aplicação.  
 
-    - ***Criando o método changeThemeMode():***  
+  [^ Sumário ^](#aula-07)  
+
+  - ***Criando o método changeThemeMode():***<a id='aula7-CriandoMetodoChangeThemeMode'></a>  
     Melhorando um pouco a lógica para que, tenha um método para realizar a modificação.  
+
     Criando o método sem retorno ***changeThemeMode()*** ``void changeThemeMode(``ele irá receber um ``ThemeMode?`` possivelmente nulo, que terá o nome de ``mode) {``, se ``if`` mode for diferente de nulo ``(mode != null)`` então ``{``o valor do tema ``themeMode.value`` será atribuído ``=`` ao mode ``mode;}`` para ele ativar a reatividade.  
 
     ```dart
@@ -1221,11 +1230,35 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
         }
     ...
     ```
+  
+  [^ Sumário ^](#aula-07)  
 
-    Como a Classe AppStore() está sendo distribuída globalmente pelo pelo Modular através do [Bind](#aula7-TrasporteDistribuicaoEstado) feito no inicio, podemos usar o tear-offs no ``onChange:`` e encurtar o código usando o valor ``appStore.changeThemeMode,`` ao invés de usar [esse](#onChanged) no ``configuration_page.dart`` ou em qualquer outro lugar.  
+  - ***Encurtando código com método tear-offs*** <a id='aula7-EncurtandoCodigoMetodotear-offs'></a>  
 
-    > ## O guia ***Effective Dart*** também se refere a cortes "tear-offs" e os descreve com menos jargão:
+    Como a ***Classe*** ``AppStore()`` está sendo distribuída ***globalmente*** pelo pelo Modular através do [Bind](#aula7-TrasporteDistribuicaoEstado) feito no inicio, podemos usar o ***tear-offs*** no ``onChange:`` e encurtar o código usando o valor ``appStore.changeThemeMode,`` ao invés de usar [esse](#onChanged) no ``configuration_page.dart`` ou em qualquer outro lugar.  
 
-    > ### Se você se referir a um método em um objeto, mas omitir os parênteses, o Dart fornecerá um “corte” tear-off, um fechamento que usa os mesmos parâmetros do método e o invoca quando você o chama.  
+    > ## O guia ***Effective Dart*** também se refere a cortes "tear-offs" e os descreve com menos jargão
+    >
+    > ### Se você se referir a um método em um objeto, mas omitir os parênteses, o Dart fornecerá um “corte” tear-off, um fechamento que usa os mesmos parâmetros do método e o invoca quando você o chama  
 
+    Além de se usar um código reduzido, já fica preparado para outro método que será usado no futuro, o método ``save()`` que irá salvar localmente o estado do Tema.  
 
+    ```dart
+    app_store.dart
+    
+    ...
+        class AppStore {
+          final themeMode = ValueNotifier(ThemeMode.system);
+          void changeThemeMode(ThemeMode? mode) {
+            if (mode != null) {
+              themeMode.value = mode;
+    >>>>      save();
+            }
+          }
+
+    >>>>  void save() {
+            //*todo: salvar os dados na base local
+          }
+        }
+    ...
+    ```
