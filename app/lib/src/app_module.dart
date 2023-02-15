@@ -6,7 +6,7 @@ import 'home/home_module.dart';
 class AppModule extends Module {
   @override
   //*todo: implement binds
-  List<Bind<Object>> get binds => [
+  List<Bind> get binds => [
         //! Versão antiga
         // Bind.singleton((i) => AppStore())
 

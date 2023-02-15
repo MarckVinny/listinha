@@ -1114,7 +1114,7 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
   Para isso, será utilizado novamente o ***Modular*** onde já foram feitas as ***Rotas*** e dentro teremos os ``Binds`` ***"vínculos"***.  
   - Abra o ***Modular*** a partir do arquivo ``app_module.dart`` e iremos adicionar os ***Binds***, use o auto-complete escrevendo ``binds`` e apertando **ENTER**.  
   No código que aparecer, substitua ``super.binds`` por colchetes ``[]`` dentro, podemos adicionar propriedades que irão se ***auto-resolver*** e serem entregues em qualquer parte da Aplicação, principalmente se estiver no ***AppModule***, e cada ***Módulo*** tem seu próprio ***bind***.  
-  - Para registrar o AppStore() no Modular, é preciso adicionar dentro dos colchetes ``[]`` ``Bind`` que implementa um ***método*** ``.singleton(i)`` que ***persiste/entrega*** ``=> AppStore()`` como uma única instancia.  
+  - Para registrar o ***AppStore()*** no ***Modular***, é preciso adicionar dentro dos colchetes ``[]`` ``Bind`` que implementa um ***método*** ``.singleton(i)`` que ***persiste/entrega*** ``=> AppStore()`` como uma única instancia.  
   Ele também resolve outros problemas de fabricação da instancia, mas no momento não iremos precisar.  
   
     ```dart
@@ -1124,7 +1124,7 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
     class AppModule extends Module {
       @override
       //*todo: implement binds
-      List<Bind<Object>> get binds => [
+      List<Bind> get binds => [
             //! Versão antiga
             // Bind.singleton((i) => AppStore())
 
@@ -1134,8 +1134,71 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
     ...
     ```  
 
-    Utilizando a nova versão ``AutoBind.singleton(AppStore.new)`` ele fica disponível para toda a Aplicação.  
+    Utilizando a nova versão ``AutoBind.singleton(AppStore.new)`` ele se ***auto-resolve*** e fica disponível para toda a Aplicação.  
 
   - Como utilizar o ***Modular*** para ***distribuir a AppStore()*** para toda a ***Aplicação*** e como fazer para ***receber a AppStore*** onde for preciso?  
-    - Será preciso receber a ``AppStore()`` na ***configuration_page.dart*** para poder modificar o Tema e outas informações.  
+    - Será preciso receber a ``AppStore()`` na ***configuration_page.dart*** para poder modificar o ***Tema*** e outas informações.  
     - Será preciso receber a ``AppStore()`` na ***app_widget.dart*** para quando ele for modificado, ele altere a propriedade ``themeMode:``.  
+
+      Então para fazer a distribuição da ***AppStor()*** dentro de ***AppWidget()*** prosseguimos da seguinte forma:  
+
+    - Primeiro abrimos o arquivo ***app_widget.dart***.  
+    - Dentro do ``build`` adicione uma ***variável*** ``final`` chamada ``appStore`` que ***receberá*** ``=`` através do ***contexto*** ``context`` o ***valor*** ``.watch<>()`` que ***escutará*** ``<AppStore>`` que está no Modular, da forma que está não irá fazer nada.  
+    - Para que funcione como deve, precisamos modificar o valor da propriedade themeMode: para pegar a ***variável*** que ***escuta*** ``appStore`` as modificações do ***Tema*** ``.themeMode`` e ***atribuir o valor*** do Tema modificado ``.value,``.  
+    - Mas, reativamente aqui não acontece nada, para que ocorra reatividade, precisamos adicionar um filtro que para o ``appStore`` distribuir, somente o que for necessário reativamente, então, dentro dos parenteses ``()`` iremos adicionar a reatividade.  
+    - Adicione um ***seletor*** ``(store) =>`` e nesta store vamos selecionar um ***Objeto Listenable Reativo*** ``.themeMode,`` ou seja, ele irá alterar quando ***themeMode*** for alterado.  
+
+      ```dart
+      app_widget.dart
+      
+      ...
+        class AppWidget extends StatelessWidget {
+          const AppWidget({super.key});
+
+          // This widget is the root of your application.
+          @override
+          Widget build(BuildContext context) {
+            Modular.setInitialRoute('/home/');
+      >>>>  final appStore = context.watch<AppStore>(
+              (store) => store.themeMode,
+            );
+
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'Flutter Demo',
+      >>>>    themeMode: appStore.themeMode.value,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              routerDelegate: Modular.routerDelegate,
+              routeInformationParser: Modular.routeInformationParser,
+            );
+          }
+        }
+      ...
+      ```  
+
+      > ## Se é um StatelessWidget, como que funciona a reatividade?  
+      >
+      > ### Funciona porquê: ``context.watch<AppStore>()`` vai pegar de ``Inherited Widget`` que seria Widget Herdado, é o Inherited Widget que irá fazer o Gerenciamento de Estado que está lá no Modular, igual ao Provider
+
+      Então, podemos ter quantas reatividades quisermos dentro da ***classe AppStore()***, pois, lá no ***filtro*** *(que acabamos de ver acima)*, o ***appStore*** irá filtrar só a reatividade que for necessária, que no nosso caso é o ***themeMode***.  
+
+    - ***Continuando dentro do configuration_page.dart:***  
+      Quando appStore registrar a modificação do Tema, em ``RadioListTile<ThemeMode>()`` a propriedade ``groupValue:`` irá receber o valor selecionado ``appStore.themeMode.value,`` em cada uma das caixas de seleção ***(system, light ou dark)*** que será utilizado.  
+      Agora, para que funcione, precisamos adicionar na propriedade ``onChanged:`` o valor ``(mode) {appStore.themeMode.value`` recebendo ``=`` o mode que pode ser nulo ``mode!;},`` mas que dificilmente fique nulo em nosso caso.  
+
+      ```dart
+      configuration_page.dart
+      
+      ...
+              value: ThemeMode.dark,
+      >>>>    groupValue: appStore.themeMode.value,
+      >>>>    onChanged: (mode) {
+                appStore.themeMode.value = mode!;
+              },
+      ...
+      ```  
+
+      Então, no momento em que a Caixa de Seleção for clicada ``onChanged:``, ``appStore`` irá alterar o valor ``value:`` do mode ``mode!`` que no exemplo acima seria o Tema ``dark``.  
+      Ao alterar o ``mode``, o ``appStore`` modifica a variável dentro da ***Classe*** ``AppStore()`` que irá gerenciar o estado do ``AppWidget()`` realizando as modificações necessárias em toda a aplicação.
+

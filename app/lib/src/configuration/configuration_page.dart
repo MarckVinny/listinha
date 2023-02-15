@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:listinha/src/shared/Store/app_store.dart';
 
 class ConfigurationPage extends StatefulWidget {
   const ConfigurationPage({super.key});
@@ -10,6 +12,8 @@ class ConfigurationPage extends StatefulWidget {
 class _ConfigurationPageState extends State<ConfigurationPage> {
   @override
   Widget build(BuildContext context) {
+    final appStore = context.watch<AppStore>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('LISTINHA'),
@@ -34,9 +38,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 'Sistema',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              value: ThemeMode.light,
-              groupValue: ThemeMode.light,
-              onChanged: (mode) {},
+              value: ThemeMode.system,
+              groupValue: appStore.themeMode.value,
+              onChanged: (mode) {
+                appStore.themeMode.value = mode!;
+              },
             ),
             RadioListTile<ThemeMode>(
               title: Text(
@@ -44,17 +50,21 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               value: ThemeMode.light,
-              groupValue: ThemeMode.light,
-              onChanged: (mode) {},
+              groupValue: appStore.themeMode.value,
+              onChanged: (mode) {
+                appStore.themeMode.value = mode!;
+              },
             ),
             RadioListTile<ThemeMode>(
               title: Text(
                 'Escuro',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              value: ThemeMode.light,
-              groupValue: ThemeMode.light,
-              onChanged: (mode) {},
+              value: ThemeMode.dark,
+              groupValue: appStore.themeMode.value,
+              onChanged: (mode) {
+                appStore.themeMode.value = mode!;
+              },
             ),
             const SizedBox(
               height: 23,
