@@ -1271,62 +1271,134 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
 ### ***Aula 08***
 
-- ***Persistência de Dados:*** <a id='aula8-PersistenciaDados'></a>  
+### ***Persistência de Dados:*** <a id='aula8-PersistenciaDados'></a>  
+
 A partir de agora vamos iniciar a persistência de dados locais com todos os dados que temos.  
 Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos auxiliar a salvar os dados de configuração e as listas posteriormente.
   
-  - ***Dados das Configurações:*** <a id='Dados das Configurações:'></a>  
-    Para iniciar a definição da ***Base de Dados das Configurações***, precisamos abrir a ***Classe AppStore***, pois é nela que iremos configurar os métodos do ***Realm***, para isso abra o arquivo ***app_store.dart***.  
-    Nela, já começamos adicionando o método save() mas ainda não definimos suas funcionalidades, mas iremos defini-las mais a frente.  
+- ***Dados das Configurações:*** <a id='Dados das Configurações:'></a>  
+  Para iniciar a definição da ***Base de Dados das Configurações***, precisamos abrir a ***Classe AppStore***, pois é nela que iremos configurar os métodos do ***Realm***, para isso abra o arquivo ***app_store.dart***.  
+  Nela, já começamos adicionando o método save() mas ainda não definimos suas funcionalidades, mas iremos defini-las mais a frente.  
 
-    #### ***Criando e definindo o método init():*** <a id='aula8-CriandoDefinindoMetodoInit'></a>  
+  #### ***Criando e definindo o método init():*** <a id='aula8-CriandoDefinindoMetodoInit'></a>  
 
-    O ***AppStore()*** precisa iniciar,já que ele vai pegar os dados da internet, então iremos criar o método ``void init(){}``.
+  O ***AppStore()*** precisa iniciar,já que ele vai pegar os dados da internet, então iremos criar o método ``void init(){}``.
 
-    #### ***Criando e definindo o método save():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
+  #### ***Criando e definindo o método save():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
 
-    O ***AppStore()*** precisa salvar os dados localmente, então iremos criar o método ``void save(){}``.
+  O ***AppStore()*** precisa salvar os dados localmente, então iremos criar o método ``void save(){}``.
 
-    #### ***Criando e definindo o método syncDate():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
+  #### ***Criando e definindo o método syncDate():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
 
-    Um ponto que precisamos prestar atenção, é que o item Sincronizar do Menu Drawer, possui data e hora para serem salvas ao sincronizar os dados, então precisamos fazer igual foi feito no [themeMode](#themeMode):  
+  Um ponto que precisamos prestar atenção, é que o item Sincronizar do Menu Drawer, possui data e hora para serem salvas ao sincronizar os dados, então precisamos fazer igual foi feito no [themeMode](#themeMode):  
 
-    Então, para que isso ocorra precisamos adicionar uma ***variável*** ``final`` chamada ``syncDate`` que irá receber ``=`` o ***valor*** ``ValueNotifier<>()`` do ***Tipo*** ``<DateTime?>`` possivelmente nulo, e irá iniciar com o ***valor*** nulo ``(null)``.  
+  Então, para que isso ocorra precisamos adicionar uma ***variável*** ``final`` chamada ``syncDate`` que irá receber ``=`` o ***valor*** ``ValueNotifier<>()`` do ***Tipo*** ``<DateTime?>`` possivelmente nulo, e irá iniciar com o ***valor*** nulo ``(null)``.  
 
-    ```dart
-    app_store.dart
-    
-    ...
-    final syncDate = ValueNotifier<DateTime?>(null);
-    ...
-    ```  
+  ```dart
+  app_store.dart
+  
+  ...
+  final syncDate = ValueNotifier<DateTime?>(null);
+  ...
+  ```  
 
-    Com o syncDate iniciado com o valor nulo, já podemos começar a definir a modificação do método.  
-    Vamos começar definindo a modificação do método ``void`` chamado ``setSyncDate(``que receberá um ``DateTime`` de ``date){``e vai atribuir o valor da ``syncDate.value =`` ao ``date;`` e após esse processo ele irá ***salvar*** ``save();}``.  
+  Com o syncDate iniciado com o valor nulo, já podemos começar a definir a modificação do método.  
+  Vamos começar definindo a modificação do método ``void`` chamado ``setSyncDate(``que receberá um ``DateTime`` de ``date){``e vai atribuir o valor da ``syncDate.value =`` ao ``date;`` e após esse processo ele irá ***salvar*** ``save();}``.  
 
-    ```dart
-    app_store.dart
-    
-    ...
-    void setSyncDate(DateTime date) {
-      syncDate.value = date;
-      save();
-    }
-    ...
-    ```  
+  ```dart
+  app_store.dart
+  
+  ...
+  void setSyncDate(DateTime date) {
+    syncDate.value = date;
+    save();
+  }
+  ...
+  ```  
 
-    #### ***Adicionando o filtro syncDate():*** <a id='aula8-AdicionandoFiltroSyncDate'></a>  
+  #### ***Adicionando o filtro syncDate():*** <a id='aula8-AdicionandoFiltroSyncDate'></a>  
 
-    Agora que acabamos de criar o método ***syncDate***, precisamos abrir o arquivo ***custom_drawer.dart***, e adicionar o filtro para escutar somente o método ***syncDate()***.  
+  Agora que acabamos de criar o método ***syncDate***, precisamos abrir o arquivo ***custom_drawer.dart***, e adicionar o filtro para escutar somente o método ***syncDate()***.  
 
-    Para isso, será precisado chamar o ***AppStore()*** através da variável ``final`` de nome ``appStore`` que recebe ``=`` o valor ``context.watch<`` que escuta as modificações de Estado recuperando o ``AppStore>(`` e o Modular como visto antes, nos permite filtrar o que queremos escutar, com ``(store) => store.syncDate,)`` e o syncData fará a alteração.  
-    Através da variável que acabamos de declarar, podemos ter acesso ao método syncDate() da seguinte forma:  
-    Adicionamos a variável ``final`` de nome ``syncDate`` que recebe ``=`` o valor ``appStore.syncDate.value,``.  
+  Para isso, será precisado chamar o ***AppStore()*** através da variável ``final`` de nome ``appStore`` que recebe ``=`` o valor ``context.watch<`` que escuta as modificações de Estado recuperando o ``AppStore>(`` e o Modular como visto antes, nos permite filtrar o que queremos escutar, com ``(store) => store.syncDate,)`` e o syncData fará a alteração.  
+  Através da variável que acabamos de declarar, podemos ter acesso ao método syncDate() da seguinte forma:  
+  Adicionamos a variável ``final`` de nome ``syncDate`` que recebe ``=`` o valor ``appStore.syncDate.value,``.  
 
-    ```dart
-    custom_drawer.dart
-    
-    ...
-        final syncDate = appStore.syncDate.value;
-    ...
-    ```
+  ```dart
+  custom_drawer.dart
+  
+  ...
+      final syncDate = appStore.syncDate.value;
+  ...
+  ```  
+
+  #### ***Adicionando e definindo valor da variável syncDateText*** <a id='aula8-AddDefValorVarSyncDateText'></a>  
+
+  Adicionamos a variável ``var`` de nome ``syncDateText`` que recebe o valor padrão ``'nunca';`` assim, mesmo que o valor seja ***nulo***, sempre irá aparecer o ***valor padrão nunca***.  
+  Nunca trabalhe com valores nulos, sempre adicione um valor padrão.
+
+  ```dart
+  custom_drawer.dart
+  
+  ...
+    var syncDateText = 'nunca';
+  ...
+  ```  
+
+  A seguir, vamos adicionar o valor da variável syncDateText no Componente Text() que irá renderizar a data no item Sincronização.  
+
+  ```dart
+  custom_drawer.dart
+  
+  ...
+        Text(
+  >>>>    syncDateText,
+          style: Theme.of(context).textTheme.labelSmall,
+        ),
+  ...
+  ```
+
+  Agora iremos fazer o teste para verificar se o valor é nulo ou não, mas antes será preciso instalar um package de internacionalização que entre outras coisas, faz a formatação da data conforme queremos, para isso, no terminal na pasta do projeto, digite: ``flutter pub add intl``.  
+
+  #### ***Definindo a formatação da Data de syncDateText***<a id='aula8-DefFormatSyncDateText'></a>  
+
+  Se ``if (syncDate`` for diferente ``!=`` de nulo ``null)`` então ``{``iremos adicionar a formatação da data com a variável ``final`` de nome ``format`` que recebe ``= DateForma(``que usará a string para formatar a data e a hora ``"dd"`` para dia ``"/MM"`` para mês ``"/yyyy"`` para o ano às e ``"hh"`` para hora e ``":mm"`` para minutos ``" h"`` para o h das horas.  
+  Essa é a formatação desejada quando se receber um ``date``, mas para isso, precisamos atribuir à variável ``syncDateText`` que ela receba ``=`` essa formatação ``format.format(``recebendo a data ``syncDate))}``.  
+
+  ```dart
+  custom_drawer.dart
+  
+  ...
+  if (syncDate != null) {
+    final format = DateFormat('dd/MM/yyyy às hh:mmh');
+    syncDateText = format.format(syncDate);
+  }
+  ...
+  ```
+
+  #### ***Formatando a Data para aparecer no final da linha:*** <a id='aula8-FormatDateShowFinalLine'></a>  
+
+  Para que a data fique melhor apresentada, iremos substituir o ``SizedBox()`` por um ``Spacer()`` que é um Componente Flex do Flutter, mas por album motivo o ***NavigationDrawer()***, não fornece o tamanho da largura para a ``Row()``*(o Row() precisa de um tamanho de largura, já que é o eixo principal dele)*, então precisamos envolve-lo com um ``SizedBox(width: 215)`` adicionando uma largura a ele para que o ***Spacer()*** ou qualquer outro flex funcione corretamente. Mas só faça isso quando o Widget não fornecer a largura para o Componente.  
+
+  ```dart
+  custom_drawer.dart
+  
+  ...
+      NavigationDrawerDestination(
+        icon: const Icon(Icons.sync),
+  >>>>  label: SizedBox(
+  >>>>    width: 215,
+          child: Row(
+            children: [
+              const Text('Sincronização'),
+  >>>>        const Spacer(),
+              Text(
+                syncDateText,
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ],
+          ),
+        ),
+      ),
+  ...
+  ```
