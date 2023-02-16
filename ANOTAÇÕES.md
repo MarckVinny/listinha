@@ -53,6 +53,10 @@ ___
     - [Criando o método changeThemeMode()](#aula7-CriandoMetodoChangeThemeMode)
     - [Encurtando código com método tear-offs](#aula7-EncurtandoCodigoMetodotear-offs)
 
+#### Aula 08
+
+- [Persistência de Dados](#aula8-PersistenciaDados)
+
 ___
 
 # ANOTAÇÕES
@@ -1093,7 +1097,7 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
   Para mudar o Tema, é necessário ter um ***Componente Reativo*** para que quando algo mude, quem estiver escutando este Componente Reativo realize a modificação.  
 
-  Então, para que isso ocorra precisamos adicionar uma ***variável*** ``final themeMode`` que irá receber o ``ValueNotifier()`` que irá receber como valor padrão o ``ThemeMode.system``.  
+  Então, para que isso ocorra precisamos adicionar uma ***variável*** ``final themeMode`` que irá receber o ``ValueNotifier()`` que irá receber como valor padrão o ``ThemeMode.system``.  <a id='themeMode'></a>
   
     ```dart
     app_store.dart
@@ -1260,5 +1264,69 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
             //*todo: salvar os dados na base local
           }
         }
+    ...
+    ```
+
+[^ Sumário ^](#aula-07)
+
+### ***Aula 08***
+
+- ***Persistência de Dados:*** <a id='aula8-PersistenciaDados'></a>  
+A partir de agora vamos iniciar a persistência de dados locais com todos os dados que temos.  
+Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos auxiliar a salvar os dados de configuração e as listas posteriormente.
+  
+  - ***Dados das Configurações:*** <a id='Dados das Configurações:'></a>  
+    Para iniciar a definição da ***Base de Dados das Configurações***, precisamos abrir a ***Classe AppStore***, pois é nela que iremos configurar os métodos do ***Realm***, para isso abra o arquivo ***app_store.dart***.  
+    Nela, já começamos adicionando o método save() mas ainda não definimos suas funcionalidades, mas iremos defini-las mais a frente.  
+
+    #### ***Criando e definindo o método init():*** <a id='aula8-CriandoDefinindoMetodoInit'></a>  
+
+    O ***AppStore()*** precisa iniciar,já que ele vai pegar os dados da internet, então iremos criar o método ``void init(){}``.
+
+    #### ***Criando e definindo o método save():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
+
+    O ***AppStore()*** precisa salvar os dados localmente, então iremos criar o método ``void save(){}``.
+
+    #### ***Criando e definindo o método syncDate():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
+
+    Um ponto que precisamos prestar atenção, é que o item Sincronizar do Menu Drawer, possui data e hora para serem salvas ao sincronizar os dados, então precisamos fazer igual foi feito no [themeMode](#themeMode):  
+
+    Então, para que isso ocorra precisamos adicionar uma ***variável*** ``final`` chamada ``syncDate`` que irá receber ``=`` o ***valor*** ``ValueNotifier<>()`` do ***Tipo*** ``<DateTime?>`` possivelmente nulo, e irá iniciar com o ***valor*** nulo ``(null)``.  
+
+    ```dart
+    app_store.dart
+    
+    ...
+    final syncDate = ValueNotifier<DateTime?>(null);
+    ...
+    ```  
+
+    Com o syncDate iniciado com o valor nulo, já podemos começar a definir a modificação do método.  
+    Vamos começar definindo a modificação do método ``void`` chamado ``setSyncDate(``que receberá um ``DateTime`` de ``date){``e vai atribuir o valor da ``syncDate.value =`` ao ``date;`` e após esse processo ele irá ***salvar*** ``save();}``.  
+
+    ```dart
+    app_store.dart
+    
+    ...
+    void setSyncDate(DateTime date) {
+      syncDate.value = date;
+      save();
+    }
+    ...
+    ```  
+
+    #### ***Adicionando o filtro syncDate():*** <a id='aula8-AdicionandoFiltroSyncDate'></a>  
+
+    Agora que acabamos de criar o método ***syncDate***, precisamos abrir o arquivo ***custom_drawer.dart***, e adicionar o filtro para escutar somente o método ***syncDate()***.  
+
+    Para isso, será precisado chamar o ***AppStore()*** através da variável ``final`` de nome ``appStore`` que recebe ``=`` o valor ``context.watch<`` que escuta as modificações de Estado recuperando o ``AppStore>(`` e o Modular como visto antes, nos permite filtrar o que queremos escutar, com ``(store) => store.syncDate,)`` e o syncData fará a alteração.  
+    Através da variável que acabamos de declarar, podemos ter acesso ao método syncDate() da seguinte forma:  
+    Adicionamos a variável ``final`` de nome ``syncDate`` que recebe ``=`` o valor ``appStore.syncDate.value,``.  
+
+    ```dart
+    custom_drawer.dart
+    
+    ...
+        final syncDate = appStore.syncDate.value;
     ...
     ```
