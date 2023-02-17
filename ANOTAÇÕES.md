@@ -1403,5 +1403,8 @@ Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos a
   ...
   ```
 
-  
-  ### ****** <a id=''></a>
+  #### ***Criando Base de Dados do Realm*** <a id='CriandoBaseDadosRealm'></a>  
+
+  Primeiro precisamos criar a pasta onde será salvo a configuração do Realm, no caminho ``lib\src\shared\services`` iremos criar a pasta de nome ``realm`` que estará disponível globalmente, e dentro criaremos o arquivo chamado ``realm_config.dart`` onde serão definidas as configurações do Realm.  
+  Na [documentação](https://pub.dev/packages/realm) do Realm no pub.dev, encontramos as configurações que precisamos definir, mas por enquanto vamos usar somente a configuração, ``var config = Configuration.local([Car.schema]);`` onde faremos as alterações necessárias.  
+  Este, é um arquivo onde passamos os ***esquemas*** ``scheme`` de modelos e esses ***esquemas*** ``scheme`` são auto-gerados.
