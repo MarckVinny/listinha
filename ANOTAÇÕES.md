@@ -1403,8 +1403,39 @@ Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos a
   ...
   ```
 
-  #### ***Criando Base de Dados do Realm*** <a id='CriandoBaseDadosRealm'></a>  
+  #### ***Criando Base de Dados do Realm*** <a id='aula8-CriandoBaseDadosRealm'></a>  
 
   Primeiro precisamos criar a pasta onde será salvo a configuração do Realm, no caminho ``lib\src\shared\services`` iremos criar a pasta de nome ``realm`` que estará disponível globalmente, e dentro criaremos o arquivo chamado ``realm_config.dart`` onde serão definidas as configurações do Realm.  
   Na [documentação](https://pub.dev/packages/realm) do Realm no pub.dev, encontramos as configurações que precisamos definir, mas por enquanto vamos usar somente a configuração, ``var config = Configuration.local([Car.schema]);`` onde faremos as alterações necessárias.  
-  Este, é um arquivo onde passamos os ***esquemas*** ``scheme`` de modelos e esses ***esquemas*** ``scheme`` são auto-gerados.
+  Este, é um arquivo onde passamos os ***esquemas*** ``scheme`` de modelos e esses ***esquemas*** ``scheme`` são auto-gerados.  
+
+  #### ***Modelo da Tabela na Base do Banco de Dados*** <a id='aulas8-ModeloTabelaBaseBancoDados'></a>  
+
+  Primeiro precisamos criar uma pasta chamada ``models`` no caminho ``lib\src\shared\services\realm`` e dentro dela criar um arquivo chamado ``configuration_model.dart``,  que vai representar um modelo da tabela na base do banco de dados, onde, serão salvas as configurações do banco de dados.
+  O Realm, utilizará essa arquivo para criar um tipo de tabela dentro dele.  
+  Para funcionar, precisamos criar uma ***Classe privada*** ``_`` com o mesmo nome do arquivo ``ConfigurationModel`` e depois será preciso criar as propriedades que serão as colunas desta tabela.  
+  - ``late`` sempre deve declarado com late no inicio, pois, não iremos atribuir nenhum valor no momento;
+  - ``String`` pois o DateTime só aceita Tipos primitivos;
+  - ``themeModeName`` nome da primeira coluna que será criada;  
+  - ``DateTime?`` Tipo da segunda coluna que pode ser uma data nula ``?``;  
+  - ``syncDate`` nome da segunda coluna.
+  - ``@RealmModel`` adicionar a anotação para que o Realm reconheça essa Classe como uma tabela.
+  - ``part "configuration_model.g.dart";`` é preciso adicionar esse part com o mesmo nome de arquivo com a única diferença é que tem que adicionar o ***.g*** antes do ***.dart***, para que o Realm crie o arquivo da tabela corretamente.  
+  
+  ```dart
+  configuration_model.dart
+  
+  ...
+  import 'package:realm/realm.dart';
+
+  part 'configuration_model.g.dart';
+
+  @RealmModel()
+  class _ConfigurationModel {
+    late String themeModelName;
+    late DateTime? syncDate;
+  }
+  ...
+  ```
+
+  Agora precisamos rodar um comando ``flutter pub run realm  generate`` no terminal para que o Realm gere a tabela, lembrando que toda vez que for adicionado ou modificar qualquer propriedade na Classe.
