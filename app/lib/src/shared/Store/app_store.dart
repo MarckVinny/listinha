@@ -8,10 +8,16 @@ class AppStore {
   final ConfigurationService _configurationService;
 
   //*todo: construtor da classe
-  AppStore(this._configurationService);
+  AppStore(this._configurationService) {
+    init();
+  }
 
   //*todo: iniciar a base de dados
-  void init() {}
+  void init() {
+    final model = _configurationService.getConfiguration();
+    syncDate.value = model.syncDate;
+    themeMode.value = _getThemeModeByName(model.themeModeName);
+  }
 
   //*todo: salvar os dados na base local
   void save() {}
@@ -28,5 +34,9 @@ class AppStore {
   void setSyncDate(DateTime date) {
     syncDate.value = date;
     save();
+  }
+
+  ThemeMode _getThemeModeByName(String name) {
+    return ThemeMode.values.firstWhere((mode) => mode.name == name);
   }
 }

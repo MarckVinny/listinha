@@ -1669,4 +1669,47 @@ Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos a
 
 ### ***Iniciando o Banco de Dados:*** <a id='aula8-IniciandoBancoDados'></a>  
 
+Para iniciar o ***Banco de Dados*** precisamos abrir o ``AppStore()`` ***app_store.dart*** e adicionar no método ``void init()`` com as definições a seguir:  
+
+- Adicione uma variável ``final`` chamada ``model`` que recebe ``=`` o valor do ***getConfiguration***.  
+``final model = _configurationService.getConfiguration();``.  
+- Chamo diretamente a variável ``syncDate.value`` e atribuo ``=`` o valor de ``mode.syncDate,``, já fica globalmente quando iniciar.  
+
+  ```dart
+  app_store.dart
+
+  ...
+        void init() {
+          final model = _configurationService.getConfiguration();
+  >>>>    syncDate.value = model.syncDate;
+        }
+  ...
+  ```
+
+- Já o ``themeMode``, é um caso especial porquê ele é um ***enum*** e para pegar um enum, será preciso criar uma variável que irá retornar um ***ThemeMode***.  
+Crie uma variável privada do Tipo ``ThemeMode`` chamada ``_getThemeModeByName(``que recebe o ***name*** ``String name){`` e ao receber o enum que precisamos, retorna ``return`` o ``ThemeMode`` no ***ThemeMode***, tem uma propriedade chamada ***value*** que é um array "lista" com todos os ``.values`` do enum e que vamos pegar o primeiro item da lista onde``.firstWhere(``cada ``mode) =>`` terá um mode.name e terá que ser igual ``==`` ao ``name);}`` que foi passado como String e é esse valor que será passado para o ***getThemeMode*** que em nosso caso os valores são ***(system, claro ou escuro)***.  
+
+  Agora que terminamos de criar o ***_getThemeModeByName()***, precisamos definir o ***themeMode*** no método ***init()***.  
+  Chamamos o ``themeMode.value`` diretamente como fizemos com o syncDate, e atribuímos ``=`` a ele o valor da variável privada que acabamos de criar ``_getThemeModeByName(``e atribuímos o valor da String ``model.themeMode.name);``  
+  
+  ```dart
+  app_store.dart
+  
+  ...
+      void init() {
+        final model = _configurationService.getConfiguration();
+        syncDate.value = model.syncDate;
+  >>>>  themeMode.value = _getThemeModeByName(model.themeModeName);
+      }
+  ...
+  ...
+  >>>>  ThemeMode _getThemeModeByName(String name) {
+          return ThemeMode.values.firstWhere((mode) => mode.name == name);
+        }
+  ...
+  ```  
+
+  > ***Agora que momento irá iniciar?  
+  > No mesmo momento em que iniciar a Classe AppStore() pois ele estará inserido no Construtor da Classe.  
+  > Com isso, ele inicia o Sistema de Injeção.***
 
