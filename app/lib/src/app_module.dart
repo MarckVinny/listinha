@@ -15,8 +15,8 @@ class AppModule extends Module {
 
         //? Versão nova a partir de março/2023
         //? Flutter_Modular: ^6.0.0-alpha.5
-        Bind.instance<Realm>(Realm(config)),
-        // AutoBind.instance(Realm.new),
+        // Bind.instance<Realm>(Realm(config)),
+        AutoBind.instance<Realm>(Realm(config)),
         AutoBind.factory<ConfigurationService>(ConfigurationServiceImpl.new),
         AutoBind.singleton(AppStore.new),
       ];

@@ -1498,8 +1498,9 @@ Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos a
 
         //? Versão nova a partir de março/2023
         //? Flutter_Modular: ^6.0.0-alpha.5
+        // Bind.instance<Realm>(Realm(config)),
+  >>>>  AutoBind.instance<Realm>(Realm(config)),
         AutoBind.singleton(AppStore.new),
-  >>>>  AutoBind.instance(Realm.new),
       ];
   ...
   ```  
@@ -1640,8 +1641,8 @@ Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos a
 
         //? Versão nova a partir de março/2023
         //? Flutter_Modular: ^6.0.0-alpha.5
-        Bind.instance<Realm>(Realm(config)),
-        // AutoBind.instance(Realm.new),
+        // Bind.instance<Realm>(Realm(config)),
+        AutoBind.instance<Realm>(Realm(config)),
   >>>>  AutoBind.factory<ConfigurationService>(ConfigurationServiceImpl.new),
         AutoBind.singleton(AppStore.new),
       ];
@@ -1734,5 +1735,3 @@ app_store.dart
 ```
 
 Com isso, toda vez que houver uma modificação no Tema ou na Data, o método save() será chamado e as alterações serão gravadas, agora nosso Gerenciamento de estado está completo.  
-
-
