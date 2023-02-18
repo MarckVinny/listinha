@@ -1,3 +1,11 @@
 import 'package:realm/realm.dart';
+import 'configuration_model.dart';
 
-var config = Configuration.local([Car.schema]);
+LocalConfiguration config = Configuration.local(
+  [
+    ConfigurationModel.schema,
+  ],
+  initialDataCallback: (realm) {
+    realm.add(ConfigurationModel('system'));
+  },
+);

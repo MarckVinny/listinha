@@ -9,21 +9,21 @@ part of 'configuration_model.dart';
 class ConfigurationModel extends _ConfigurationModel
     with RealmEntity, RealmObjectBase, RealmObject {
   ConfigurationModel(
-    String themeModelName, {
+    String themeModeName, {
     DateTime? syncDate,
   }) {
-    RealmObjectBase.set(this, 'themeModelName', themeModelName);
+    RealmObjectBase.set(this, 'themeModeName', themeModeName);
     RealmObjectBase.set(this, 'syncDate', syncDate);
   }
 
   ConfigurationModel._();
 
   @override
-  String get themeModelName =>
-      RealmObjectBase.get<String>(this, 'themeModelName') as String;
+  String get themeModeName =>
+      RealmObjectBase.get<String>(this, 'themeModeName') as String;
   @override
-  set themeModelName(String value) =>
-      RealmObjectBase.set(this, 'themeModelName', value);
+  set themeModeName(String value) =>
+      RealmObjectBase.set(this, 'themeModeName', value);
 
   @override
   DateTime? get syncDate =>
@@ -45,7 +45,7 @@ class ConfigurationModel extends _ConfigurationModel
     RealmObjectBase.registerFactory(ConfigurationModel._);
     return const SchemaObject(
         ObjectType.realmObject, ConfigurationModel, 'ConfigurationModel', [
-      SchemaProperty('themeModelName', RealmPropertyType.string),
+      SchemaProperty('themeModeName', RealmPropertyType.string),
       SchemaProperty('syncDate', RealmPropertyType.timestamp, optional: true),
     ]);
   }

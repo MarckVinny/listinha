@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../configuration/services/configuration_service.dart';
+
 class AppStore {
   final themeMode = ValueNotifier(ThemeMode.system);
   final syncDate = ValueNotifier<DateTime?>(null);
+  final ConfigurationService _configurationService;
 
   //*todo: construtor da classe
-  AppStore();
+  AppStore(this._configurationService);
 
   //*todo: iniciar a base de dados
   void init() {}

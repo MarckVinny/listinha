@@ -1432,10 +1432,241 @@ Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos a
 
   @RealmModel()
   class _ConfigurationModel {
-    late String themeModelName;
+    late String themeModeName;
     late DateTime? syncDate;
   }
   ...
   ```
 
-  Agora precisamos rodar um comando ``flutter pub run realm  generate`` no terminal para que o Realm gere a tabela, lembrando que toda vez que for adicionado ou modificar qualquer propriedade na Classe.
+  Agora precisamos rodar um comando ``flutter pub run realm  generate`` no terminal para que o Realm gere a tabela, lembrando que toda vez que for adicionado ou modificar qualquer propriedade na Classe.  
+  Com esse comando, ele gera um modelo público do mesmo modelo que criamos de forma privada, para que possamos acessar os dados fora da Classe Privada.  
+  
+  Agora, abrimos o arquivo ``realm_config.dart`` e adicionamos a ***Classe Pública*** recém criada ``ConfigurationModel`` na definição do ``config``.  
+  
+  ```dart
+  realm_config.dart
+  
+  ...
+        import 'package:realm/realm.dart';
+
+        import 'configuration_model.dart';
+
+  >>>>  var config = Configuration.local([
+          ConfigurationModel.schema,
+        ]);
+  ...
+  ```  
+  
+  #### ***Adicionando Valores padrão a Base de Dados:*** <a id='aula8-AddValoresPadBaseDados'></a>
+
+  E é só isso a configuração do ***Realm***, Classe e configuração, e pode se fazer quantas Classes forem necessárias, lembrando sempre de adicionar suas respectivas configurações dentro do ``array``.  
+  O Realm tem outras propriedades, como por exemplo a ``initialDataCallback:`` que inicia a Base de Dados, podendo adicionar valores padrão para ela.  
+  Para adicionar um valor padrão, é igual a adicionar um item no array (na lista), e atribui o valor da instancia que acabou de ser criada.  
+  Adicione a propriedade ``initialDataCallback:`` que recebe como valor uma Função ``(realm){``que adiciona ``realm.add(``e atribui a instancia que acabou de ser criada ``ConfigurationModel(``recebendo o valor do themeModeName ``'system'))}`` como valor padrão, assim, quando o Aplicativo iniciar, o Realm vai atribuir ao themeMode (ao Tema) o valor padrão ou Tema Padrão, ***system***  que é o tema do sistema.
+  
+  ```dart
+  realm_config.dart
+  
+  ...
+      import 'package:realm/realm.dart';
+      import 'configuration_model.dart';
+
+      LocalConfiguration config = Configuration.local(
+        [
+          ConfigurationModel.schema,
+        ],
+  >>>>  initialDataCallback: (realm) {
+          realm.add(ConfigurationModel('system'));
+        },
+      );
+  ...
+  ```
+
+  #### ***Criando uma instancia do config do Realm:*** <a id='aula8-CriandoInstanciaConfigRealm'></a>
+
+  Para criar a instancia do config do Realm, precisamos abrir o AppModule() que é o arquivo de injeção de dependência app_module.dart e adicionar um Bind para o config.  
+  Com o ***AppModule()*** aberto, dentro do registro de dependências, adicione um ``AutoBind`` de instância ``.instance`` do Tipo ``<Realm>(``instanciando o ``Realm`` e passando o config``(config))`` como parâmetro.  
+  Desta forma, o Realm está pronto para ser usando em qualquer registro.  
+  
+  ```dart
+  app_module.dart
+  
+  ...
+    List<Bind> get binds => [
+        //! Versão antiga
+        // Bind.singleton((i) => AppStore())
+
+        //? Versão nova a partir de março/2023
+        //? Flutter_Modular: ^6.0.0-alpha.5
+        AutoBind.singleton(AppStore.new),
+  >>>>  AutoBind.instance(Realm.new),
+      ];
+  ...
+  ```  
+
+  ### ***Criando Serviço de Configuração*** <a id='aula8-CriandoServiceConfig'></a>
+
+  Crie uma pasta chamada services dentro do caminho ``lib\src\configuration`` e crie um arquivo ``chamado configuration_service.dart``.  
+  Como nossa [arquitetura](ARCHITECTURE.md#entidades) pede que se use ***Classes Abstratas***, obrigatoriamente deve-se criar uma Classe Abstrata ``abstract class`` chamada ``ConfigurationService{}`` e atribuir os métodos que serão utilizados.  
+
+  - ***Classe Abstrata:***  
+
+  - O método que irá retornar o ``ConfigurationModel`` que será o ``getConfiguration();``
+  - O método qua irá salvar, ``void saveConfiguration(``recebendo a String com o nome do Tema ``String themeModeName``, e um ``DateTime`` possivelmente nulo ``?`` recebendo um date ``syncDate);``
+  - O método que deleta tudo ``void deleteAll();``  
+
+    ***Código Completo da Classe Abstrata***
+
+    ```dart
+    configuration_service.dart
+    
+    ...
+    abstract class ConfigurationService {
+      ConfigurationModel getConfiguration();
+      void saveConfiguration(
+        String themeModeName,
+        DateTime? syncDate,
+      );
+      void deleteAll();
+    }
+    ...
+    ```
+
+  Agora precisamos criar uma implementação de uma Classe Concreta para a classe abstrata criada acima, para poder usar seus métodos.  
+
+  - ***Classe Concreta:***  
+  Crie a ***classe concreta*** com o mesmo nome, mas adicionando ***Impl*** (de implementação) ao final do nome para facilitar a identificação, ``class ConfigurationServiceImpl`` e então, implementa ``implements`` o contrato que acabou de ser feito acima ``ConfigurationService {}`` feito isso, todos os métodos criados acima, serão implementados automaticamente.  
+
+  - ***Injeção de Dependência:***  
+  Adicione o ***Realm*** por injeção de dependência:  
+  Adicione uma variável ``final`` do Tipo ``Realm`` que recebe o nome ``realm;``.  
+
+  - ***Construtor:***  
+  Inicie a variável ***realm*** no ***Construtor***:  
+  ``ConfigurationServiceImpl(this.realm);``  
+
+  - ***Método getConfiguration():***  
+  Para pegar alguma informação usando o Realm.  
+  Dentro do  ``getConfiguration(){``ele irá retornar ``return`` uma lista com todas as informações ``realm.all<``Tipo do modelo que estamos trabalhando ``ConfigurationModel>()`` e pegamos o primeiro item ``.first`` da lista.  
+  ``return realm.all<ConfigurationModel>().first;``  
+  
+  - ***Para salvar:***  
+  Primeiro criamos a variável ``final`` chamada ``model`` que recebe ``=`` o valor de  ``getConfiguration();``.  
+  
+    ```dart
+    configuration_service.dart
+    
+    ...
+          void saveConfiguration(String themeModeName, DateTime? syncDate) {
+    >>>>  final model = getConfiguration();
+    ...
+    ```  
+
+    Depois que tiver o valor do ``model``, através do ``real.write((){})`` que possui uma ***Função setState ((){})*** podemos alterar as informações deste modelo e escolher qual será salvo no Banco de Dados.  
+    - ``model.syncDate`` recebe ``=`` o valor de ``syncDate;``;  
+    - ``model.themeModeName`` recebe ``=`` o valor de ``themeModeName;``.  
+
+    ```dart
+    configuration_service.dart
+    
+    ...
+        @override
+        void saveConfiguration(String themeModeName, DateTime? syncDate) {
+          final model = getConfiguration();
+    >>>>  realm.write(() {
+    >>>>    model.syncDate = syncDate;
+    >>>>    model.themeModeName = themeModeName;
+          });
+        }
+    ...
+    ```  
+
+    Desta forma, as informações são salvas de forma síncrona na Base de Dados.  
+
+  - ***Método de deletar tudo:***  
+  Para deletar tudo, é muito simples ``realm.deleteAll();`` somente isso!  
+
+    ***Código Completo da Classe Abstrata***  
+
+    ```dart
+    configuration_service.dart
+    
+    ...
+    class ConfigurationServiceImpl implements ConfigurationService {
+      final Realm realm;
+
+      ConfigurationServiceImpl(this.realm);
+
+      @override
+      //*todo: pega o primeiro item da lista
+      ConfigurationModel getConfiguration() {
+        return realm.all<ConfigurationModel>().first;
+      }
+
+      @override
+      void saveConfiguration(String themeModeName, DateTime? syncDate) {
+        final model = getConfiguration();
+        //*todo: salva o Tema e a data no Banco de Dados
+        realm.write(() {
+          model.syncDate = syncDate;
+          model.themeModeName = themeModeName;
+        });
+      }
+
+      @override
+      void deleteAll() {
+        realm.deleteAll();
+      }
+    }
+    ...
+    ```  
+
+### ***Injeção de Dependência:*** <a id='aula8-InjectDependency:'></a>  
+
+- ***Adicionar Classe Concreta na Injeção de Dependência:***  
+  Com a configuração de serviço terminada, só é preciso adicionar o ***ConfigurationServiceImpl()*** no arquivo de infeção de dependência.
+  Com o ***AppModule()*** aberto, dentro do registro de dependências, adicione um ``AutoBind`` de fábrica ``.factory(`` recebendo uma nova instância ``ConfigurationServiceImpl.new),``, pode ser usado o factory, pois, ele sempre irá criar uma nova instância quando ele for iniciado.  
+  Neste caso não importa, pois não existe nada dentro que precise impedir a reconstrução.  
+  Só será possível usar a injeção de dependência se pegar pela classe abstrata, ConfigurationService nunca pela implementação, para que isso ocorra, iremos Tipar a instância ``<ConfigurationService>``.
+  Isso nos dá mais segurança, pois, quando precisar usar a injeção de dependência, só vai ser possível acessando pela Classe Abstrata.
+
+  ```dart
+  app_module.dart
+  
+  ...
+    List<Bind> get binds => [
+        //! Versão antiga
+        // Bind.singleton((i) => AppStore())
+
+        //? Versão nova a partir de março/2023
+        //? Flutter_Modular: ^6.0.0-alpha.5
+        Bind.instance<Realm>(Realm(config)),
+        // AutoBind.instance(Realm.new),
+  >>>>  AutoBind.factory<ConfigurationService>(ConfigurationServiceImpl.new),
+        AutoBind.singleton(AppStore.new),
+      ];
+  ...
+  ```  
+
+  O Realm será adicionado automaticamente ao ConfigurationService que também será adicionado automaticamente ao AppStore().  
+  Da mesma forma que foi feito com o Realm, iremos adicionar o ConfigurationService na injeção de dependência no AppStore, adicionando uma variável ``final`` do Tipo ``ConfigurationService`` chamada ``_ConfigurationService,`` e adiciona ao Construtor da Classe ``AppStore(this._configurationService);``.  
+  
+  ```dart
+  app_store.dart
+  
+  ...
+        class AppStore {
+        final themeMode = ValueNotifier(ThemeMode.system);
+        final syncDate = ValueNotifier<DateTime?>(null);
+  >>>>  final ConfigurationService _configurationService;
+
+        //*todo: construtor da classe
+  >>>>  AppStore(this._configurationService);
+  ...
+  ```
+
+  > ### E isso que é bom no Modular, ele vai injetar automaticamente o ConfigurationService dentro do Construtor e vai entender tudo e resolver todas as instâncias isso é Injeção de Dependência.
+
+### ***Iniciando o Banco de Dados:*** <a id='aula8-IniciandoBancoDados'></a>  
+
+
