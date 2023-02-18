@@ -1713,3 +1713,26 @@ Crie uma variável privada do Tipo ``ThemeMode`` chamada ``_getThemeModeByName(`
   > No mesmo momento em que iniciar a Classe AppStore() pois ele estará inserido no Construtor da Classe.  
   > Com isso, ele inicia o Sistema de Injeção.***
 
+### ***Salvando o Banco de Dados*** <a id='aula8-SalvandoBancoDados'></a>
+
+Para salvar o ***Banco de Dados*** precisamos abrir o ``AppStore()`` ***app_store.dart*** e adicionar no método ``void save()`` com as definições a seguir:  
+
+- O ***save()*** é muito simples de se definir, pois ele já está sendo chamado nos métodos ***changeThemeMode()*** e ***setSyncDate()***.  
+- Dentro do método ``save()``, iremos definir o ``_configurationService`` pegando os valores do Tema e da Data ``.saveConfiguration(``recebendo uma String contendo o nome do Tema ``themeMode.value.name``, e recebendo o valor do ***date*** data ``syncDate.value);``  
+
+```dart
+app_store.dart
+
+...
+  void save() {
+    _configurationService.saveConfiguration(
+      themeMode.value.name,
+      syncDate.value,
+    );
+  }
+...
+```
+
+Com isso, toda vez que houver uma modificação no Tema ou na Data, o método save() será chamado e as alterações serão gravadas, agora nosso Gerenciamento de estado está completo.  
+
+

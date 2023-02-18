@@ -20,7 +20,12 @@ class AppStore {
   }
 
   //*todo: salvar os dados na base local
-  void save() {}
+  void save() {
+    _configurationService.saveConfiguration(
+      themeMode.value.name,
+      syncDate.value,
+    );
+  }
 
   //*todo: modifica o valor do themeMode
   void changeThemeMode(ThemeMode? mode) {
