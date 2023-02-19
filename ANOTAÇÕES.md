@@ -40,13 +40,13 @@ ___
 
 #### Aula 07
 
-- [Gerenciamento de Estado](#aula7-GerenciamentoEstado)
+- [Gerenciamento de Estado](#gerenciamento-e-distribuição-de-estado)
   - [Definindo a ListView()](#definindo-a-listview)
     - [Título da Lista](#aula7-TituloLista)
     - [Caixa de Seleção](#aula7-CaixaSelecao)
     - [Botão Apagar Cache e Reiniciar App](#aula7-BotaoApagarCacheReiniciarApp)
     - [Finalizando o ListView](#aula7-FinalizandoListView)
-  - [Criando um Gerenciamento de Estado](#aula7-CriandoGerenciamentoEstado)
+  - [Criando um Gerenciamento de Estado](#criando-um-gerenciamento-de-estado)
     - [Iniciando o Gerenciamento](#aula7-IniciandoGerenciamento)
     - [Trasporte e Distribuição do Estado](#aula7-TrasporteDistribuicaoEstado)
     - [Como utilizar o Modular para distribuir a AppStore() para toda a Aplicação](#aula7-ComoUtilizarModularDistribuirAppStore)
@@ -921,7 +921,9 @@ Ou seja. as pessoas irão ver e entender esse código melhor, mesmo ele tendo um
 
 [^ Sumário ^](#aula-06)  
 
-## ***Aula 07 - Gerenciamento e distribuição de estado*** <a id='aula7-GerenciamentoEstado'></a>
+## Aula 07
+
+### Gerenciamento e Distribuição de Estado
 
 Uma das principais coisas feitas no Flutter, é controlar o Estado ***"State"*** da Tela ***(view, page, etc.)*** por esse motivo, construiremos a ***Tela de Configurações*** ``configuration_page.dart`` onde teremos um Controle de Estado baseado no tema ***theme***.
 
@@ -1108,7 +1110,7 @@ Uma das principais coisas feitas no Flutter, é controlar o Estado ***"State"***
 
 [^ Sumário ^](#aula-07)
 
-### ***Criando um Gerenciamento de Estado*** <a id='aula7-CriandoGerenciamentoEstado'></a>  
+### ***Criando um Gerenciamento de Estado***  
 
 ***Gerenciar um Estado*** ``State``, significa escolher uma ***Classe/Componente*** para salvar o ***Estado da Aplicação***.  
 Um Componente muito utilizado para realizar essa tarefa é o ***Store***.  
