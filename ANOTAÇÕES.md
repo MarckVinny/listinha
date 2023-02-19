@@ -78,7 +78,7 @@ ___
     - [Adicionar Classe Concreta na Injeção de Dependência](#AddClasseConcretaInjectDependency)
   - [Iniciando o Banco de Dados](#aula8-IniciandoBancoDados)
   - [Salvando o Banco de Dados](#aula8-SalvandoBancoDados)
-  - [Função Apagar Cache](#função-apagar-cache)
+  - [Função Apagar Cache](#aula8-FunctionApagarCache)
 
 ___
 
@@ -1551,7 +1551,9 @@ app_module.dart
 
 [^ Sumário ^](#aula-08)
 
-### ***Criando Serviço de Configuração*** <a id='aula8-CriandoServiceConfig'></a>
+### ***Criando Serviço de Configuração***
+
+<a id='aula8-CriandoServiceConfig'></a>
 
 Crie uma pasta chamada services dentro do caminho ``lib\src\configuration`` e crie um arquivo ``chamado configuration_service.dart``.  
 Como nossa [arquitetura](ARCHITECTURE.md#entidades) pede que se use ***Classes Abstratas***, obrigatoriamente deve-se criar uma Classe Abstrata ``abstract class`` chamada ``ConfigurationService{}`` e atribuir os métodos que serão utilizados.  
