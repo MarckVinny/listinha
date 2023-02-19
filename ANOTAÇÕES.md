@@ -56,6 +56,29 @@ ___
 #### Aula 08
 
 - [Persistência de Dados](#aula8-PersistenciaDados)
+  - [Dados das Configurações](#aula8-DadosConfig)
+  - [Criando e definindo o método init()](#aula8-CriandoDefinindoMetodoInit)
+  - [Criando e definindo o método save()](#aula8-CriandoDefinindoMetodoSave)
+  - [Criando e definindo o método syncDate()](#aula8-CriandoDefinindoSyncDate)
+  - [Adicionando o filtro syncDate()](#aula8-AdicionandoFiltroSyncDate)
+  - [Adicionando e definindo valor da variável syncDateText](#aula8-AddDefValorVarSyncDateText)
+  - [Definindo a formatação da Data de syncDateText](#aula8-DefFormatSyncDateText)
+  - [Formatando a Data para aparecer no final da linha](#aula8-FormatDateShowFinalLine)
+- [Criando Base de Dados do Realm](#aula8-CriandoBaseDadosRealm)
+  - [Modelo da Tabela na Base de Dados](#aulas8-ModeloTabelaBaseBancoDados)
+  - [Adicionando Valores padrão à Base de Dados](#aula8-AddValoresPadBaseDados)
+  - [Criando uma instancia do config do Realm](#aula8-CriandoInstanciaConfigRealm)
+- [Criando Serviço de Configuração](#aula8-CriandoServiceConfig)
+  - [Classe Abstrata](#aula8-ClasseAbstrata)
+  - [Classe Concreta](#aula8-ClasseConcreta)
+    - [Injeção de Dependência](#aula8-InjectDependencyConcreta)
+    - [Método Obter Configuração - getConfiguration()](#aula8-MetodoObterConfig)
+    - [Método Salvar Configuração - saveConfiguration()](#aula8-MetodoSalvarConfig)
+    - [Método de Deletar Tudo - deleteAll()](#aula8-MetodoDeletarTudo)
+    - [Adicionar Classe Concreta na Injeção de Dependência](#AddClasseConcretaInjectDependency)
+  - [Iniciando o Banco de Dados](#aula8-IniciandoBancoDados)
+  - [Salvando o Banco de Dados](#aula8-SalvandoBancoDados)
+  - [Função Apagar Cache](#aula8-FunctionApagarCache)
 
 ___
 
@@ -1155,7 +1178,7 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
   - Primeiro abrimos o arquivo ***app_widget.dart***.  
   - Dentro do ``build`` adicione uma ***variável*** ``final`` chamada ``appStore`` que ***receberá*** ``=`` através do ***contexto*** ``context`` o ***valor*** ``.watch<>()`` que ***escutará*** ``<AppStore>`` que está no Modular, da forma que está não irá fazer nada.  
-  - Para que funcione como deve, precisamos modificar o valor da propriedade themeMode: para pegar a ***variável*** que ***escuta*** ``appStore`` as modificações do ***Tema*** ``.themeMode`` e ***atribuir o valor*** do Tema modificado ``.value,``.  
+  - Para que funcione como deve, precisamos modificar o valor da propriedade themeMode: para obter a ***variável*** que ***escuta*** ``appStore`` as modificações do ***Tema*** ``.themeMode`` e ***atribuir o valor*** do Tema modificado ``.value,``.  
   - Mas, reativamente aqui não acontece nada, para que ocorra reatividade, precisamos adicionar um filtro que para o ``appStore`` distribuir, somente o que for necessário reativamente, então, dentro dos parenteses ``()`` iremos adicionar a reatividade.  
   - Adicione um ***seletor*** ``(store) =>`` e nesta store vamos selecionar um ***Objeto Listenable Reativo*** ``.themeMode,`` ou seja, ele irá alterar quando ***themeMode*** for alterado.  
 
@@ -1190,7 +1213,7 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
     > ## Se é um StatelessWidget, como que funciona a reatividade?  
     >
-    > ### Funciona porquê: ``context.watch<AppStore>()`` vai pegar de ``Inherited Widget`` que seria Widget Herdado, é o Inherited Widget que irá fazer o Gerenciamento de Estado que está lá no Modular, igual ao Provider
+    > ### Funciona porquê: ``context.watch<AppStore>()`` vai obter de ``Inherited Widget`` que seria Widget Herdado, é o Inherited Widget que irá fazer o Gerenciamento de Estado que está lá no Modular, igual ao Provider
 
     Então, podemos ter quantas reatividades quisermos dentro da ***classe AppStore()***, pois, lá no ***filtro*** *(que acabamos de ver acima)*, o ***appStore*** irá filtrar só a reatividade que for necessária, que no nosso caso é o ***themeMode***.  
 
@@ -1271,402 +1294,437 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
 ### ***Aula 08***
 
-### ***Persistência de Dados:*** <a id='aula8-PersistenciaDados'></a>  
+### ***Persistência de Dados*** <a id='aula8-PersistenciaDados'></a>  
 
 A partir de agora vamos iniciar a persistência de dados locais com todos os dados que temos.  
 Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos auxiliar a salvar os dados de configuração e as listas posteriormente.
   
-- ***Dados das Configurações:*** <a id='Dados das Configurações:'></a>  
-  Para iniciar a definição da ***Base de Dados das Configurações***, precisamos abrir a ***Classe AppStore***, pois é nela que iremos configurar os métodos do ***Realm***, para isso abra o arquivo ***app_store.dart***.  
-  Nela, já começamos adicionando o método save() mas ainda não definimos suas funcionalidades, mas iremos defini-las mais a frente.  
+#### ***Dados das Configurações:*** <a id='aula8-DadosConfig'></a>  
 
-  #### ***Criando e definindo o método init():*** <a id='aula8-CriandoDefinindoMetodoInit'></a>  
+Para iniciar a definição da ***Base de Dados das Configurações***, precisamos abrir a ***Classe AppStore***, pois é nela que iremos configurar os métodos do ***Realm***, para isso abra o arquivo ***app_store.dart***.  
 
-  O ***AppStore()*** precisa iniciar,já que ele vai pegar os dados da internet, então iremos criar o método ``void init(){}``.
+Nela, já começamos adicionando o método save() mas ainda não definimos suas funcionalidades, mas iremos defini-las mais a frente.  
 
-  #### ***Criando e definindo o método save():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
+[^ Sumário ^](#aula-08)
 
-  O ***AppStore()*** precisa salvar os dados localmente, então iremos criar o método ``void save(){}``.
+#### ***Criando e definindo o método init():*** <a id='aula8-CriandoDefinindoMetodoInit'></a>  
 
-  #### ***Criando e definindo o método syncDate():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
+O ***AppStore()*** precisa iniciar,já que ele vai obter os dados da internet, então iremos criar o método ``void init(){}``.  
 
-  Um ponto que precisamos prestar atenção, é que o item Sincronizar do Menu Drawer, possui data e hora para serem salvas ao sincronizar os dados, então precisamos fazer igual foi feito no [themeMode](#themeMode):  
+#### ***Criando e definindo o método save():*** <a id='aula8-CriandoDefinindoMetodoSave'></a>  
 
-  Então, para que isso ocorra precisamos adicionar uma ***variável*** ``final`` chamada ``syncDate`` que irá receber ``=`` o ***valor*** ``ValueNotifier<>()`` do ***Tipo*** ``<DateTime?>`` possivelmente nulo, e irá iniciar com o ***valor*** nulo ``(null)``.  
+O ***AppStore()*** precisa salvar os dados localmente, então iremos criar o método ``void save(){}``.
 
-  ```dart
-  app_store.dart
-  
-  ...
-  final syncDate = ValueNotifier<DateTime?>(null);
-  ...
-  ```  
+#### ***Criando e definindo o método syncDate():*** <a id='aula8-CriandoDefinindoSyncDate'></a>  
 
-  Com o syncDate iniciado com o valor nulo, já podemos começar a definir a modificação do método.  
-  Vamos começar definindo a modificação do método ``void`` chamado ``setSyncDate(``que receberá um ``DateTime`` de ``date){``e vai atribuir o valor da ``syncDate.value =`` ao ``date;`` e após esse processo ele irá ***salvar*** ``save();}``.  
+Um ponto que precisamos prestar atenção, é que o item Sincronizar do Menu Drawer, possui data e hora para serem salvas ao sincronizar os dados, então precisamos fazer igual foi feito no [themeMode](#themeMode):  
 
-  ```dart
-  app_store.dart
-  
-  ...
-  void setSyncDate(DateTime date) {
-    syncDate.value = date;
-    save();
-  }
-  ...
-  ```  
+Então, para que isso ocorra precisamos adicionar uma ***variável*** ``final`` chamada ``syncDate`` que irá receber ``=`` o ***valor*** ``ValueNotifier<>()`` do ***Tipo*** ``<DateTime?>`` possivelmente nulo, e irá iniciar com o ***valor*** nulo ``(null)``.  
 
-  #### ***Adicionando o filtro syncDate():*** <a id='aula8-AdicionandoFiltroSyncDate'></a>  
+```dart
+app_store.dart
 
-  Agora que acabamos de criar o método ***syncDate***, precisamos abrir o arquivo ***custom_drawer.dart***, e adicionar o filtro para escutar somente o método ***syncDate()***.  
+...
+final syncDate = ValueNotifier<DateTime?>(null);
+...
+```  
 
-  Para isso, será precisado chamar o ***AppStore()*** através da variável ``final`` de nome ``appStore`` que recebe ``=`` o valor ``context.watch<`` que escuta as modificações de Estado recuperando o ``AppStore>(`` e o Modular como visto antes, nos permite filtrar o que queremos escutar, com ``(store) => store.syncDate,)`` e o syncData fará a alteração.  
-  Através da variável que acabamos de declarar, podemos ter acesso ao método syncDate() da seguinte forma:  
-  Adicionamos a variável ``final`` de nome ``syncDate`` que recebe ``=`` o valor ``appStore.syncDate.value,``.  
+Com o syncDate iniciado com o valor nulo, já podemos começar a definir a modificação do método.  
+Vamos começar definindo a modificação do método ``void`` chamado ``setSyncDate(``que receberá um ``DateTime`` de ``date){``e vai atribuir o valor da ``syncDate.value =`` ao ``date;`` e após esse processo ele irá ***salvar*** ``save();}``.  
 
-  ```dart
-  custom_drawer.dart
-  
-  ...
-      final syncDate = appStore.syncDate.value;
-  ...
-  ```  
+```dart
+app_store.dart
 
-  #### ***Adicionando e definindo valor da variável syncDateText*** <a id='aula8-AddDefValorVarSyncDateText'></a>  
+...
+void setSyncDate(DateTime date) {
+  syncDate.value = date;
+  save();
+}
+...
+```  
 
-  Adicionamos a variável ``var`` de nome ``syncDateText`` que recebe o valor padrão ``'nunca';`` assim, mesmo que o valor seja ***nulo***, sempre irá aparecer o ***valor padrão nunca***.  
-  Nunca trabalhe com valores nulos, sempre adicione um valor padrão.
+[^ Sumário ^](#aula-08)
 
-  ```dart
-  custom_drawer.dart
-  
-  ...
-    var syncDateText = 'nunca';
-  ...
-  ```  
+#### ***Adicionando o filtro syncDate():*** <a id='aula8-AdicionandoFiltroSyncDate'></a>  
 
-  A seguir, vamos adicionar o valor da variável syncDateText no Componente Text() que irá renderizar a data no item Sincronização.  
+Agora que acabamos de criar o método ***syncDate***, precisamos abrir o arquivo ***custom_drawer.dart***, e adicionar o filtro para escutar somente o método ***syncDate()***.  
 
-  ```dart
-  custom_drawer.dart
-  
-  ...
-        Text(
-  >>>>    syncDateText,
-          style: Theme.of(context).textTheme.labelSmall,
-        ),
-  ...
-  ```
+Para isso, será precisado chamar o ***AppStore()*** através da variável ``final`` de nome ``appStore`` que recebe ``=`` o valor ``context.watch<`` que escuta as modificações de Estado recuperando o ``AppStore>(`` e o Modular como visto antes, nos permite filtrar o que queremos escutar, com ``(store) => store.syncDate,)`` e o syncData fará a alteração.  
+Através da variável que acabamos de declarar, podemos ter acesso ao método syncDate() da seguinte forma:  
+Adicionamos a variável ``final`` de nome ``syncDate`` que recebe ``=`` o valor ``appStore.syncDate.value,``.  
 
-  Agora iremos fazer o teste para verificar se o valor é nulo ou não, mas antes será preciso instalar um package de internacionalização que entre outras coisas, faz a formatação da data conforme queremos, para isso, no terminal na pasta do projeto, digite: ``flutter pub add intl``.  
+```dart
+custom_drawer.dart
 
-  #### ***Definindo a formatação da Data de syncDateText***<a id='aula8-DefFormatSyncDateText'></a>  
+...
+    final syncDate = appStore.syncDate.value;
+...
+```  
 
-  Se ``if (syncDate`` for diferente ``!=`` de nulo ``null)`` então ``{``iremos adicionar a formatação da data com a variável ``final`` de nome ``format`` que recebe ``= DateForma(``que usará a string para formatar a data e a hora ``"dd"`` para dia ``"/MM"`` para mês ``"/yyyy"`` para o ano às e ``"hh"`` para hora e ``":mm"`` para minutos ``" h"`` para o h das horas.  
-  Essa é a formatação desejada quando se receber um ``date``, mas para isso, precisamos atribuir à variável ``syncDateText`` que ela receba ``=`` essa formatação ``format.format(``recebendo a data ``syncDate))}``.  
+[^ Sumário ^](#aula-08)
 
-  ```dart
-  custom_drawer.dart
-  
-  ...
-  if (syncDate != null) {
-    final format = DateFormat('dd/MM/yyyy às hh:mmh');
-    syncDateText = format.format(syncDate);
-  }
-  ...
-  ```
+#### ***Adicionando e definindo valor da variável syncDateText*** <a id='aula8-AddDefValorVarSyncDateText'></a>  
 
-  #### ***Formatando a Data para aparecer no final da linha:*** <a id='aula8-FormatDateShowFinalLine'></a>  
+Adicionamos a variável ``var`` de nome ``syncDateText`` que recebe o valor padrão ``'nunca';`` assim, mesmo que o valor seja ***nulo***, sempre irá aparecer o ***valor padrão nunca***.  
+Nunca trabalhe com valores nulos, sempre adicione um valor padrão.
 
-  Para que a data fique melhor apresentada, iremos substituir o ``SizedBox()`` por um ``Spacer()`` que é um Componente Flex do Flutter, mas por album motivo o ***NavigationDrawer()***, não fornece o tamanho da largura para a ``Row()``*(o Row() precisa de um tamanho de largura, já que é o eixo principal dele)*, então precisamos envolve-lo com um ``SizedBox(width: 215)`` adicionando uma largura a ele para que o ***Spacer()*** ou qualquer outro flex funcione corretamente. Mas só faça isso quando o Widget não fornecer a largura para o Componente.  
+```dart
+custom_drawer.dart
 
-  ```dart
-  custom_drawer.dart
-  
-  ...
-      NavigationDrawerDestination(
-        icon: const Icon(Icons.sync),
-  >>>>  label: SizedBox(
-  >>>>    width: 215,
-          child: Row(
-            children: [
-              const Text('Sincronização'),
-  >>>>        const Spacer(),
-              Text(
-                syncDateText,
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-            ],
-          ),
+...
+  var syncDateText = 'nunca';
+...
+```  
+
+A seguir, vamos adicionar o valor da variável syncDateText no Componente Text() que irá renderizar a data no item Sincronização.  
+
+```dart
+custom_drawer.dart
+
+...
+      Text(
+>>>>    syncDateText,
+        style: Theme.of(context).textTheme.labelSmall,
+      ),
+...
+```
+
+Agora iremos fazer o teste para verificar se o valor é nulo ou não, mas antes será preciso instalar um package de internacionalização que entre outras coisas, faz a formatação da data conforme queremos, para isso, no terminal na pasta do projeto, digite: ``flutter pub add intl``.  
+
+[^ Sumário ^](#aula-08)
+
+#### ***Definindo a formatação da Data de syncDateText***<a id='aula8-DefFormatSyncDateText'></a>  
+
+Se ``if (syncDate`` for diferente ``!=`` de nulo ``null)`` então ``{``iremos adicionar a formatação da data com a variável ``final`` de nome ``format`` que recebe ``= DateForma(``que usará a string para formatar a data e a hora ``"dd"`` para dia ``"/MM"`` para mês ``"/yyyy"`` para o ano às e ``"hh"`` para hora e ``":mm"`` para minutos ``" h"`` para o h das horas.  
+Essa é a formatação desejada quando se receber um ``date``, mas para isso, precisamos atribuir à variável ``syncDateText`` que ela receba ``=`` essa formatação ``format.format(``recebendo a data ``syncDate))}``.  
+
+```dart
+custom_drawer.dart
+
+...
+if (syncDate != null) {
+  final format = DateFormat('dd/MM/yyyy às hh:mmh');
+  syncDateText = format.format(syncDate);
+}
+...
+```
+
+[^ Sumário ^](#aula-08)
+
+#### ***Formatando a Data para aparecer no final da linha:*** <a id='aula8-FormatDateShowFinalLine'></a>  
+
+Para que a data fique melhor apresentada, iremos substituir o ``SizedBox()`` por um ``Spacer()`` que é um Componente Flex do Flutter, mas por album motivo o ***NavigationDrawer()***, não fornece o tamanho da largura para a ``Row()``*(o Row() precisa de um tamanho de largura, já que é o eixo principal dele)*, então precisamos envolve-lo com um ``SizedBox(width: 215)`` adicionando uma largura a ele para que o ***Spacer()*** ou qualquer outro flex funcione corretamente. Mas só faça isso quando o Widget não fornecer a largura para o Componente.  
+
+```dart
+custom_drawer.dart
+
+...
+    NavigationDrawerDestination(
+      icon: const Icon(Icons.sync),
+>>>>  label: SizedBox(
+>>>>    width: 215,
+        child: Row(
+          children: [
+            const Text('Sincronização'),
+>>>>        const Spacer(),
+            Text(
+              syncDateText,
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ],
         ),
       ),
-  ...
-  ```
+    ),
+...
+```
 
-  #### ***Criando Base de Dados do Realm*** <a id='aula8-CriandoBaseDadosRealm'></a>  
+[^ Sumário ^](#aula-08)
 
-  Primeiro precisamos criar a pasta onde será salvo a configuração do Realm, no caminho ``lib\src\shared\services`` iremos criar a pasta de nome ``realm`` que estará disponível globalmente, e dentro criaremos o arquivo chamado ``realm_config.dart`` onde serão definidas as configurações do Realm.  
-  Na [documentação](https://pub.dev/packages/realm) do Realm no pub.dev, encontramos as configurações que precisamos definir, mas por enquanto vamos usar somente a configuração, ``var config = Configuration.local([Car.schema]);`` onde faremos as alterações necessárias.  
-  Este, é um arquivo onde passamos os ***esquemas*** ``scheme`` de modelos e esses ***esquemas*** ``scheme`` são auto-gerados.  
+### ***Criando Base de Dados do Realm*** <a id='aula8-CriandoBaseDadosRealm'></a>  
 
-  #### ***Modelo da Tabela na Base do Banco de Dados*** <a id='aulas8-ModeloTabelaBaseBancoDados'></a>  
+Primeiro precisamos criar a pasta onde será salvo a configuração do Realm, no caminho ``lib\src\shared\services`` iremos criar a pasta de nome ``realm`` que estará disponível globalmente, e dentro criaremos o arquivo chamado ``realm_config.dart`` onde serão definidas as configurações do Realm.  
+Na [documentação](https://pub.dev/packages/realm) do Realm no pub.dev, encontramos as configurações que precisamos definir, mas por enquanto vamos usar somente a configuração, ``var config = Configuration.local([Car.schema]);`` onde faremos as alterações necessárias.  
+Este, é um arquivo onde passamos os ***esquemas*** ``scheme`` de modelos e esses ***esquemas*** ``scheme`` são auto-gerados.  
 
-  Primeiro precisamos criar uma pasta chamada ``models`` no caminho ``lib\src\shared\services\realm`` e dentro dela criar um arquivo chamado ``configuration_model.dart``,  que vai representar um modelo da tabela na base do banco de dados, onde, serão salvas as configurações do banco de dados.
-  O Realm, utilizará essa arquivo para criar um tipo de tabela dentro dele.  
-  Para funcionar, precisamos criar uma ***Classe privada*** ``_`` com o mesmo nome do arquivo ``ConfigurationModel`` e depois será preciso criar as propriedades que serão as colunas desta tabela.  
-  - ``late`` sempre deve declarado com late no inicio, pois, não iremos atribuir nenhum valor no momento;
-  - ``String`` pois o DateTime só aceita Tipos primitivos;
-  - ``themeModeName`` nome da primeira coluna que será criada;  
-  - ``DateTime?`` Tipo da segunda coluna que pode ser uma data nula ``?``;  
-  - ``syncDate`` nome da segunda coluna.
-  - ``@RealmModel`` adicionar a anotação para que o Realm reconheça essa Classe como uma tabela.
-  - ``part "configuration_model.g.dart";`` é preciso adicionar esse part com o mesmo nome de arquivo com a única diferença é que tem que adicionar o ***.g*** antes do ***.dart***, para que o Realm crie o arquivo da tabela corretamente.  
-  
+[^ Sumário ^](#aula-08)
+
+#### ***Modelo da Tabela na Base de Dados*** <a id='aulas8-ModeloTabelaBaseBancoDados'></a>  
+
+Primeiro precisamos criar uma pasta chamada ``models`` no caminho ``lib\src\shared\services\realm`` e dentro dela criar um arquivo chamado ``configuration_model.dart``,  que vai representar um modelo da tabela na base do banco de dados, onde, serão salvas as configurações do banco de dados.
+O Realm, utilizará essa arquivo para criar um tipo de tabela dentro dele.  
+Para funcionar, precisamos criar uma ***Classe privada*** ``_`` com o mesmo nome do arquivo ``ConfigurationModel`` e depois será preciso criar as propriedades que serão as colunas desta tabela.  
+
+- ``late`` sempre deve declarado com late no inicio, pois, não iremos atribuir nenhum valor no momento;
+- ``String`` pois o DateTime só aceita Tipos primitivos;
+- ``themeModeName`` nome da primeira coluna que será criada;  
+- ``DateTime?`` Tipo da segunda coluna que pode ser uma data nula ``?``;  
+- ``syncDate`` nome da segunda coluna.
+- ``@RealmModel`` adicionar a anotação para que o Realm reconheça essa Classe como uma tabela.
+- ``part "configuration_model.g.dart";`` é preciso adicionar esse part com o mesmo nome de arquivo com a única diferença é que tem que adicionar o ***.g*** antes do ***.dart***, para que o Realm crie o arquivo da tabela corretamente.  
+
+```dart
+configuration_model.dart
+
+...
+import 'package:realm/realm.dart';
+
+part 'configuration_model.g.dart';
+
+@RealmModel()
+class _ConfigurationModel {
+  late String themeModeName;
+  late DateTime? syncDate;
+}
+...
+```
+
+Agora precisamos rodar um comando ``flutter pub run realm  generate`` no terminal para que o Realm gere a tabela, lembrando que toda vez que for adicionado ou modificar qualquer propriedade na Classe.  
+Com esse comando, ele gera um modelo público do mesmo modelo que criamos de forma privada, para que possamos acessar os dados fora da Classe Privada.  
+
+Agora, abrimos o arquivo ``realm_config.dart`` e adicionamos a ***Classe Pública*** recém criada ``ConfigurationModel`` na definição do ``config``.  
+
+```dart
+realm_config.dart
+
+...
+      import 'package:realm/realm.dart';
+
+      import 'configuration_model.dart';
+
+>>>>  var config = Configuration.local([
+        ConfigurationModel.schema,
+      ]);
+...
+```  
+
+[^ Sumário ^](#aula-08)
+
+#### ***Adicionando Valores padrão à Base de Dados:*** <a id='aula8-AddValoresPadBaseDados'></a>
+
+E é só isso a configuração do ***Realm***, Classe e configuração, e pode se fazer quantas Classes forem necessárias, lembrando sempre de adicionar suas respectivas configurações dentro do ``array``.  
+O Realm tem outras propriedades, como por exemplo a ``initialDataCallback:`` que inicia a Base de Dados, podendo adicionar valores padrão para ela.  
+Para adicionar um valor padrão, é igual a adicionar um item no array (na lista), e atribui o valor da instancia que acabou de ser criada.  
+Adicione a propriedade ``initialDataCallback:`` que recebe como valor uma Função ``(realm){``que adiciona ``realm.add(``e atribui a instancia que acabou de ser criada ``ConfigurationModel(``recebendo o valor do themeModeName ``'system'))}`` como valor padrão, assim, quando o Aplicativo iniciar, o Realm vai atribuir ao themeMode (ao Tema) o valor padrão ou Tema Padrão, ***system***  que é o tema do sistema.
+
+```dart
+realm_config.dart
+
+...
+    import 'package:realm/realm.dart';
+    import 'configuration_model.dart';
+
+    LocalConfiguration config = Configuration.local(
+      [
+        ConfigurationModel.schema,
+      ],
+>>>>  initialDataCallback: (realm) {
+        realm.add(ConfigurationModel('system'));
+      },
+    );
+...
+```
+
+[^ Sumário ^](#aula-08)
+
+#### ***Criando uma instancia do config do Realm:*** <a id='aula8-CriandoInstanciaConfigRealm'></a>
+
+Para criar a instancia do config do Realm, precisamos abrir o AppModule() que é o arquivo de injeção de dependência app_module.dart e adicionar um Bind para o config.  
+Com o ***AppModule()*** aberto, dentro do registro de dependências, adicione um ``AutoBind`` de instância ``.instance`` do Tipo ``<Realm>(``instanciando o ``Realm`` e passando o config``(config))`` como parâmetro.  
+Desta forma, o Realm está pronto para ser usando em qualquer registro.  
+
+```dart
+app_module.dart
+
+...
+  List<Bind> get binds => [
+      //! Versão antiga
+      // Bind.singleton((i) => AppStore())
+
+      //? Versão nova a partir de março/2023
+      //? Flutter_Modular: ^6.0.0-alpha.5
+      // Bind.instance<Realm>(Realm(config)),
+>>>>  AutoBind.instance<Realm>(Realm(config)),
+      AutoBind.singleton(AppStore.new),
+    ];
+...
+```  
+
+[^ Sumário ^](#aula-08)
+
+### ***Criando Serviço de Configuração*** <a id='aula8-CriandoServiceConfig'></a>
+
+Crie uma pasta chamada services dentro do caminho ``lib\src\configuration`` e crie um arquivo ``chamado configuration_service.dart``.  
+Como nossa [arquitetura](ARCHITECTURE.md#entidades) pede que se use ***Classes Abstratas***, obrigatoriamente deve-se criar uma Classe Abstrata ``abstract class`` chamada ``ConfigurationService{}`` e atribuir os métodos que serão utilizados.  
+
+- ***Classe Abstrata:***<a id='aula8-ClasseAbstrata'></a>  
+
+- O método que irá retornar o ``ConfigurationModel`` que será o ``getConfiguration();``
+- O método qua irá salvar, ``void saveConfiguration(``recebendo a String com o nome do Tema ``String themeModeName``, e um ``DateTime`` possivelmente nulo ``?`` recebendo um date ``syncDate);``
+- O método que deleta tudo ``void deleteAll();``  
+
+  ***Código Completo da Classe Abstrata***<a id='aula8-CodeCompletoClasseAbstrata'></a>
+
   ```dart
-  configuration_model.dart
+  configuration_service.dart
   
   ...
-  import 'package:realm/realm.dart';
-
-  part 'configuration_model.g.dart';
-
-  @RealmModel()
-  class _ConfigurationModel {
-    late String themeModeName;
-    late DateTime? syncDate;
+  abstract class ConfigurationService {
+    ConfigurationModel getConfiguration();
+    void saveConfiguration(
+      String themeModeName,
+      DateTime? syncDate,
+    );
+    void deleteAll();
   }
   ...
   ```
 
-  Agora precisamos rodar um comando ``flutter pub run realm  generate`` no terminal para que o Realm gere a tabela, lembrando que toda vez que for adicionado ou modificar qualquer propriedade na Classe.  
-  Com esse comando, ele gera um modelo público do mesmo modelo que criamos de forma privada, para que possamos acessar os dados fora da Classe Privada.  
-  
-  Agora, abrimos o arquivo ``realm_config.dart`` e adicionamos a ***Classe Pública*** recém criada ``ConfigurationModel`` na definição do ``config``.  
-  
+Agora precisamos criar uma implementação de uma Classe Concreta para a classe abstrata criada acima, para poder usar seus métodos.  
+
+[^ Sumário ^](#aula-08)
+
+- ***Classe Concreta:***<a id='aula8-ClasseConcreta'></a>  
+Crie a ***classe concreta*** com o mesmo nome, mas adicionando ***Impl*** (de implementação) ao final do nome para facilitar a identificação, ``class ConfigurationServiceImpl`` e então, implementa ``implements`` o contrato que acabou de ser feito acima ``ConfigurationService {}`` feito isso, todos os métodos criados acima, serão implementados automaticamente.  
+
+[^ Sumário ^](#aula-08)
+
+- ***Injeção de Dependência:***<a id='aula8-InjectDependencyConcreta'></a>  
+Adicione o ***Realm*** por injeção de dependência:  
+Adicione uma variável ``final`` do Tipo ``Realm`` que recebe o nome ``realm;``.  
+
+- ***Construtor:***  
+Inicie a variável ***realm*** no ***Construtor***:  
+``ConfigurationServiceImpl(this.realm);``  
+
+- ***Método Obter Configuração - getConfiguration():***<a id='aula8-MetodoObterConfig'></a>  
+Para obter alguma informação usando o Realm.  
+Dentro do  ``getConfiguration(){``ele irá retornar ``return`` uma lista com todas as informações ``realm.all<``Tipo do modelo que estamos trabalhando ``ConfigurationModel>()`` e pegamos o primeiro item ``.first`` da lista.  
+``return realm.all<ConfigurationModel>().first;``
+
+[^ Sumário ^](#aula-08)  
+
+- ***Método Salvar Configuração - saveConfiguration():***<a id='aula8-MetodoSalvarConfig'></a>  
+Primeiro criamos a variável ``final`` chamada ``model`` que recebe ``=`` o valor de  ``getConfiguration();``.  
+
   ```dart
-  realm_config.dart
+  configuration_service.dart
   
   ...
-        import 'package:realm/realm.dart';
-
-        import 'configuration_model.dart';
-
-  >>>>  var config = Configuration.local([
-          ConfigurationModel.schema,
-        ]);
-  ...
-  ```  
-  
-  #### ***Adicionando Valores padrão a Base de Dados:*** <a id='aula8-AddValoresPadBaseDados'></a>
-
-  E é só isso a configuração do ***Realm***, Classe e configuração, e pode se fazer quantas Classes forem necessárias, lembrando sempre de adicionar suas respectivas configurações dentro do ``array``.  
-  O Realm tem outras propriedades, como por exemplo a ``initialDataCallback:`` que inicia a Base de Dados, podendo adicionar valores padrão para ela.  
-  Para adicionar um valor padrão, é igual a adicionar um item no array (na lista), e atribui o valor da instancia que acabou de ser criada.  
-  Adicione a propriedade ``initialDataCallback:`` que recebe como valor uma Função ``(realm){``que adiciona ``realm.add(``e atribui a instancia que acabou de ser criada ``ConfigurationModel(``recebendo o valor do themeModeName ``'system'))}`` como valor padrão, assim, quando o Aplicativo iniciar, o Realm vai atribuir ao themeMode (ao Tema) o valor padrão ou Tema Padrão, ***system***  que é o tema do sistema.
-  
-  ```dart
-  realm_config.dart
-  
-  ...
-      import 'package:realm/realm.dart';
-      import 'configuration_model.dart';
-
-      LocalConfiguration config = Configuration.local(
-        [
-          ConfigurationModel.schema,
-        ],
-  >>>>  initialDataCallback: (realm) {
-          realm.add(ConfigurationModel('system'));
-        },
-      );
-  ...
-  ```
-
-  #### ***Criando uma instancia do config do Realm:*** <a id='aula8-CriandoInstanciaConfigRealm'></a>
-
-  Para criar a instancia do config do Realm, precisamos abrir o AppModule() que é o arquivo de injeção de dependência app_module.dart e adicionar um Bind para o config.  
-  Com o ***AppModule()*** aberto, dentro do registro de dependências, adicione um ``AutoBind`` de instância ``.instance`` do Tipo ``<Realm>(``instanciando o ``Realm`` e passando o config``(config))`` como parâmetro.  
-  Desta forma, o Realm está pronto para ser usando em qualquer registro.  
-  
-  ```dart
-  app_module.dart
-  
-  ...
-    List<Bind> get binds => [
-        //! Versão antiga
-        // Bind.singleton((i) => AppStore())
-
-        //? Versão nova a partir de março/2023
-        //? Flutter_Modular: ^6.0.0-alpha.5
-        // Bind.instance<Realm>(Realm(config)),
-  >>>>  AutoBind.instance<Realm>(Realm(config)),
-        AutoBind.singleton(AppStore.new),
-      ];
-  ...
-  ```  
-
-  ### ***Criando Serviço de Configuração*** <a id='aula8-CriandoServiceConfig'></a>
-
-  Crie uma pasta chamada services dentro do caminho ``lib\src\configuration`` e crie um arquivo ``chamado configuration_service.dart``.  
-  Como nossa [arquitetura](ARCHITECTURE.md#entidades) pede que se use ***Classes Abstratas***, obrigatoriamente deve-se criar uma Classe Abstrata ``abstract class`` chamada ``ConfigurationService{}`` e atribuir os métodos que serão utilizados.  
-
-  - ***Classe Abstrata:***  
-
-  - O método que irá retornar o ``ConfigurationModel`` que será o ``getConfiguration();``
-  - O método qua irá salvar, ``void saveConfiguration(``recebendo a String com o nome do Tema ``String themeModeName``, e um ``DateTime`` possivelmente nulo ``?`` recebendo um date ``syncDate);``
-  - O método que deleta tudo ``void deleteAll();``  
-
-    ***Código Completo da Classe Abstrata***
-
-    ```dart
-    configuration_service.dart
-    
-    ...
-    abstract class ConfigurationService {
-      ConfigurationModel getConfiguration();
-      void saveConfiguration(
-        String themeModeName,
-        DateTime? syncDate,
-      );
-      void deleteAll();
-    }
-    ...
-    ```
-
-  Agora precisamos criar uma implementação de uma Classe Concreta para a classe abstrata criada acima, para poder usar seus métodos.  
-
-  - ***Classe Concreta:***  
-  Crie a ***classe concreta*** com o mesmo nome, mas adicionando ***Impl*** (de implementação) ao final do nome para facilitar a identificação, ``class ConfigurationServiceImpl`` e então, implementa ``implements`` o contrato que acabou de ser feito acima ``ConfigurationService {}`` feito isso, todos os métodos criados acima, serão implementados automaticamente.  
-
-  - ***Injeção de Dependência:***  
-  Adicione o ***Realm*** por injeção de dependência:  
-  Adicione uma variável ``final`` do Tipo ``Realm`` que recebe o nome ``realm;``.  
-
-  - ***Construtor:***  
-  Inicie a variável ***realm*** no ***Construtor***:  
-  ``ConfigurationServiceImpl(this.realm);``  
-
-  - ***Método getConfiguration():***  
-  Para pegar alguma informação usando o Realm.  
-  Dentro do  ``getConfiguration(){``ele irá retornar ``return`` uma lista com todas as informações ``realm.all<``Tipo do modelo que estamos trabalhando ``ConfigurationModel>()`` e pegamos o primeiro item ``.first`` da lista.  
-  ``return realm.all<ConfigurationModel>().first;``  
-  
-  - ***Para salvar:***  
-  Primeiro criamos a variável ``final`` chamada ``model`` que recebe ``=`` o valor de  ``getConfiguration();``.  
-  
-    ```dart
-    configuration_service.dart
-    
-    ...
-          void saveConfiguration(String themeModeName, DateTime? syncDate) {
-    >>>>  final model = getConfiguration();
-    ...
-    ```  
-
-    Depois que tiver o valor do ``model``, através do ``real.write((){})`` que possui uma ***Função setState ((){})*** podemos alterar as informações deste modelo e escolher qual será salvo no Banco de Dados.  
-    - ``model.syncDate`` recebe ``=`` o valor de ``syncDate;``;  
-    - ``model.themeModeName`` recebe ``=`` o valor de ``themeModeName;``.  
-
-    ```dart
-    configuration_service.dart
-    
-    ...
-        @override
         void saveConfiguration(String themeModeName, DateTime? syncDate) {
-          final model = getConfiguration();
-    >>>>  realm.write(() {
-    >>>>    model.syncDate = syncDate;
-    >>>>    model.themeModeName = themeModeName;
-          });
-        }
-    ...
-    ```  
+  >>>>  final model = getConfiguration();
+  ...
+  ```  
 
-    Desta forma, as informações são salvas de forma síncrona na Base de Dados.  
+  Depois que tiver o valor do ``model``, através do ``real.write((){})`` que possui uma ***Função setState ((){})*** podemos alterar as informações deste modelo e escolher qual será salvo no Banco de Dados.  
+  - ``model.syncDate`` recebe ``=`` o valor de ``syncDate;``;  
+  - ``model.themeModeName`` recebe ``=`` o valor de ``themeModeName;``.  
 
-  - ***Método de deletar tudo:***  
-  Para deletar tudo, é muito simples ``realm.deleteAll();`` somente isso!  
-
-    ***Código Completo da Classe Abstrata***  
-
-    ```dart
-    configuration_service.dart
-    
-    ...
-    class ConfigurationServiceImpl implements ConfigurationService {
-      final Realm realm;
-
-      ConfigurationServiceImpl(this.realm);
-
-      @override
-      //*todo: pega o primeiro item da lista
-      ConfigurationModel getConfiguration() {
-        return realm.all<ConfigurationModel>().first;
-      }
-
+  ```dart
+  configuration_service.dart
+  
+  ...
       @override
       void saveConfiguration(String themeModeName, DateTime? syncDate) {
         final model = getConfiguration();
-        //*todo: salva o Tema e a data no Banco de Dados
-        realm.write(() {
-          model.syncDate = syncDate;
-          model.themeModeName = themeModeName;
+  >>>>  realm.write(() {
+  >>>>    model.syncDate = syncDate;
+  >>>>    model.themeModeName = themeModeName;
         });
       }
-
-      @override
-      void deleteAll() {
-        realm.deleteAll();
-      }
-    }
-    ...
-    ```  
-
-### ***Injeção de Dependência:*** <a id='aula8-InjectDependency:'></a>  
-
-- ***Adicionar Classe Concreta na Injeção de Dependência:***  
-  Com a configuração de serviço terminada, só é preciso adicionar o ***ConfigurationServiceImpl()*** no arquivo de infeção de dependência.
-  Com o ***AppModule()*** aberto, dentro do registro de dependências, adicione um ``AutoBind`` de fábrica ``.factory(`` recebendo uma nova instância ``ConfigurationServiceImpl.new),``, pode ser usado o factory, pois, ele sempre irá criar uma nova instância quando ele for iniciado.  
-  Neste caso não importa, pois não existe nada dentro que precise impedir a reconstrução.  
-  Só será possível usar a injeção de dependência se pegar pela classe abstrata, ConfigurationService nunca pela implementação, para que isso ocorra, iremos Tipar a instância ``<ConfigurationService>``.
-  Isso nos dá mais segurança, pois, quando precisar usar a injeção de dependência, só vai ser possível acessando pela Classe Abstrata.
-
-  ```dart
-  app_module.dart
-  
-  ...
-    List<Bind> get binds => [
-        //! Versão antiga
-        // Bind.singleton((i) => AppStore())
-
-        //? Versão nova a partir de março/2023
-        //? Flutter_Modular: ^6.0.0-alpha.5
-        // Bind.instance<Realm>(Realm(config)),
-        AutoBind.instance<Realm>(Realm(config)),
-  >>>>  AutoBind.factory<ConfigurationService>(ConfigurationServiceImpl.new),
-        AutoBind.singleton(AppStore.new),
-      ];
   ...
   ```  
 
-  O Realm será adicionado automaticamente ao ConfigurationService que também será adicionado automaticamente ao AppStore().  
-  Da mesma forma que foi feito com o Realm, iremos adicionar o ConfigurationService na injeção de dependência no AppStore, adicionando uma variável ``final`` do Tipo ``ConfigurationService`` chamada ``_ConfigurationService,`` e adiciona ao Construtor da Classe ``AppStore(this._configurationService);``.  
+  Desta forma, as informações são salvas de forma síncrona na Base de Dados.  
   
+  [^ Sumário ^](#aula-08)
+
+- ***Método de deletar tudo - deleteAll():***<a id='aula8-MetodoDeletarTudo'></a>  
+Para deletar tudo, é muito simples ``realm.deleteAll();`` somente isso!  
+
+  ***Código Completo da Classe Abstrata***  
+
   ```dart
-  app_store.dart
+  configuration_service.dart
   
   ...
-        class AppStore {
-        final themeMode = ValueNotifier(ThemeMode.system);
-        final syncDate = ValueNotifier<DateTime?>(null);
-  >>>>  final ConfigurationService _configurationService;
+  class ConfigurationServiceImpl implements ConfigurationService {
+    final Realm realm;
 
-        //*todo: construtor da classe
-  >>>>  AppStore(this._configurationService);
+    ConfigurationServiceImpl(this.realm);
+
+    @override
+    //*todo: pega o primeiro item da lista
+    ConfigurationModel getConfiguration() {
+      return realm.all<ConfigurationModel>().first;
+    }
+
+    @override
+    void saveConfiguration(String themeModeName, DateTime? syncDate) {
+      final model = getConfiguration();
+      //*todo: salva o Tema e a data no Banco de Dados
+      realm.write(() {
+        model.syncDate = syncDate;
+        model.themeModeName = themeModeName;
+      });
+    }
+
+    @override
+    void deleteAll() {
+      realm.deleteAll();
+    }
+  }
   ...
-  ```
+  ```  
+  
+  [^ Sumário ^](#aula-08)
 
-  > ### E isso que é bom no Modular, ele vai injetar automaticamente o ConfigurationService dentro do Construtor e vai entender tudo e resolver todas as instâncias isso é Injeção de Dependência.
+### ***Injeção de Dependência:*** <a id='aula8-InjectDependency'></a>  
+
+- ***Adicionar Classe Concreta na Injeção de Dependência:***<a id='AddClasseConcretaInjectDependency'></a>  
+Com a configuração de serviço terminada, só é preciso adicionar o ***ConfigurationServiceImpl()*** no arquivo de infeção de dependência.
+Com o ***AppModule()*** aberto, dentro do registro de dependências, adicione um ``AutoBind`` de fábrica ``.factory(`` recebendo uma nova instância ``ConfigurationServiceImpl.new),``, pode ser usado o factory, pois, ele sempre irá criar uma nova instância quando ele for iniciado.  
+Neste caso não importa, pois não existe nada dentro que precise impedir a reconstrução.  
+Só será possível usar a injeção de dependência se obter pela classe abstrata, ConfigurationService nunca pela implementação, para que isso ocorra, iremos Tipar a instância ``<ConfigurationService>``.
+Isso nos dá mais segurança, pois, quando precisar usar a injeção de dependência, só vai ser possível acessando pela Classe Abstrata.
+
+```dart
+app_module.dart
+
+...
+  List<Bind> get binds => [
+      //! Versão antiga
+      // Bind.singleton((i) => AppStore())
+
+      //? Versão nova a partir de março/2023
+      //? Flutter_Modular: ^6.0.0-alpha.5
+      // Bind.instance<Realm>(Realm(config)),
+      AutoBind.instance<Realm>(Realm(config)),
+>>>>  AutoBind.factory<ConfigurationService>(ConfigurationServiceImpl.new),
+      AutoBind.singleton(AppStore.new),
+    ];
+...
+```  
+
+O Realm será adicionado automaticamente ao ConfigurationService que também será adicionado automaticamente ao AppStore().  
+Da mesma forma que foi feito com o Realm, iremos adicionar o ConfigurationService na injeção de dependência no AppStore, adicionando uma variável ``final`` do Tipo ``ConfigurationService`` chamada ``_ConfigurationService,`` e adiciona ao Construtor da Classe ``AppStore(this._configurationService);``.  
+
+```dart
+app_store.dart
+
+...
+      class AppStore {
+      final themeMode = ValueNotifier(ThemeMode.system);
+      final syncDate = ValueNotifier<DateTime?>(null);
+>>>>  final ConfigurationService _configurationService;
+
+      //*todo: construtor da classe
+>>>>  AppStore(this._configurationService);
+...
+```
+
+> ### E isso que é bom no Modular, ele vai injetar automaticamente o ConfigurationService dentro do Construtor e vai entender tudo e resolver todas as instâncias isso é Injeção de Dependência.
+
+[^ Sumário ^](#aula-08)
 
 ### ***Iniciando o Banco de Dados:*** <a id='aula8-IniciandoBancoDados'></a>  
 
@@ -1676,43 +1734,45 @@ Para iniciar o ***Banco de Dados*** precisamos abrir o ``AppStore()`` ***app_sto
 ``final model = _configurationService.getConfiguration();``.  
 - Chamo diretamente a variável ``syncDate.value`` e atribuo ``=`` o valor de ``mode.syncDate,``, já fica globalmente quando iniciar.  
 
-  ```dart
-  app_store.dart
+```dart
+app_store.dart
 
-  ...
-        void init() {
-          final model = _configurationService.getConfiguration();
-  >>>>    syncDate.value = model.syncDate;
-        }
-  ...
-  ```
-
-- Já o ``themeMode``, é um caso especial porquê ele é um ***enum*** e para pegar um enum, será preciso criar uma variável que irá retornar um ***ThemeMode***.  
-Crie uma variável privada do Tipo ``ThemeMode`` chamada ``_getThemeModeByName(``que recebe o ***name*** ``String name){`` e ao receber o enum que precisamos, retorna ``return`` o ``ThemeMode`` no ***ThemeMode***, tem uma propriedade chamada ***value*** que é um array "lista" com todos os ``.values`` do enum e que vamos pegar o primeiro item da lista onde``.firstWhere(``cada ``mode) =>`` terá um mode.name e terá que ser igual ``==`` ao ``name);}`` que foi passado como String e é esse valor que será passado para o ***getThemeMode*** que em nosso caso os valores são ***(system, claro ou escuro)***.  
-
-  Agora que terminamos de criar o ***_getThemeModeByName()***, precisamos definir o ***themeMode*** no método ***init()***.  
-  Chamamos o ``themeMode.value`` diretamente como fizemos com o syncDate, e atribuímos ``=`` a ele o valor da variável privada que acabamos de criar ``_getThemeModeByName(``e atribuímos o valor da String ``model.themeMode.name);``  
-  
-  ```dart
-  app_store.dart
-  
-  ...
+...
       void init() {
         final model = _configurationService.getConfiguration();
-        syncDate.value = model.syncDate;
-  >>>>  themeMode.value = _getThemeModeByName(model.themeModeName);
+>>>>    syncDate.value = model.syncDate;
       }
-  ...
-  ...
-  >>>>  ThemeMode _getThemeModeByName(String name) {
-          return ThemeMode.values.firstWhere((mode) => mode.name == name);
-        }
-  ...
-  ```  
+...
+```
 
-  > ***Agora que momento irá iniciar?  
-  > No mesmo momento em que iniciar a Classe AppStore() pois ele estará inserido no Construtor da Classe.  
-  > Com isso, ele inicia o Sistema de Injeção.***
+- Já o ``themeMode``, é um caso especial porquê ele é um ***enum*** e para obter um enum, será preciso criar uma variável que irá retornar um ***ThemeMode***.  
+Crie uma variável privada do Tipo ``ThemeMode`` chamada ``_getThemeModeByName(``que recebe o ***name*** ``String name){`` e ao receber o enum que precisamos, retorna ``return`` o ``ThemeMode`` no ***ThemeMode***, tem uma propriedade chamada ***value*** que é um array "lista" com todos os ``.values`` do enum e que vamos obter o primeiro item da lista onde``.firstWhere(``cada ``mode) =>`` terá um mode.name e terá que ser igual ``==`` ao ``name);}`` que foi passado como String e é esse valor que será passado para o ***getThemeMode*** que em nosso caso os valores são ***(system, claro ou escuro)***.  
+
+Agora que terminamos de criar o ***_getThemeModeByName()***, precisamos definir o ***themeMode*** no método ***init()***.  
+Chamamos o ``themeMode.value`` diretamente como fizemos com o syncDate, e atribuímos ``=`` a ele o valor da variável privada que acabamos de criar ``_getThemeModeByName(``e atribuímos o valor da String ``model.themeMode.name);``  
+
+```dart
+app_store.dart
+
+...
+    void init() {
+      final model = _configurationService.getConfiguration();
+      syncDate.value = model.syncDate;
+>>>>  themeMode.value = _getThemeModeByName(model.themeModeName);
+    }
+...
+...
+>>>>  ThemeMode _getThemeModeByName(String name) {
+        return ThemeMode.values.firstWhere((mode) => mode.name == name);
+      }
+...
+```  
+
+> ***Agora que momento irá iniciar?  
+> No mesmo momento em que iniciar a Classe AppStore() pois ele estará inserido no Construtor da Classe.  
+> Com isso, ele inicia o Sistema de Injeção.***
+
+[^ Sumário ^](#aula-08)
 
 ### ***Salvando o Banco de Dados*** <a id='aula8-SalvandoBancoDados'></a>
 
@@ -1725,12 +1785,12 @@ Para salvar o ***Banco de Dados*** precisamos abrir o ``AppStore()`` ***app_stor
 app_store.dart
 
 ...
-  void save() {
-    _configurationService.saveConfiguration(
-      themeMode.value.name,
-      syncDate.value,
-    );
-  }
+void save() {
+  _configurationService.saveConfiguration(
+    themeMode.value.name,
+    syncDate.value,
+  );
+}
 ...
 ```
 
@@ -1740,6 +1800,8 @@ Com isso, toda vez que houver uma modificação no ***Tema*** ou na ***Data,*** 
 >
 > ***Função: é todo procedimento que retorna algo;  
 > Método: é todo procedimento sem retorno.***
+
+[^ Sumário ^](#aula-08)
 
 ### ***Função Apagar Cache:*** <a id='aula8-FunctionApagarCache'></a>  
 
@@ -1751,9 +1813,9 @@ Para apagar o cache, precisamos criar uma ***Função*** chamada ***deleteApp()*
 app_store.dart
 
 ...
-  void deleteApp() {
-    _configurationService.deleteAll();
-  }
+void deleteApp() {
+  _configurationService.deleteAll();
+}
 ...
 ```  
 
@@ -1763,9 +1825,9 @@ E o deleteApp() vai ser chamado na Página de Configurações, abrindo o arquivo
 configuration_page.dart
 
 ...
-      OutlinedButton(
-        onPressed: appStore.deleteApp,
-        child: const Text('Apagar Cache e Reiniciar App'),
-      ),
+    OutlinedButton(
+      onPressed: appStore.deleteApp,
+      child: const Text('Apagar Cache e Reiniciar App'),
+    ),
 ...
 ```  
