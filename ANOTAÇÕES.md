@@ -55,11 +55,11 @@ ___
 
 #### Aula 08
 
-- [Persistência de Dados](#aula8-PersistenciaDados)
-  - [Dados das Configurações](#aula8-DadosConfig)
-  - [Criando e definindo o método init()](#aula8-CriandoDefinindoMetodoInit)
-  - [Criando e definindo o método save()](#aula8-CriandoDefinindoMetodoSave)
-  - [Criando e definindo o método syncDate()](#aula8-CriandoDefinindoSyncDate)
+- [Persistência de Dados](#persistência-de-dados)
+  - [Dados das Configurações](#dados-das-configurações)
+  - [Criando e definindo o método init()](#criando-e-definindo-o-método-init)
+  - [Criando e definindo o método save()](#criando-e-definindo-o-método-save)
+  - [Criando e definindo o método syncDate()](#criando-e-definindo-o-método-syncdate)
   - [Adicionando o filtro syncDate()](#aula8-AdicionandoFiltroSyncDate)
   - [Adicionando e definindo valor da variável syncDateText](#aula8-AddDefValorVarSyncDateText)
   - [Definindo a formatação da Data de syncDateText](#aula8-DefFormatSyncDateText)
