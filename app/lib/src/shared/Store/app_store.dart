@@ -41,6 +41,11 @@ class AppStore {
     save();
   }
 
+  //*todo: apaga o cache
+  void deleteApp() {
+    _configurationService.deleteAll();
+  }
+
   ThemeMode _getThemeModeByName(String name) {
     return ThemeMode.values.firstWhere((mode) => mode.name == name);
   }

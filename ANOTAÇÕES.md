@@ -1734,4 +1734,38 @@ app_store.dart
 ...
 ```
 
-Com isso, toda vez que houver uma modificação no Tema ou na Data, o método save() será chamado e as alterações serão gravadas, agora nosso Gerenciamento de estado está completo.  
+Com isso, toda vez que houver uma modificação no ***Tema*** ou na ***Data,*** o método ***save()*** será chamado e as alterações serão gravadas, agora nosso ***Gerenciamento de Estado*** está completo.  
+
+> ### Dica:
+>
+> ***Função: é todo procedimento que retorna algo;  
+> Método: é todo procedimento sem retorno.***
+
+### ***Função Apagar Cache:*** <a id='aula8-FunctionApagarCache'></a>  
+
+Para apagar o cache, precisamos criar uma ***Função*** chamada ***deleteApp()***.  
+
+- Abra o arquivo ***app_store.dart*** e crie uma Função void chamada ``deleteApp(){``que irá retornar ``_configurationService.deleteAll();}``  
+
+```dart
+app_store.dart
+
+...
+  void deleteApp() {
+    _configurationService.deleteAll();
+  }
+...
+```  
+
+E o deleteApp() vai ser chamado na Página de Configurações, abrindo o arquivo configuration_page.dart no Componente OutlinedButton() na propriedade onPressed: iremos adicionar o valor appStore.deleteApp, e fazer a chamada da Função.
+
+```dart
+configuration_page.dart
+
+...
+      OutlinedButton(
+        onPressed: appStore.deleteApp,
+        child: const Text('Apagar Cache e Reiniciar App'),
+      ),
+...
+```  
