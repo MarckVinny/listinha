@@ -1298,14 +1298,10 @@ Um Componente muito utilizado para realizar essa tarefa é o ***Store***.
 
 ### ***Persistência de Dados***
 
-<a id='aula8-PersistenciaDados'></a>  
-
 A partir de agora vamos iniciar a persistência de dados locais com todos os dados que temos.  
 Para isso, iremos utilizar a Base de Dados local Realm síncrona, que irá nos auxiliar a salvar os dados de configuração e as listas posteriormente.
   
 #### ***Dados das Configurações:***
-
-<a id='aula8-DadosConfig'></a>  
 
 Para iniciar a definição da ***Base de Dados das Configurações***, precisamos abrir a ***Classe AppStore***, pois é nela que iremos configurar os métodos do ***Realm***, para isso abra o arquivo ***app_store.dart***.  
 
@@ -1315,19 +1311,13 @@ Nela, já começamos adicionando o método save() mas ainda não definimos suas 
 
 #### ***Criando e definindo o método init():***
 
-<a id='aula8-CriandoDefinindoMetodoInit'></a>  
-
 O ***AppStore()*** precisa iniciar,já que ele vai obter os dados da internet, então iremos criar o método ``void init(){}``.  
 
 #### ***Criando e definindo o método save():***
 
-<a id='aula8-CriandoDefinindoMetodoSave'></a>  
-
 O ***AppStore()*** precisa salvar os dados localmente, então iremos criar o método ``void save(){}``.
 
 #### ***Criando e definindo o método syncDate():***
-
-<a id='aula8-CriandoDefinindoSyncDate'></a>  
 
 Um ponto que precisamos prestar atenção, é que o item Sincronizar do Menu Drawer, possui data e hora para serem salvas ao sincronizar os dados, então precisamos fazer igual foi feito no [themeMode](#themeMode):  
 
@@ -1359,8 +1349,6 @@ void setSyncDate(DateTime date) {
 
 #### ***Adicionando o filtro syncDate():***
 
-<a id='aula8-AdicionandoFiltroSyncDate'></a>  
-
 Agora que acabamos de criar o método ***syncDate***, precisamos abrir o arquivo ***custom_drawer.dart***, e adicionar o filtro para escutar somente o método ***syncDate()***.  
 
 Para isso, será precisado chamar o ***AppStore()*** através da variável ``final`` de nome ``appStore`` que recebe ``=`` o valor ``context.watch<`` que escuta as modificações de Estado recuperando o ``AppStore>(`` e o Modular como visto antes, nos permite filtrar o que queremos escutar, com ``(store) => store.syncDate,)`` e o syncData fará a alteração.  
@@ -1378,8 +1366,6 @@ custom_drawer.dart
 [^ Sumário ^](#aula-08)
 
 #### ***Adicionando e definindo valor da variável syncDateText***
-
-<a id='aula8-AddDefValorVarSyncDateText'></a>  
 
 Adicionamos a variável ``var`` de nome ``syncDateText`` que recebe o valor padrão ``'nunca';`` assim, mesmo que o valor seja ***nulo***, sempre irá aparecer o ***valor padrão nunca***.  
 Nunca trabalhe com valores nulos, sempre adicione um valor padrão.
@@ -1411,8 +1397,6 @@ Agora iremos fazer o teste para verificar se o valor é nulo ou não, mas antes 
 
 #### ***Definindo a formatação da Data de syncDateText***
 
-<a id='aula8-DefFormatSyncDateText'></a>  
-
 Se ``if (syncDate`` for diferente ``!=`` de nulo ``null)`` então ``{``iremos adicionar a formatação da data com a variável ``final`` de nome ``format`` que recebe ``= DateForma(``que usará a string para formatar a data e a hora ``"dd"`` para dia ``"/MM"`` para mês ``"/yyyy"`` para o ano às e ``"hh"`` para hora e ``":mm"`` para minutos ``" h"`` para o h das horas.  
 Essa é a formatação desejada quando se receber um ``date``, mas para isso, precisamos atribuir à variável ``syncDateText`` que ela receba ``=`` essa formatação ``format.format(``recebendo a data ``syncDate))}``.  
 
@@ -1430,8 +1414,6 @@ if (syncDate != null) {
 [^ Sumário ^](#aula-08)
 
 #### ***Formatando a Data para aparecer no final da linha:***
-
-<a id='aula8-FormatDateShowFinalLine'></a>  
 
 Para que a data fique melhor apresentada, iremos substituir o ``SizedBox()`` por um ``Spacer()`` que é um Componente Flex do Flutter, mas por album motivo o ***NavigationDrawer()***, não fornece o tamanho da largura para a ``Row()``*(o Row() precisa de um tamanho de largura, já que é o eixo principal dele)*, então precisamos envolve-lo com um ``SizedBox(width: 215)`` adicionando uma largura a ele para que o ***Spacer()*** ou qualquer outro flex funcione corretamente. Mas só faça isso quando o Widget não fornecer a largura para o Componente.  
 
@@ -1462,8 +1444,6 @@ custom_drawer.dart
 
 ### ***Criando Base de Dados do Realm***
 
-<a id='aula8-CriandoBaseDadosRealm'></a>  
-
 Primeiro precisamos criar a pasta onde será salvo a configuração do Realm, no caminho ``lib\src\shared\services`` iremos criar a pasta de nome ``realm`` que estará disponível globalmente, e dentro criaremos o arquivo chamado ``realm_config.dart`` onde serão definidas as configurações do Realm.  
 Na [documentação](https://pub.dev/packages/realm) do Realm no pub.dev, encontramos as configurações que precisamos definir, mas por enquanto vamos usar somente a configuração, ``var config = Configuration.local([Car.schema]);`` onde faremos as alterações necessárias.  
 Este, é um arquivo onde passamos os ***esquemas*** ``scheme`` de modelos e esses ***esquemas*** ``scheme`` são auto-gerados.  
@@ -1471,8 +1451,6 @@ Este, é um arquivo onde passamos os ***esquemas*** ``scheme`` de modelos e esse
 [^ Sumário ^](#aula-08)
 
 #### ***Modelo da Tabela na Base de Dados***
-
-<a id='aulas8-ModeloTabelaBaseBancoDados'></a>  
 
 Primeiro precisamos criar uma pasta chamada ``models`` no caminho ``lib\src\shared\services\realm`` e dentro dela criar um arquivo chamado ``configuration_model.dart``,  que vai representar um modelo da tabela na base do banco de dados, onde, serão salvas as configurações do banco de dados.
 O Realm, utilizará essa arquivo para criar um tipo de tabela dentro dele.  
@@ -1525,8 +1503,6 @@ realm_config.dart
 
 #### ***Adicionando Valores padrão à Base de Dados:***
 
-<a id='aula8-AddValoresPadBaseDados'></a>
-
 E é só isso a configuração do ***Realm***, Classe e configuração, e pode se fazer quantas Classes forem necessárias, lembrando sempre de adicionar suas respectivas configurações dentro do ``array``.  
 O Realm tem outras propriedades, como por exemplo a ``initialDataCallback:`` que inicia a Base de Dados, podendo adicionar valores padrão para ela.  
 Para adicionar um valor padrão, é igual a adicionar um item no array (na lista), e atribui o valor da instancia que acabou de ser criada.  
@@ -1554,8 +1530,6 @@ realm_config.dart
 
 #### ***Criando uma instancia do config do Realm:***
 
-<a id='aula8-CriandoInstanciaConfigRealm'></a>
-
 Para criar a instancia do config do Realm, precisamos abrir o AppModule() que é o arquivo de injeção de dependência app_module.dart e adicionar um Bind para o config.  
 Com o ***AppModule()*** aberto, dentro do registro de dependências, adicione um ``AutoBind`` de instância ``.instance`` do Tipo ``<Realm>(``instanciando o ``Realm`` e passando o config``(config))`` como parâmetro.  
 Desta forma, o Realm está pronto para ser usando em qualquer registro.  
@@ -1580,8 +1554,6 @@ app_module.dart
 [^ Sumário ^](#aula-08)
 
 ### ***Criando Serviço de Configuração***
-
-<a id='aula8-CriandoServiceConfig'></a>
 
 Crie uma pasta chamada services dentro do caminho ``lib\src\configuration`` e crie um arquivo ``chamado configuration_service.dart``.  
 Como nossa [arquitetura](ARCHITECTURE.md#entidades) pede que se use ***Classes Abstratas***, obrigatoriamente deve-se criar uma Classe Abstrata ``abstract class`` chamada ``ConfigurationService{}`` e atribuir os métodos que serão utilizados.  
@@ -1710,8 +1682,6 @@ Para deletar tudo, é muito simples ``realm.deleteAll();`` somente isso!
 
 ### ***Injeção de Dependência:***
 
-<a id='aula8-InjectDependency'></a>  
-
 - ***Adicionar Classe Concreta na Injeção de Dependência:***<a id='AddClasseConcretaInjectDependency'></a>  
 Com a configuração de serviço terminada, só é preciso adicionar o ***ConfigurationServiceImpl()*** no arquivo de infeção de dependência.
 Com o ***AppModule()*** aberto, dentro do registro de dependências, adicione um ``AutoBind`` de fábrica ``.factory(`` recebendo uma nova instância ``ConfigurationServiceImpl.new),``, pode ser usado o factory, pois, ele sempre irá criar uma nova instância quando ele for iniciado.  
@@ -1759,8 +1729,6 @@ app_store.dart
 [^ Sumário ^](#aula-08)
 
 ### ***Iniciando o Banco de Dados:***
-
-<a id='aula8-IniciandoBancoDados'></a>  
 
 Para iniciar o ***Banco de Dados*** precisamos abrir o ``AppStore()`` ***app_store.dart*** e adicionar no método ``void init()`` com as definições a seguir:  
 
@@ -1810,8 +1778,6 @@ app_store.dart
 
 ### ***Salvando o Banco de Dados***
 
-<a id='aula8-SalvandoBancoDados'></a>
-
 Para salvar o ***Banco de Dados*** precisamos abrir o ``AppStore()`` ***app_store.dart*** e adicionar no método ``void save()`` com as definições a seguir:  
 
 - O ***save()*** é muito simples de se definir, pois ele já está sendo chamado nos métodos ***changeThemeMode()*** e ***setSyncDate()***.  
@@ -1840,8 +1806,6 @@ Com isso, toda vez que houver uma modificação no ***Tema*** ou na ***Data,*** 
 [^ Sumário ^](#aula-08)
 
 ### ***Função Apagar Cache:***
-
-<a id='aula8-FunctionApagarCache'></a>  
 
 Para apagar o cache, precisamos criar uma ***Função*** chamada ***deleteApp()***.  
 
