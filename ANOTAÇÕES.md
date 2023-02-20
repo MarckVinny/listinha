@@ -1922,6 +1922,48 @@ Por enquanto a ***Classe _TaskBoard*** será criada no mesmo arquivo ***task_mod
   > *Modificar o arquivo recém criado, separando as Classes, mas, que uma enxergue as Classes Privadas como se fizessem parte do mesmo arquivo.*  
   > ***Dica:*** *usar part e part of.*  
 
+### Separando as Classes Task e TaskBoard
+
+Para que os arquivos funcionem separado mas como se ainda fossem um só, compartilhando as ***Classes Privadas*** entre si, eles precisam usar uma propriedade chamada `part '';`, na Classe principal contendo o arquivo da segunda Classe.  
+
+```dart
+task_model.dart
+
+...
+      import 'package:realm/realm.dart';
+
+      part 'task_model.g.dart';
+>>>>  part 'task_board_model.dart';
+
+      @RealmModel()
+      class _Task {
+        @PrimaryKey()
+        late Uuid id;
+        late String description;
+        bool complete = false;
+      }
+...
+```  
+
+Já na segunda Classe, ela precisa usar a propriedade chamada `part of '';`, contendo o arquivo da primeira Classe, com uma observação que não precisa importar nenhum outro arquivo que esteja sendo importado na ***Classe Principal***.  
+
+```dart
+task_board_model.dart
+
+...
+>>>>  part of 'task_model.dart';
+
+      @RealmModel()
+      class _TaskBoard {
+        @PrimaryKey()
+        late Uuid id;
+        late String title;
+        late List<_Task> tasks;
+        bool enable = true;
+      }
+...
+```
+
 [^ Sumário ^](#aula-09)
 
 ### Configurando Base de Dados Realm
