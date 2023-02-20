@@ -40,7 +40,7 @@ ___
 
 #### Aula 07
 
-- [Gerenciamento de Estado](#gerenciamento-e-distribuição-de-estado)
+- [Gerenciamento e Distribuição de Estado](#gerenciamento-e-distribuição-de-estado)
   - [Definindo a ListView()](#definindo-a-listview)
     - [Título da Lista](#aula7-TituloLista)
     - [Caixa de Seleção](#aula7-CaixaSelecao)
@@ -1833,3 +1833,77 @@ configuration_page.dart
     ),
 ...
 ```  
+
+### Aula 09
+
+### Relacionamento de Tabelas no Realm
+
+Pra criar um relacionamento entre Tabelas no Realm, precisamos seguir umas regras:  
+
+- ***@PrimaryKey()***: para fazer o Relacionamento entre as Tabela e precisa de um identificador único;
+- ***Uuid***: é o identificador único da Tabela, do próprio Realm;
+- ***<_Class>***: o relacionamento, precisa ser feito somente com as ***Classes Privadas*** *(com underline na frente)*;  
+
+O relacionamento é feito com as Classes Privadas e não com as Classes geradas ``<_Task>`` em nosso exemplo a seguir.  
+
+Vamos precisar criar duas Classes para poder fazer o Relacionamento entre elas:
+
+- ***Classe _Task***: onde serão salvas as Tarefas;  
+Primeiro, criamos um arquivo chamado `task_model.dart` no caminho ***lib\src\shared\services\realm*** que será nossa Classe;  
+  - `@RealmModel()`: Identifica que é Classe é uma Tabela para o Real;  
+  - `class _Task{}`: Cria a Classe Privada com o mesmo nome do arquivo;  
+  Dentro cria as propriedades da Tabela:  
+  - `@PrimaryKey()`: não esquecendo de usar o a notação ***notation***  acima da propriedade Uuid para identifica-la como a ***chave primária***;  
+  - `late Uuid id;`: ***Uuid*** é o id nativo do Realm e terá o nome de ***id***;  
+  - `late String description;`: variável que conterá a descrição da tarefa e terá o nome ***description***;  
+  - `bool complete = false;`: variável que checa se a tarefa foi ou não cumprida, recebe o valor padrão ***false*** *(não cumprida)*.
+
+  Quando for fazer o Relacionamento, uma das propriedades acima, precisa ser identificada como sendo a ***Chave Primária*** *(como foi dito antes)*, para poder identificar toda a Tabela, e o ***id*** foi escolhido para ser a ***Chave Primária***, por isso recebeu a notation ***@PrimaryKey()***, posteriormente a então "Tabela" ***_Task()*** pode ser usada em outras Classes um ***array*** *(lista)* desta própria Task.
+
+- ***Classe _TaskBoard***: onde serão gerenciadas as tarefas;  
+Por enquanto a ***Classe _TaskBoard*** será criada no mesmo arquivo ***task_model.dart***, mas, futuramente será criado um arquivo separado para ela.  
+  - `@RealmModel()`: Identifica que é Classe é uma Tabela para o Real;  
+  - `class _TaskBoard{}`: Cria a Classe Privada que irá gerenciar as Tarefas;  
+  - `@PrimaryKey()`: não esquecendo de usar o a notação ***notation***  acima da propriedade Uuid para identifica-la como a ***chave primária***;  
+  - `late Uuid id;`: ***Uuid*** é o id nativo do Realm e terá o nome de ***id***;  
+  - `late String title;`: variável que conterá o Título da tarefa e terá o nome ***title***;  
+  - `late List<_Task> tasks;`: relaciona uma lista ***List*** de ***<_Task>*** com o nome de ***tasks***;  
+  - `bool enable = false;`: variável que checa se a tarefa está ou não habilitada, recebe o valor padrão ***true*** *(habilitada)*;  
+  - ``part "task_model.g.dart";``: é preciso adicionar esse part com o mesmo nome de arquivo com a única diferença é que tem que adicionar o ***.g*** antes do ***.dart***, para que o Realm crie o arquivo da tabela corretamente.  
+  
+    ```dart
+    task_model.dart
+    
+    ...
+      import 'package:realm/realm.dart';
+
+      part "task_model.g.dart";
+
+      @RealmModel()
+      class _Task {
+        @PrimaryKey()
+        late Uuid id;
+        late String description;
+        bool complete = false;
+      }
+
+      class _TaskBoard {
+        @PrimaryKey()
+        late Uuid id;
+        late String title;
+        late List<_Task> tasks;
+        bool enable = true;
+      }
+    ...
+    ```  
+
+  Agora precisamos rodar um comando ``flutter pub run realm  generate`` no terminal para que o Realm gere a tabela, lembrando que toda vez que for adicionado ou modificar qualquer propriedade na Classe.  
+  Com esse comando, ele gera um modelo público do mesmo modelo que criamos de forma privada, para que possamos acessar os dados fora da Classe Privada.  
+
+  > ***TAREFA:***  
+  > *Modificar o arquivo recém criado, separando as Classes, mas, que uma enxergue as Classes Privadas como se fizessem parte do mesmo arquivo.*  
+  > ***Dica:*** *usar part e part of.*  
+
+### Configurando Base de Dados Realm
+
+Para que as Tabelas funcionem, precisamos adiciona-las a Base de Dados do Realm, para isso, abra o arquivo ***realm_config.dart*** no caminho `lib\src\shared\services\realm` e adicione o `Task.schema` referente a ***Classe _Task*** e o `TaskBoard.schema` referente a ***Classe _TaskBoard***
