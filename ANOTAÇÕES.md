@@ -85,6 +85,7 @@ ___
 - [Relacionamento de Tabelas no Realm](#relacionamento-de-tabelas-no-realm)
   - [Classe _Task](#aula9-ClasseTask)
   - [Classe _TaskBoard](#aula9-ClasseTaskBoard)
+  - [Separando as Classes Task e TaskBoard](#separando-as-classes-task-e-taskboard)
 - [Configurando Base de Dados Realm](#configurando-base-de-dados-realm)
 
 ___
@@ -1921,6 +1922,8 @@ Por enquanto a ***Classe _TaskBoard*** será criada no mesmo arquivo ***task_mod
   > ***TAREFA:***  
   > *Modificar o arquivo recém criado, separando as Classes, mas, que uma enxergue as Classes Privadas como se fizessem parte do mesmo arquivo.*  
   > ***Dica:*** *usar part e part of.*  
+
+[^ Sumário ^](#aula-09)
 
 ### Separando as Classes Task e TaskBoard
 
