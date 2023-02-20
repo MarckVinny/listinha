@@ -1,5 +1,5 @@
 import 'package:realm/realm.dart';
-import 'configuration_model.dart';
+import 'models/configuration_model.dart';
 
 LocalConfiguration config = Configuration.local(
   [
