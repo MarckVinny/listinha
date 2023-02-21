@@ -1993,3 +1993,51 @@ realm_config.dart
     );
 ...
 ```
+
+### Aula 10
+
+### Criação de Widget Customizado
+
+Nesta aula, iremos criar a Tela de TaskBoard onde criaremos e personalizaremos o Widget TaskCard, seguindo esse passo a passo, será possível criar qualquer Tela.  
+Mas antes de começar a criar nosso Widget, precisamos fazer uma alteração na HomePage().  
+
+
+#### Modificando a HomePage()
+
+- Abra o arquivo ***home_page.dart*** no caminho `lib\src\home`;
+- Dentro da propriedade `body:` iremos trocar o Componente `Column()` por um Componente chamado `Stack()`.  
+Este componente é responsável por empilhar vários componentes um em cima do outro, com isso podemos deixar o `TaskCard()` por baixo dos ***Botões Segmentados*** `SegmentedButton()`;  
+
+  ```dart
+  home_page.dart
+
+  ...
+        body: Center(
+  >>>>    child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SegmentedButton(
+                  segments: const [
+                    ButtonSegment(
+  ...
+  ```  
+
+- Agora precisamos alinhar os Botões centralizados no top, para isso vamos envolver o Componente `Padding()` com um Widget ***CTRL+PONTO*** e escolher `Wrap with widget` e depois renomear par `Align();`
+- Adicione a propriedade `alignment:` com o valor `Alignment.topCenter,` que fará com que os botões fiquem centralizados no topo da Tela;  
+
+  ```dart
+  home_page.dart
+
+  ...
+        body: Center(
+          child: Stack(
+            children: [
+  >>>>        Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SegmentedButton(
+  ...
+  ```
+

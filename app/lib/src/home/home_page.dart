@@ -19,35 +19,38 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Center(
-          child: Column(
-            children: [
-              SegmentedButton(
-                segments: const [
-                  ButtonSegment(
-                    value: 0,
-                    label: Text('Todos'),
-                  ),
-                  ButtonSegment(
-                    value: 1,
-                    label: Text('Pendentes'),
-                  ),
-                  ButtonSegment(
-                    value: 2,
-                    label: Text('Concluídos'),
-                  ),
-                  ButtonSegment(
-                    value: 3,
-                    label: Text('Desativados'),
-                  ),
-                ],
-                selected: const {0},
-                onSelectionChanged: (values) {},
+      body: Center(
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SegmentedButton(
+                  segments: const [
+                    ButtonSegment(
+                      value: 0,
+                      label: Text('Todos'),
+                    ),
+                    ButtonSegment(
+                      value: 1,
+                      label: Text('Pendentes'),
+                    ),
+                    ButtonSegment(
+                      value: 2,
+                      label: Text('Concluídos'),
+                    ),
+                    ButtonSegment(
+                      value: 3,
+                      label: Text('Desativados'),
+                    ),
+                  ],
+                  selected: const {0},
+                  onSelectionChanged: (values) {},
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
