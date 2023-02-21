@@ -239,11 +239,12 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
   home_page.dart
 
   ...
-        body: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              SegmentedButton(
+      body: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SegmentedButton(
                 segments: const [
                   ButtonSegment(
                     value: 0,
@@ -265,9 +266,10 @@ Foi adicionado um ```Padding()``` em toda a coluna para que não fique grudada n
                 selected: const {0},
                 onSelectionChanged: (values) {},
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
   ...
   ```
 
