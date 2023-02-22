@@ -23,10 +23,16 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: Stack(
           children: [
-            ListView.builder(
+            ListView.separated(
+              padding: const EdgeInsets.fromLTRB(20, 50, 20, 90),
+              separatorBuilder: (context, index) {
+                return const SizedBox(
+                  height: 20,
+                );
+              },
               itemCount: 100,
               itemBuilder: (_, index) {
-                return TaskCard();
+                return const TaskCard();
               },
             ),
             Align(

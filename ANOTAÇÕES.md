@@ -2003,6 +2003,40 @@ realm_config.dart
 Nesta aula, iremos criar a Tela de TaskBoard onde criaremos e personalizaremos o Widget TaskCard, seguindo esse passo a passo, será possível criar qualquer Tela.  
 Mas antes de começar a criar nosso Widget, precisamos fazer uma alteração na HomePage().  
 
+#### Criando o Widget TaskCard
+
+Primeiro precisamos criar um arquivo chamado `task_card.dart`, como ele é um ***Widget*** da página ***home***, iremos criar o arquivo no caminho `lib\src\home\widgets`.  
+
+- Dentro, iremos criar um `StatelessWidget` com o atalho `stl`;
+- Receberá o nome de `TaskCard`;
+- Dentro do `Widget build(BuildContext context)` irá retornar `return` um Componente `Container`, onde será criado nosso ***Widget TaskCard***.
+
+  ```dart
+  task_card.dart
+
+  ...
+      import 'package:flutter/material.dart';
+
+      class TaskCard extends StatelessWidget {
+        const TaskCard({super.key});
+
+        @override
+        Widget build(BuildContext context) {
+          return Container();
+        }
+      }
+  ...
+  ```  
+
+  Dentro do ***Container()*** é onde será criada a interface do nosso Widget onde estarão as informações que serão visualizadas pelo usuário.  
+  De agora em diante, todos os Componentes serão criados dentro do Componente `Container()` "dentro dos parenteses".
+
+- Inicialmente vamos dar uma altura `height:` com o valor de `150,` para o Container;
+- Vamos dar uma cor inicial para podermos enxergar o Container `color:` com o valor `Colors.red,`;  
+- Agora adicionaremos uma propriedade `decoration:` com o valor `BoxDecoration()` onde adicionaremos o arredondamento das bordas;
+- Dentro do `BoxDecoration()` adicionaremos a propriedade `borderRadius:` com o valor `BorderRadius.circular(20),`;
+- 
+
 #### Modificando a HomePage()
 
 - Abra o arquivo ***home_page.dart*** no caminho `lib\src\home`;
@@ -2042,7 +2076,7 @@ Este componente é responsável por empilhar vários componentes um em cima do o
   ...
   ```  
 
-- Agora com a Barra de Botões configurada e alinhada ao topo, podemos adicionar o Componente que irá ficar por trás da Barra de Botões;
+- Agora adicione o Componente que irá ficar por trás da Barra de Botões;
 - Acima do alinhamento `Align()`, adicione o Componente `ListView.builder()` que irá conter o nosso Componente `TaskCard()`;
 - Dentro do ***ListView.builder()*** vamos definir a propriedade `itemBuilder: (`que recebe um contexto que não será passado `_,` e um `index){},`;
 - Para que a lista não fique infinita, iremos adicionar a propriedade `itemCount:` com o valor de `100,`, ou seja, uma lista de 100 itens;
@@ -2062,29 +2096,33 @@ Este componente é responsável por empilhar vários componentes um em cima do o
                 },
               ),
   ...
-  ```
+  ```  
+  
+  Com isso temos o Container() vermelho, mas ainda não podemos ver, pois está sem separação.  
 
-#### Criando o Widget TaskCard
-
-Primeiro precisamos criar um arquivo chamado `task_card.dart`, como ele é um ***Widget*** da página ***home***, iremos criar o arquivo no caminho `lib\src\home\widgets`.  
-
-- Dentro, iremos criar um `StatelessWidget` com o atalho `stl`;
-- Receberá o nome de `TaskCard`;
-- Dentro do `Widget build(BuildContext context)` irá retornar `return` um Componente `Container`, onde será criado nosso ***Widget TaskCard***.
+- Para adicionar uma separação, usaremos o Componente `ListView.separated()` ao invés do ***ListView.builder()***;
+- Como separador usaremos a propriedade `separatorBuilder: (context, index) {},` onde podemos retornar `return` qualquer Widget;
+- E vamos usar o `SizedBox()` com a propriedade `height:` altura com o valor `20,`;  
 
   ```dart
-  task_card.dart
+  home_page.dart
 
   ...
-      import 'package:flutter/material.dart';
+          ListView.separated(
+  >>>>      separatorBuilder: (context, index) {
+              return SizedBox(
+                height: 20,
+              );
+            },
+  ...
+  ```
 
-      class TaskCard extends StatelessWidget {
-        const TaskCard({super.key});
+- Para que fique parecido com um ***Card***, adicionaremos a propriedade `padding:` com o valor `EdgeInsets.fromLTRB(20, 50, 20, 90),` onde ***.fromLTRB*** significa ***Left, Top, Right e Bottom***;
 
-        @override
-        Widget build(BuildContext context) {
-          return Container();
-        }
-      }
+  ```dart
+  home_page.dart
+
+  ...
+      padding: const EdgeInsets.fromLTRB(20, 50, 20, 90),
   ...
   ```
