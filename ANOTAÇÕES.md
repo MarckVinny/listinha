@@ -2031,11 +2031,61 @@ Primeiro precisamos criar um arquivo chamado `task_card.dart`, como ele é um **
   Dentro do ***Container()*** é onde será criada a interface do nosso Widget onde estarão as informações que serão visualizadas pelo usuário.  
   De agora em diante, todos os Componentes serão criados dentro do Componente `Container()` "dentro dos parenteses".
 
+- Adicione a propriedade `padding:` com o valor `EdgeInsets.symmetric(),`;
+  - Com os valores na `vertical: 12,` que dará o espaçamento no topo e na base.
+  - Com os valores na `horizontal: 16,` que dará o espaçamento na esquerda e na direita.
 - Inicialmente vamos dar uma altura `height:` com o valor de `150,` para o Container;
-- Vamos dar uma cor inicial para podermos enxergar o Container `color:` com o valor `Colors.red,`;  
+- Vamos dar uma cor inicial para podermos enxergar o Container `color:` com o valor `Colors.red.shade100,`;  
 - Agora adicionaremos uma propriedade `decoration:` com o valor `BoxDecoration()` onde adicionaremos o arredondamento das bordas;
 - Dentro do `BoxDecoration()` adicionaremos a propriedade `borderRadius:` com o valor `BorderRadius.circular(20),`;
-- 
+- Agora adicionaremos os itens do Card que serão: o ícone, o Status, o Título, a Barra de Progresso e o Texto de Progresso;
+  - Para iniciar, ainda dentro do Container, vamos adicionar a propriedade `child:` com um Componente `Column(),` que conterá nossos itens;
+  - Adicione a propriedade `crossAxisAlignment:` para alinhar o eixo Vertical no inicio `CrossAxisAlignment.start,`;
+  - Dentro da ***Column*** na propriedade `children: []` vamos adicionar uma `Row(),` que conterá os itens `icon` e `status`;;
+  - Dentro da ***Row*** na propriedade `children: []` vamos adicionar um `Icon(),` contendo o ícone `Icons.access_time_outlined`;
+  - Adicione um `Spacer(),` para que o ***Text()*** vá para o final da ***Row()***;
+  - Ainda dentro de ***children: []***, vamos adicionar um `Text(),` que conterá o ***Status da Tarefa*** `'status'`;
+  - Adicione um `Spacer(),` para que o ***Text(), a Barra de Progresso e o Texto de Progresso*** vá para o final da ***Column()***;
+  - Fora da ***Row()***, mas ainda dentro da ***Column()***, vamos adicionar um `Text(),` que conterá o ***Título da Tarefa*** `'Título da Tarefa'`;
+  - Adicione uma Barra de Progresso `LinearProgressIndicator(),`
+    - Dentro adicione uma cor `color: Colors.red,`;
+    - E adicione um valor qualquer para a barra `value: 0.6,`;
+  - Adicione um `Text(),` contendo o Texto de Progresso `'1/4'`.
+  
+    ```dart
+    task_card.dart
+    
+    ...
+        Widget build(BuildContext context) {
+        return Container(
+          height: 150,
+          decoration: BoxDecoration(
+            color: Colors.red.shade100,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: const [
+                  Icon(Icons.access_time_outlined),
+                  Spacer(),
+                  Text('Status'),
+                ],
+              ),
+              Spacer(),
+              const Text('Título da Tarefa'),
+              const LinearProgressIndicator(
+                color: Colors.red,
+                value: 0.6,
+              ),
+              const Text('1/4'),
+            ],
+          ),
+        );
+      }
+    }
+    ...
+    ```
 
 #### Modificando a HomePage()
 
