@@ -2087,6 +2087,73 @@ Primeiro precisamos criar um arquivo chamado `task_card.dart`, como ele é um **
     ...
     ```
 
+#### Componentização do Itens da TaskCard()
+
+Precisaremos saber algumas informações sobre os itens que acabamos de criar acima e ver o que vamos precisar componentizar.  
+Iremos fazer uso novamente do ***Self Explanatory Variable*** que significa: *Variável de Auto Explicação*.  
+
+- Faremos a declaração de todas as variáveis que usaremos no Card dentro do Build;
+
+  ```dart
+  task_card.dart
+
+  ...
+    Widget build(BuildContext context) {
+      final theme = Theme.of(context);
+      final backgroundColor = theme.colorScheme.primaryContainer;
+      final color = theme.colorScheme.primary;
+
+      final progress = 0.25;
+      final title = 'Título Exemplo';
+      final statusText = 'Status Exemplo';
+      final progressText = '1/4';
+      final iconData = Icons.access_time_outlined;
+  ...
+  ```
+
+- Agora faremos as substituições das variáveis em seus respectivos lugares;
+
+  ```dart
+  task_card.dart
+
+  ...
+      return Container(
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 16,
+        ),
+        height: 130,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(iconData),
+                const Spacer(),
+                Text(statusText),
+              ],
+            ),
+            const Spacer(),
+            Text(title),
+            LinearProgressIndicator(
+              color: color,
+              value: progress,
+            ),
+            Text(progressText),
+          ],
+        ),
+      );
+    }
+  }
+  ...
+  ```  
+
+O que foi feito nos dois passos acima, é que foram identificados os itens que iriam ser adicionados nas variáveis e o próximo passo será procurar uma forma de resolve-los.
+
 #### Modificando a HomePage()
 
 - Abra o arquivo ***home_page.dart*** no caminho `lib\src\home`;

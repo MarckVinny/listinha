@@ -5,6 +5,16 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final backgroundColor = theme.colorScheme.primaryContainer;
+    final color = theme.colorScheme.primary;
+
+    final progress = 0.25;
+    final title = 'Título Exemplo';
+    final statusText = 'Status Exemplo';
+    final progressText = '1/4';
+    final iconData = Icons.access_time_outlined;
+
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
@@ -12,26 +22,26 @@ class TaskCard extends StatelessWidget {
       ),
       height: 130,
       decoration: BoxDecoration(
-        color: Colors.red.shade100,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: const [
-              Icon(Icons.access_time_outlined),
-              Spacer(),
-              Text('Status'),
+            children: [
+              Icon(iconData),
+              const Spacer(),
+              Text(statusText),
             ],
           ),
           const Spacer(),
-          const Text('Título da Tarefa'),
-          const LinearProgressIndicator(
-            color: Colors.red,
-            value: 0.6,
+          Text(title),
+          LinearProgressIndicator(
+            color: color,
+            value: progress,
           ),
-          const Text('1/4'),
+          Text(progressText),
         ],
       ),
     );
