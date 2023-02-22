@@ -2003,7 +2003,6 @@ realm_config.dart
 Nesta aula, iremos criar a Tela de TaskBoard onde criaremos e personalizaremos o Widget TaskCard, seguindo esse passo a passo, será possível criar qualquer Tela.  
 Mas antes de começar a criar nosso Widget, precisamos fazer uma alteração na HomePage().  
 
-
 #### Modificando a HomePage()
 
 - Abra o arquivo ***home_page.dart*** no caminho `lib\src\home`;
@@ -2041,5 +2040,26 @@ Este componente é responsável por empilhar vários componentes um em cima do o
                   padding: const EdgeInsets.all(8.0),
                   child: SegmentedButton(
   ...
-  ```
+  ```  
 
+- Agora com a Barra de Botões configurada e alinhada ao topo, podemos adicionar o Componente que irá ficar por trás da Barra de Botões;
+- Acima do alinhamento `Align()`, adicione o Componente `ListView.builder()` que irá conter o nosso Componente `TaskCard()`;
+- Dentro do ***ListView.builder()*** vamos definir a propriedade `itemBuilder: (`que recebe um contexto que não será passado `_,` e um `index){},`;
+- Para que a lista não fique infinita, iremos adicionar a propriedade `itemCount:` com o valor de `100,`, ou seja, uma lista de 100 itens;
+- E irá retornar `return` o `TaskCard();`
+
+  ```dart
+  home_page.dart
+
+  ...
+        body: Center(
+          child: Stack(
+            children: [
+  >>>>        ListView.builder(
+  >>>>          itemCount: 100,
+  >>>>          itemBuilder: (_, index) {
+  >>>>            return TaskCard();
+                },
+              ),
+  ...
+  ```

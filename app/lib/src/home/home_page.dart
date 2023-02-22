@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/widgets/user_image_button.dart';
 import 'widgets/custom_drawer.dart';
+import 'widgets/task_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,6 +23,12 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: Stack(
           children: [
+            ListView.builder(
+              itemCount: 100,
+              itemBuilder: (_, index) {
+                return TaskCard();
+              },
+            ),
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
