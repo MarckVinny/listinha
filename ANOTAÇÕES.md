@@ -2063,3 +2063,28 @@ Este componente é responsável por empilhar vários componentes um em cima do o
               ),
   ...
   ```
+
+#### Criando o Widget TaskCard
+
+Primeiro precisamos criar um arquivo chamado `task_card.dart`, como ele é um ***Widget*** da página ***home***, iremos criar o arquivo no caminho `lib\src\home\widgets`.  
+
+- Dentro, iremos criar um `StatelessWidget` com o atalho `stl`;
+- Receberá o nome de `TaskCard`;
+- Dentro do `Widget build(BuildContext context)` irá retornar `return` um Componente `Container`, onde será criado nosso ***Widget TaskCard***.
+
+  ```dart
+  task_card.dart
+
+  ...
+      import 'package:flutter/material.dart';
+
+      class TaskCard extends StatelessWidget {
+        const TaskCard({super.key});
+
+        @override
+        Widget build(BuildContext context) {
+          return Container();
+        }
+      }
+  ...
+  ```
