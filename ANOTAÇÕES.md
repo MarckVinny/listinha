@@ -2312,22 +2312,24 @@ Usaremos a nova versão do Enum, pois agora, temos a possibilidade de adicionar 
 - Adicione o Construtor da Classe enum TaskCardStatus.
   - `const TaskCardStatus(this.icon, this.text);`  
 
-```dart
-task_card.dart
+  ```dart
+  task_card.dart
 
-...
-  enum TaskCardStatus {
-    pending(Icons.access_time_outlined, 'Pendentes'),
-    completed(Icons.check, 'Concluídos'),
-    disabled(Icons.cancel_outlined, 'Desativadas');
+  ...
+    enum TaskCardStatus {
+      pending(Icons.access_time_outlined, 'Pendentes'),
+      completed(Icons.check, 'Concluídos'),
+      disabled(Icons.cancel_outlined, 'Desativadas');
 
-    final IconData icon;
-    final String text;
+      final IconData icon;
+      final String text;
 
-    const TaskCardStatus(this.icon, this.text);
-  }
-...
-```
+      const TaskCardStatus(this.icon, this.text);
+    }
+  ...
+  ```  
+
+- 
 
 #### Criando o Método getStatus()
 
@@ -2343,21 +2345,43 @@ Com esse Método, podemos obter os status das tarefas através da lógica a segu
   - `{return TaskCardStatus.pending;}`: retorna o status pendente;
   - `else {return TaskCardStatus.completed;}`: senão, retorna o status concluído.
 
-```dart
-task_card.dart
+    ```dart
+    task_card.dart
 
-...
-    TaskCardStatus getStatus(TaskBoard board, double progress) {
-      if (!board.enable) {
-        return TaskCardStatus.disabled;
-      } else if (progress < 1.0) {
-        return TaskCardStatus.pending;
-      } else {
-        return TaskCardStatus.completed;
-      }
-    }
-...
-```
+    ...
+        TaskCardStatus getStatus(TaskBoard board, double progress) {
+          if (!board.enable) {
+            return TaskCardStatus.disabled;
+          } else if (progress < 1.0) {
+            return TaskCardStatus.pending;
+          } else {
+            return TaskCardStatus.completed;
+          }
+        }
+    ...
+    ```  
+  
+- Agora adicione ao ***Self Explanatory Variable*** uma variável `final` chamada `status` que recebe `=` o status da tarefa `getStatus(`recebendo o TaskBoard `board`, e o cálculo do progresso `progress);`, e que irá guardar as informações do status.  
+- Substitua o valor da variável `IconData` por `status.icon`;
+- Substitua o valor da variável `textStatus` por `status.text`;
+
+    ```dart
+    task_card.dart
+
+    ...
+        Widget build(BuildContext context) {
+          final theme = Theme.of(context);
+          final backgroundColor = theme.colorScheme.primaryContainer;
+          final color = theme.colorScheme.primary;
+
+          final progress = getProgress(board.tasks);
+          final progressText = getProgressText(board.tasks);
+    >>>>  final status = getStatus(board, progress);
+          final title = board.title;
+    >>>>  final iconData = status.icon;
+    >>>>  final statusText = status.text;
+    ...
+    ```  
 
 #### Modificando a HomePage()
 
