@@ -2295,7 +2295,7 @@ Cada uma das variáveis pode ser uma Função, vamos ver como fica cada uma dela
   ...
   ```  
 
-#### Criando um Enum com Propeirdades
+#### Criando um Enum com Propriedades
 
 Será criada uma Função que retornará um Enum, contendo os ***ícones*** com seus respectivos ***Status*** *(Pendentes, Concluídos e Desativados)*.  
 Usaremos a nova versão do Enum, pois agora, temos a possibilidade de adicionar propriedades e Construtor.
