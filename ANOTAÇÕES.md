@@ -2329,6 +2329,35 @@ task_card.dart
 ...
 ```
 
+#### Criando o Método getStatus()
+
+Com esse Método, podemos obter os status das tarefas através da lógica a seguir.  
+
+- Dento da ***Classe TaskCard***, crie o Método `getStatus(TaskCard board, double progress){}` do Tipo `TaskCardStatus`;
+- Que retorna um `board` do Tipo `TaskBoard` e um `progress` do Tipo `double` *(para não precisar refazer a cálculo do progress)*;  
+- Dentro do escopo *{ }*, crie a lógica:
+
+  - `if(!board.enable)`: se o board.enabled for false "!board", então;
+  - `{return TaskCardStatus.disabled;}`: retorna o status desativado;
+  - `else if (progress < 1.0)`: senão, se o progress for menor que 1.0, então;
+  - `{return TaskCardStatus.pending;}`: retorna o status pendente;
+  - `else {return TaskCardStatus.completed;}`: senão, retorna o status concluído.
+
+```dart
+task_card.dart
+
+...
+    TaskCardStatus getStatus(TaskBoard board, double progress) {
+      if (!board.enable) {
+        return TaskCardStatus.disabled;
+      } else if (progress < 1.0) {
+        return TaskCardStatus.pending;
+      } else {
+        return TaskCardStatus.completed;
+      }
+    }
+...
+```
 
 #### Modificando a HomePage()
 

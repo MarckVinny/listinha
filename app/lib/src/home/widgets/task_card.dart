@@ -27,6 +27,16 @@ class TaskCard extends StatelessWidget {
     return '$completas/${tasks.length}';
   }
 
+  TaskCardStatus getStatus(TaskBoard board, double progress) {
+    if (!board.enable) {
+      return TaskCardStatus.disabled;
+    } else if (progress < 1.0) {
+      return TaskCardStatus.pending;
+    } else {
+      return TaskCardStatus.completed;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -35,9 +45,10 @@ class TaskCard extends StatelessWidget {
 
     final progress = getProgress(board.tasks);
     final progressText = getProgressText(board.tasks);
+    final status = getStatus(board, progress);
     final title = board.title;
-    final statusText = 'Status Exemplo';
-    final iconData = Icons.access_time_outlined;
+    final iconData = status.icon;
+    final statusText = status.text;
 
     return Container(
       padding: const EdgeInsets.symmetric(
