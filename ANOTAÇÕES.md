@@ -2295,6 +2295,41 @@ Cada uma das variáveis pode ser uma Função, vamos ver como fica cada uma dela
   ...
   ```  
 
+#### Criando um Enum com Propeirdades
+
+Será criada uma Função que retornará um Enum, contendo os ***ícones*** com seus respectivos ***Status*** *(Pendentes, Concluídos e Desativados)*.  
+Usaremos a nova versão do Enum, pois agora, temos a possibilidade de adicionar propriedades e Construtor.
+
+- Ainda do arquivo ***task_card.dart***, mas, fora da Classe TaskCard, crie a Classe Enum `enum` chamada `TaskCardStatus`.  
+
+- Adicione as propriedades relacionadas ao status da tarefa, recebendo 2 argumentos posicionais ***icon*** e **text**;
+  - `pending(Icons.access_time_outlined, 'Pendente'),`: responsável por notificar quando a tarefa não foi concluída e está ***pendente*** e adiciona o ícone e o texto do status.
+  - `completed(Icons.check,'Concluída'),`: responsável por notificar quando a tarefa foi ***concluída*** e adiciona o ícone e o texto do status.
+  - `disabled(Icons.cancel_outlined,'Desativada');`: responsável por notificar quando a tarefa foi ***desativada*** e adiciona o ícone e o texto do status.  
+- Adicione as variáveis que irão guardar as informações dos ícones e dos status.  
+  - `final IconData icon;`: cria uma variável `final` do Tipo `IconData` chamada `icon`;
+  - `final String text;`: cria uma variável final do Tipo `String` chamada `text`;  
+- Adicione o Construtor da Classe enum TaskCardStatus.
+  - `const TaskCardStatus(this.icon, this.text);`  
+
+```dart
+task_card.dart
+
+...
+  enum TaskCardStatus {
+    pending(Icons.access_time_outlined, 'Pendentes'),
+    completed(Icons.check, 'Concluídos'),
+    disabled(Icons.cancel_outlined, 'Desativadas');
+
+    final IconData icon;
+    final String text;
+
+    const TaskCardStatus(this.icon, this.text);
+  }
+...
+```
+
+
 #### Modificando a HomePage()
 
 - Abra o arquivo ***home_page.dart*** no caminho `lib\src\home`;

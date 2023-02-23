@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:listinha/src/shared/services/realm/models/task_model.dart';
 
+enum TaskCardStatus {
+  pending(Icons.access_time_outlined, 'Pendente'),
+  completed(Icons.check, 'Concluída'),
+  disabled(Icons.cancel_outlined, 'Desativada');
+
+  final IconData icon;
+  final String text;
+
+  const TaskCardStatus(this.icon, this.text);
+}
+
 class TaskCard extends StatelessWidget {
   final TaskBoard board;
 
