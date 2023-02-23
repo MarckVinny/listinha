@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:listinha/src/shared/services/realm/models/task_model.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key});
+  final TaskBoard board;
+
+  const TaskCard({super.key, required this.board});
+
+  double getProgress(List<Task> tasks) {}
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +14,7 @@ class TaskCard extends StatelessWidget {
     final backgroundColor = theme.colorScheme.primaryContainer;
     final color = theme.colorScheme.primary;
 
-    final progress = 0.25;
+    final progress = getProgress(board.tasks);
     final title = 'Título Exemplo';
     final statusText = 'Status Exemplo';
     final progressText = '1/4';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:listinha/src/shared/services/realm/models/task_model.dart';
+import 'package:realm/realm.dart';
 
 import '../shared/widgets/user_image_button.dart';
 import 'widgets/custom_drawer.dart';
@@ -32,7 +34,11 @@ class HomePage extends StatelessWidget {
               },
               itemCount: 100,
               itemBuilder: (_, index) {
-                return const TaskCard();
+                final board = TaskBoard(
+                  Uuid.v4(),
+                  'Nova Lista de Tarefas',
+                );
+                return TaskCard(board: board);
               },
             ),
             Align(

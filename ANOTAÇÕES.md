@@ -2152,7 +2152,103 @@ Iremos fazer uso novamente do ***Self Explanatory Variable*** que significa: *Va
   ...
   ```  
 
-O que foi feito nos dois passos acima, é que foram identificados os itens que iriam ser adicionados nas variáveis e o próximo passo será procurar uma forma de resolve-los.
+O que foi feito nos dois passos acima, é que foram identificados os itens que iriam ser adicionados nas variáveis e o próximo passo será procurar uma forma de resolve-los.  
+Uma forma de resolve-los, é recebendo o módulo feito na aula passada que é o TaskBoard, para isso, adicione uma variável `final` do Tipo `TaskBoard` chamada `board;` fora do Build do nosso Componente.  
+E fazer com que o ***Construtor*** receba nossa variável ***board***, a adicionando com um `required this.board`.
+
+```dart
+task_card.dart
+
+...
+  class TaskCard extends StatelessWidget {
+      
+    final TaskBoard board;
+
+    const TaskCard({super.key, required this.board});
+...
+```  
+
+Agora abra o ***home_page.dart***, pois, precisamos adicionar dentro do `itemBuilder:` localizado dentro do body: uma variável `final board` que irá receber `=` uma tarefa `TaskBoard(`que receberá um `Uuid.v4(),` e um ***title*** da tarefa `'Nova Lista de Tarefas'),` para que possamos testar nosso TaskCard.  
+Mas para isso, precisamos adicionar nosso modelo no `TaskCard()` de retorno, a propriedade `board:` com seu valor `board,` que é nosso modelo.  
+Então, é dessa forma que iremos Componentizar, vamos receber um ***board*** `final board = TaskBoard(Uuid.v4(),'Nova Lista de Tarefas');` e transforma-lo em um ***Widget*** `return TaskCard(board: board);` a cada item da ***ListView()***.  
+
+#### Atribuindo Valor à Variável Dinamicamente
+
+Abra o arquivo ***task_card.dart***;  
+Com o a variável ***board*** `final TaskBoard board;` em mãos, já temos nosso ***objeto*** para resolver algumas coias.  
+Através desta variável teremos acesso aos dados contantes na ***Classe TaskBoard***, por isso vamos pegar os valores das variáveis dinamicamente, a seguir faremos as alterações.  
+Poderia pegar o valor da variável diretamente no Widget sem precisar criar uma variável pra armazenar seu valor, sim poderia, mas criando as variável ou o ***Self Explanatory Variable*** o cérebro aprende mais fácil.  
+Pois não a quantidade de código (menos) que importa, mas sim, o processo para que aconteça que importa, então, precisa criar um processo que seja de fácil assimilação para o cérebro.  
+Então, com o uso das ***Variáveis Auto Explicativas***, fica melhor para fixar o processo na cabeça.  
+
+#### Função getProgress() - Barra de Progresso
+
+- `final progress = 0.25;`  
+Precisamos obter a partir da ***Lista de Tasks***, pois o `TaskBoard` ***task_board_model.dart*** tem uma ***tasks*** `late List<_Task> tasks;`.  
+Obtemos a Lista Completa e fazemos um cálculo para saber o quanto falta para completar a lista.  
+Cada uma das variáveis pode ser uma Função, vamos ver como fica cada uma delas.  
+
+> ***DICA:***  
+> A Função não ***getProgress()*** precisa receber nada, mas, por uma questão de ***Paradigma Funcional*** *(Stateless)* é bom que se receba o que irá trabalhar fora do ***Build***.  
+> Sabemos que temos acesso as informações globalmente, mas, é bom deixar as informações o mais Stateless possível.  
+> Ou seja, dentro do ***escopo*** *(das chaves ***{ }***)* não é bom que se acesse nada de fora.  
+
+- Abra o aquivo ***task_card.dart*** fora do `Build`, crie uma ***Função*** que retorne um `doble getProgress(List<Task> tasks){},` dessa forma, podemos realizar o cálculo corretamente.  
+- Podemos realizar o cálculo, rodando na Aplicação ou utilizando a ***Ferramenta de Testes*** *(clicando com o botão direito do mouse em cima do arquivo e depois em ***Go to Test***)*.  
+- Os Testes de Unidade, não são para garantir que seu código está funcionando, existe ***cobertura de testes 100%*** e o código não vai estar funcionando, ainda vai ter ***bugs***.  
+- Para que serve os testes: serve para ajudar na programação, ao invés de ficar fazendo testes direto na Tela, testamos somente a Função ou o Método para saber se está funcionando da forma que se espera.  
+- Nós iremos realizar o teste da Função que acabamos de criar `doble getProgress(List<Task> tasks){},` para saber se ela está funcionando baseado em uma Lista de Tasks.  
+- Para isso, `final progress` espera receber `=` a Lista de Tasks `getProgress(board.tasks);`  
+- Para poder obter esse algoritmo, precisamos realizar os testes:  
+  
+  #### Teste Unitário
+  
+  - Abra o arquivo `task_card_test.dart` no caminho `test\src\home\widgets\` para poder criar nosso teste.  
+  - Dentro do arquivo de testes, dentro do main(){}, crie uma Função chamada `test('task card ...', () {});` para realizar os testes em nosso arquivo.  
+  - Dentro do escopo *(chaves {})* crie nosso algoritmo de teste.  
+  - Crie uma variável `final` chamada `tasks` que recebe `=` uma Lista `[]` de tasks.
+  - Crie 4 Listas de Tarefas *(utilizando o Paradigma Funcional)* para poder realizar o cálculo.  
+  - Duas ***tarefas*** `Task(` que recebe um ***id*** `Uuid.v4(),` que recebe uma ***descrição*** `'',` que recebe um ***status*** `complete: true),`.  
+  - Duas ***tarefas*** `Task(` que recebe um ***id*** `Uuid.v4(),` que recebe uma ***descrição*** `''),` que não recebe um ***status*** pois o padrão é `false`.  
+  - Desta forma, espera-se que o resultado seja ***50%*** ou seja, ***0.5***.  
+
+    > ***DICA:***  
+    > O progress vai receber um TaskCard que vai receber um board, e essa board pode ser um ***Mockup***, pode fazer com que a variável ***board*** seja possivelmente nula `final TaskBoard? board;` ou podemos criar um modelo *(como foi feito no `itemBuilder:`)* da ***home_page.dart***.  
+
+  - Como isso não importa no momento, pois, só irá servir para nosso mockup, porquê o que vai nos interessar mesmo é o método `getProgress(tasks)`, então, crie um modelo antes da Função de teste:  
+  `final board = TaskBoard(Uuid.v4(), 'Nova Lista de Tarefas');`.
+  - Crie uma variável final chamada progress que recebe = um TaskCard(e recebe uma board: board).getProgress(tasks).  
+  - O resultado esperado desta Função é que seja de 50%, então:  
+  `expect(progress, 0.5);`  
+  Então, agora temos as informações, temos a verificação a ser executada e o resultado esperado, então, agora posemos começar a escrever o algoritmo sem precisar pensar em Tela.  
+  
+    ```dart
+    task_card_test.dart
+    
+    ...
+      void main() {
+      final board = TaskBoard(
+        Uuid.v4(),
+        'Nova Lista de Tarefas',
+      );
+      test('task card ...', () {
+        final tasks = [
+          Task(Uuid.v4(), '', complete: true),
+          Task(Uuid.v4(), '', complete: true),
+          Task(Uuid.v4(), ''),
+          Task(Uuid.v4(), ''),
+        ];
+
+        final progress = TaskCard(board: board).getProgress(tasks);
+
+        expect(progress, 0.5);
+      });
+    }
+    ```
+
+- Volte para o arquivo ***task_card.dart***;  
+- Dentro do escopo ***{ }*** da ***Função getProgress()*** vamos criar nosso Algoritmo;  
+- 
 
 #### Modificando a HomePage()
 
