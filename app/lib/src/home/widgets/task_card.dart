@@ -11,6 +11,11 @@ class TaskCard extends StatelessWidget {
     return completas / tasks.length;
   }
 
+  String getProgressText(List<Task> tasks) {
+    final completas = tasks.where((task) => task.complete).length;
+    return '$completas/${tasks.length}';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -18,9 +23,9 @@ class TaskCard extends StatelessWidget {
     final color = theme.colorScheme.primary;
 
     final progress = getProgress(board.tasks);
-    final title = 'Título Exemplo';
+    final progressText = getProgressText(board.tasks);
+    final title = board.title;
     final statusText = 'Status Exemplo';
-    final progressText = '1/4';
     final iconData = Icons.access_time_outlined;
 
     return Container(

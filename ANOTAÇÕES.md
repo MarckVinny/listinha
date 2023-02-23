@@ -2263,7 +2263,37 @@ Cada uma das variáveis pode ser uma Função, vamos ver como fica cada uma dela
       return completas / tasks.length;
     }
   ...
-  ```
+  ```  
+
+- Agora que obtemos o valor do `progress`, podemos realizar outros cálculos:  
+- Com a mesma ***Função getProgress()***, podemos criar a Função `getProgressText()` que irá retomar o mesmo resultado com uma diferença que será em forma de ***String***.  
+
+  ```dart
+  task_card.dart
+
+  ...
+    String getProgressText(List<Task> tasks) {
+      final completas = tasks.where((task) => task.complete).length;
+      return '$completas/${tasks.length}';
+    }
+  ...
+  ```  
+
+- Com isso, conseguimos retornar os valores corretos nas variáveis ***progress*** e ***progressText***;  
+
+  ```dart
+  task_card.dart
+
+  ...
+      Widget build(BuildContext context) {
+        final theme = Theme.of(context);
+        final backgroundColor = theme.colorScheme.primaryContainer;
+        final color = theme.colorScheme.primary;
+
+  >>>>  final progress = getProgress(board.tasks);
+  >>>>  final progressText = getProgressText(board.tasks);
+  ...
+  ```  
 
 #### Modificando a HomePage()
 
