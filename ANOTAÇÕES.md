@@ -2041,7 +2041,7 @@ Primeiro precisamos criar um arquivo chamado `task_card.dart`, como ele é um **
 - Agora adicionaremos os itens do Card que serão: o ícone, o Status, o Título, a Barra de Progresso e o Texto de Progresso;
   - Para iniciar, ainda dentro do Container, vamos adicionar a propriedade `child:` com um Componente `Column(),` que conterá nossos itens;
   - Adicione a propriedade `crossAxisAlignment:` para alinhar o eixo Vertical no inicio `CrossAxisAlignment.start,`;
-  - Dentro da ***Column*** na propriedade `children: []` vamos adicionar uma `Row(),` que conterá os itens `icon` e `status`;;
+  - Dentro da ***Column*** na propriedade `children: []` vamos adicionar uma `Row(),` que conterá os itens `icon` e `status`;
   - Dentro da ***Row*** na propriedade `children: []` vamos adicionar um `Icon(),` contendo o ícone `Icons.access_time_outlined`;
   - Adicione um `Spacer(),` para que o ***Text()*** vá para o final da ***Row()***;
   - Ainda dentro de ***children: []***, vamos adicionar um `Text(),` que conterá o ***Status da Tarefa*** `'status'`;
@@ -2329,8 +2329,6 @@ Usaremos a nova versão do Enum, pois agora, temos a possibilidade de adicionar 
   ...
   ```  
 
-- 
-
 #### Criando o Método getStatus()
 
 Com esse Método, podemos obter os status das tarefas através da lógica a seguir.  
@@ -2382,6 +2380,39 @@ Com esse Método, podemos obter os status das tarefas através da lógica a segu
     >>>>  final statusText = status.text;
     ...
     ```  
+
+#### Criando o Método getBackgroundColor()
+
+Com esse Método, podemos obter as cores relativas a cada um dos status ***(Pendente, Concluído e Desativado)*** através da lógica a seguir.
+
+- Dentro da ***Classe TaskCard***, crie um Método do Tipo `Color` chamado `getBackgroundColor`;
+  - Que irá receber `(TaskCardStatus status,` modificará a cor em relação ao status;
+  - Recebendo também o `themeData theme)`modificando a cor em relação ao Tema;  
+- Dentro do escopo *{ }* crie um ***switch/case*** contendo a lógica.
+  - `switch(status){`: `switch` compara os valores da variável `status`;
+    - `{case TaskCardStatus.pending:`: caso o ***status*** seja ***Pendente***, então:
+    - `return theme.colorScheme.primaryContainer;`: aplique a cor do Tema `.primaryContainer`;
+    - `{case TaskCardStatus.completed:`: caso o ***status*** seja ***Concluído***, então:
+    - `return theme.colorScheme.tertiaryContainer;`: aplique a cor do Tema ***tertiaryContainer***;
+    - `{case TaskCardStatus.disabled:`: caso o ***status*** seja ***Desativado***, então:
+    - `return theme.colorScheme.errorContainer;}}`: aplique a cor do Tema `errorContainer`;
+  
+  ```dart
+  task_card.dart
+  
+  ...
+      Color getBackgroundColor(TaskCardStatus status, ThemeData theme) {
+        switch (status) {
+          case TaskCardStatus.pending:
+            return theme.colorScheme.primaryContainer;
+          case TaskCardStatus.completed:
+            return theme.colorScheme.tertiaryContainer;
+          case TaskCardStatus.disabled:
+            return theme.colorScheme.errorContainer;
+        }
+      }
+  ...
+  ```
 
 #### Modificando a HomePage()
 

@@ -37,6 +37,17 @@ class TaskCard extends StatelessWidget {
     }
   }
 
+  Color getBackgroundColor(TaskCardStatus status, ThemeData theme) {
+    switch (status) {
+      case TaskCardStatus.pending:
+        return theme.colorScheme.primaryContainer;
+      case TaskCardStatus.completed:
+        return theme.colorScheme.tertiaryContainer;
+      case TaskCardStatus.disabled:
+        return theme.colorScheme.errorContainer;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
