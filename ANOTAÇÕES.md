@@ -2246,9 +2246,24 @@ Cada uma das variáveis pode ser uma Função, vamos ver como fica cada uma dela
     }
     ```
 
+#### Cálculo da Barra de Progresso
+
 - Volte para o arquivo ***task_card.dart***;  
 - Dentro do escopo ***{ }*** da ***Função getProgress()*** vamos criar nosso Algoritmo;  
-- 
+- Para realizar o cálculo:
+- Crie uma variável `final` chamada `completas` que receberá `=` as Tarefas `tasks.where((task)` e verifico `=>` se todas as Tarefas estão Completas `task.complete)` se todas são ***true*** e pego o tamanho total da lista `.length;`.
+- Para realizar o cálculo a Função irá retornar `return` o tamanho das Listas Completas `completas` dividido `/` pelo tamanho das Tarefas `tasks.length;`;  
+
+  ```dart
+  task_card.dart
+
+  ...
+    double getProgress(List<Task> tasks) {
+      final completas = tasks.where((task) => task.complete).length;
+      return completas / tasks.length;
+    }
+  ...
+  ```
 
 #### Modificando a HomePage()
 

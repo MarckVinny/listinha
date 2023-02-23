@@ -6,7 +6,10 @@ class TaskCard extends StatelessWidget {
 
   const TaskCard({super.key, required this.board});
 
-  double getProgress(List<Task> tasks) {}
+  double getProgress(List<Task> tasks) {
+    final completas = tasks.where((task) => task.complete).length;
+    return completas / tasks.length;
+  }
 
   @override
   Widget build(BuildContext context) {

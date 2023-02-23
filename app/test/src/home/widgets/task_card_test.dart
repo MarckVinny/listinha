@@ -8,7 +8,7 @@ void main() {
     Uuid.v4(),
     'Nova Lista de Tarefas',
   );
-  test('task card ...', () {
+  test('getProgress() ...', () {
     final tasks = [
       Task(Uuid.v4(), '', complete: true),
       Task(Uuid.v4(), '', complete: true),

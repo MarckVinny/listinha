@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: SegmentedButton(
                   segments: const [
                     ButtonSegment(
