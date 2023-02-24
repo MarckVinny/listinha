@@ -18,6 +18,7 @@ class TaskCard extends StatelessWidget {
   const TaskCard({super.key, required this.board});
 
   double getProgress(List<Task> tasks) {
+    if (tasks.isEmpty) return 0;
     final completas = tasks.where((task) => task.complete).length;
     return completas / tasks.length;
   }

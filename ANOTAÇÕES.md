@@ -2473,6 +2473,22 @@ Iremos obter as cores da Barra de Status, relativas a cada um dos status (Penden
 - ***Conclusão:***  
 Foram resolvidas todas as questões, todas as informações vindas da ***Classe TaskBoard*** foram convertidas em ***Widgets*** e todos as Funções podem ser testadas.  
 
+- ***CORREÇÃO ERRO OVERFLOW BARRA DE PROGRESSO***
+
+  - `if (tasks.isEmpty) return 0;`: Se a lista de tarefas esticar vazia, atribua o valor 0;
+
+```dart
+task_card.dart
+
+...
+      double getProgress(List<Task> tasks) {
+>>>>    if (tasks.isEmpty) return 0;
+        final completas = tasks.where((task) => task.complete).length;
+        return completas / tasks.length;
+      }
+...
+```
+
 #### Modificando a HomePage()
 
 - Abra o arquivo ***home_page.dart*** no caminho `lib\src\home`;
