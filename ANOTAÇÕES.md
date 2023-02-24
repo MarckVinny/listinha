@@ -88,6 +88,22 @@ ___
   - [Separando as Classes Task e TaskBoard](#separando-as-classes-task-e-taskboard)
 - [Configurando Base de Dados Realm](#configurando-base-de-dados-realm)
 
+#### Aula 10
+
+- [Criação de Widget Customizado](#criação-de-widget-customizado)
+  - [Criando o Widget TaskCard()](#criando-o-widget-taskcard)
+  - [Componentização dos Itens da TaskCard()](#componentização-dos-itens-da-taskcard)
+  - [Atribuindo Valor à Variável Dinamicamente](#atribuindo-valor-à-variável-dinamicamente)
+  - [Função getProgress() - Barra de Progresso](#função-getprogress---barra-de-progresso)
+    - [Teste Unitário](#teste-unitário)
+  - [Cálculo da Barra de Progresso](#cálculo-da-barra-de-progresso)
+  - [Criando um Enum com Propriedades](#criando-um-enum-com-propriedades)
+  - [Criando o Método getStatus()](#criando-o-método-getstatus)
+  - [Criando o Método getBackgroundColor()](#criando-o-método-getbackgroundcolor)
+  - [Criando o Método getColor()](#criando-o-método-getcolor)
+    - [CORREÇÃO ERRO OVERFLOW BARRA DE PROGRESSO](#aula10-erroOverflow)
+  - [Modificando a HomePage()](#modificando-a-homepage)
+
 ___
 
 # ANOTAÇÕES
@@ -1996,6 +2012,8 @@ realm_config.dart
 ...
 ```
 
+[^ Sumário ^](#aula-10)
+
 ### Aula 10
 
 ### Criação de Widget Customizado
@@ -2087,7 +2105,8 @@ Primeiro precisamos criar um arquivo chamado `task_card.dart`, como ele é um **
     ...
     ```
 
-#### Componentização do Itens da TaskCard()
+[^ Sumário ^](#aula-10)
+#### Componentização dos Itens da TaskCard()
 
 Precisaremos saber algumas informações sobre os itens que acabamos de criar acima e ver o que vamos precisar componentizar.  
 Iremos fazer uso novamente do ***Self Explanatory Variable*** que significa: *Variável de Auto Explicação*.  
@@ -2172,6 +2191,8 @@ Agora abra o ***home_page.dart***, pois, precisamos adicionar dentro do `itemBui
 Mas para isso, precisamos adicionar nosso modelo no `TaskCard()` de retorno, a propriedade `board:` com seu valor `board,` que é nosso modelo.  
 Então, é dessa forma que iremos Componentizar, vamos receber um ***board*** `final board = TaskBoard(Uuid.v4(),'Nova Lista de Tarefas');` e transforma-lo em um ***Widget*** `return TaskCard(board: board);` a cada item da ***ListView()***.  
 
+[^ Sumário ^](#aula-10)
+
 #### Atribuindo Valor à Variável Dinamicamente
 
 Abra o arquivo ***task_card.dart***;  
@@ -2180,6 +2201,8 @@ Através desta variável teremos acesso aos dados contantes na ***Classe TaskBoa
 Poderia pegar o valor da variável diretamente no Widget sem precisar criar uma variável pra armazenar seu valor, sim poderia, mas criando as variável ou o ***Self Explanatory Variable*** o cérebro aprende mais fácil.  
 Pois não a quantidade de código (menos) que importa, mas sim, o processo para que aconteça que importa, então, precisa criar um processo que seja de fácil assimilação para o cérebro.  
 Então, com o uso das ***Variáveis Auto Explicativas***, fica melhor para fixar o processo na cabeça.  
+
+[^ Sumário ^](#aula-10)
 
 #### Função getProgress() - Barra de Progresso
 
@@ -2201,6 +2224,8 @@ Cada uma das variáveis pode ser uma Função, vamos ver como fica cada uma dela
 - Para isso, `final progress` espera receber `=` a Lista de Tasks `getProgress(board.tasks);`  
 - Para poder obter esse algoritmo, precisamos realizar os testes:  
   
+  [^ Sumário ^](#aula-10)
+
   #### Teste Unitário
   
   - Abra o arquivo `task_card_test.dart` no caminho `test\src\home\widgets\` para poder criar nosso teste.  
@@ -2245,6 +2270,8 @@ Cada uma das variáveis pode ser uma Função, vamos ver como fica cada uma dela
       });
     }
     ```
+
+[^ Sumário ^](#aula-10)
 
 #### Cálculo da Barra de Progresso
 
@@ -2295,6 +2322,8 @@ Cada uma das variáveis pode ser uma Função, vamos ver como fica cada uma dela
   ...
   ```  
 
+[^ Sumário ^](#aula-10)
+
 #### Criando um Enum com Propriedades
 
 Será criada uma Função que retornará um Enum, contendo os ***ícones*** com seus respectivos ***Status*** *(Pendentes, Concluídos e Desativados)*.  
@@ -2328,6 +2357,8 @@ Usaremos a nova versão do Enum, pois agora, temos a possibilidade de adicionar 
     }
   ...
   ```  
+
+[^ Sumário ^](#aula-10)
 
 #### Criando o Método getStatus()
 
@@ -2381,6 +2412,8 @@ Com esse Método, podemos obter os status das tarefas através da lógica a segu
     ...
     ```  
 
+[^ Sumário ^](#aula-10)
+
 #### Criando o Método getBackgroundColor()
 
 Com esse Método, podemos obter as cores relativas a cada um dos status ***(Pendente, Concluído e Desativado)*** através da lógica a seguir.
@@ -2413,6 +2446,8 @@ Com esse Método, podemos obter as cores relativas a cada um dos status ***(Pend
       }
   ...
   ```
+
+[^ Sumário ^](#aula-10)
 
 #### Criando o Método getColor()
 
@@ -2473,7 +2508,9 @@ Iremos obter as cores da Barra de Status, relativas a cada um dos status (Penden
 - ***Conclusão:***  
 Foram resolvidas todas as questões, todas as informações vindas da ***Classe TaskBoard*** foram convertidas em ***Widgets*** e todos as Funções podem ser testadas.  
 
-- ***CORREÇÃO ERRO OVERFLOW BARRA DE PROGRESSO***
+[^ Sumário ^](#aula-10)
+
+- ***CORREÇÃO ERRO OVERFLOW BARRA DE PROGRESSO***<a id='aula10-erroOverflow'></a>
 
   - `if (tasks.isEmpty) return 0;`: Se a lista de tarefas esticar vazia, atribua o valor 0;
 
@@ -2488,6 +2525,8 @@ task_card.dart
       }
 ...
 ```
+
+[^ Sumário ^](#aula-10)
 
 #### Modificando a HomePage()
 
