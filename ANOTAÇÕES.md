@@ -2106,6 +2106,7 @@ Primeiro precisamos criar um arquivo chamado `task_card.dart`, como ele é um **
     ```
 
 [^ Sumário ^](#aula-10)
+
 #### Componentização dos Itens da TaskCard()
 
 Precisaremos saber algumas informações sobre os itens que acabamos de criar acima e ver o que vamos precisar componentizar.  

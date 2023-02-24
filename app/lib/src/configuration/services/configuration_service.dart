@@ -27,6 +27,7 @@ class ConfigurationServiceImpl implements ConfigurationService {
     //*todo: salva o Tema e a data no Banco de Dados
     realm.write(() {
       model.syncDate = syncDate;
+      // ignore: cascade_invocations
       model.themeModeName = themeModeName;
     });
   }
