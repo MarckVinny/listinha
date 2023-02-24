@@ -2414,6 +2414,65 @@ Com esse Método, podemos obter as cores relativas a cada um dos status ***(Pend
   ...
   ```
 
+#### Criando o Método getColor()
+
+Assim como foi feito no Método getBackgroundColor() iremos fazer o mesmo no Método getColor().  
+Iremos obter as cores da Barra de Status, relativas a cada um dos status (Pendente, Concluído e Desativado) através da lógica a seguir.  
+
+- Dentro da ***Classe TaskCard*** e abaixo do Método ***getBackgroundColor()***, crie um Método do Tipo `Color` chamado `getColor`;
+  - Que irá receber `(TaskCardStatus status,` modificará a cor em relação ao status;
+  - Recebendo também o `themeData theme)`modificando a cor em relação ao Tema;  
+- Dentro do escopo *{ }* crie um ***switch/case*** contendo a lógica.
+  - `switch(status){`: `switch` compara os valores da variável `status`;
+    - `{case TaskCardStatus.pending:`: caso o ***status*** seja ***Pendente***, então:
+    - `return theme.colorScheme.primary;`: aplique a cor do Tema `.primary`;
+    - `{case TaskCardStatus.completed:`: caso o ***status*** seja ***Concluído***, então:
+    - `return theme.colorScheme.tertiary;`: aplique a cor do Tema ***tertiary***;
+    - `{case TaskCardStatus.disabled:`: caso o ***status*** seja ***Desativado***, então:
+    - `return theme.colorScheme.error;}}`: aplique a cor do Tema `error`;
+  
+    ```dart
+    task_card.dart
+    
+    ...
+        Color getColor(TaskCardStatus status, ThemeData theme) {
+          switch (status) {
+            case TaskCardStatus.pending:
+              return theme.colorScheme.primary;
+            case TaskCardStatus.completed:
+              return theme.colorScheme.tertiary;
+            case TaskCardStatus.disabled:
+              return theme.colorScheme.error;
+          }
+        }
+    ...
+    ```  
+
+- Agora modificamos os valores das variáveis `backgroundColor` e `color`:  
+  - final backgroundColor: para receber `=` as ***cores do Tema*** relativas ao ***status*** `getBackgroundColor(status, theme);`;  
+  - `final color:` para receber `=` as ***cores do Tema*** para a Barra de Progresso relativas ao ***status*** `getColor(status, theme);`.
+  
+    ```dart
+    task_card.dart
+
+    ...
+          Widget build(BuildContext context) {
+          final theme = Theme.of(context);
+
+          final progress = getProgress(board.tasks);
+          final progressText = getProgressText(board.tasks);
+          final status = getStatus(board, progress);
+          final title = board.title;
+          final iconData = status.icon;
+          final statusText = status.text;
+    >>>>  final backgroundColor = getBackgroundColor(status, theme);
+    >>>>  final color = getColor(status, theme);
+    ...
+    ```
+
+- ***Conclusão:***  
+Foram resolvidas todas as questões, todas as informações vindas da ***Classe TaskBoard*** foram convertidas em ***Widgets*** e todos as Funções podem ser testadas.  
+
 #### Modificando a HomePage()
 
 - Abra o arquivo ***home_page.dart*** no caminho `lib\src\home`;

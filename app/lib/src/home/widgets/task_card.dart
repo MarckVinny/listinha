@@ -48,11 +48,20 @@ class TaskCard extends StatelessWidget {
     }
   }
 
+  Color getColor(TaskCardStatus status, ThemeData theme) {
+    switch (status) {
+      case TaskCardStatus.pending:
+        return theme.colorScheme.primary;
+      case TaskCardStatus.completed:
+        return theme.colorScheme.tertiary;
+      case TaskCardStatus.disabled:
+        return theme.colorScheme.error;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final backgroundColor = theme.colorScheme.primaryContainer;
-    final color = theme.colorScheme.primary;
 
     final progress = getProgress(board.tasks);
     final progressText = getProgressText(board.tasks);
@@ -60,6 +69,8 @@ class TaskCard extends StatelessWidget {
     final title = board.title;
     final iconData = status.icon;
     final statusText = status.text;
+    final backgroundColor = getBackgroundColor(status, theme);
+    final color = getColor(status, theme);
 
     return Container(
       padding: const EdgeInsets.symmetric(
