@@ -2539,6 +2539,9 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
     > O ***.copyWith()*** só funciona para o Componente onde está sendo utilizado, não faz modificação de forma global.
 
   - `fontWeight: FontWeight.w700,`: Podemos adicionar um peso na fonte `FontWeight.w700,` para a fonte não ficar muito fina.
+
+  - `color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),`: altera a cor do Componente adicionando uma opacidade de 50% *(note que diferente de modificar só o estilo do texto, teve que adicionar o `?.copyWith()` na linha anterior)*  
+
     ```dart
     task_card.dart
     
@@ -2552,8 +2555,6 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
           ),
     ...
     ```  
-
-    Altera a cor do Componente adicionando uma opacidade de 50% *(note que diferente de modificar só o estilo do texto, teve que adicionar o `?.copyWith()` na linha anterior)*  
 
 - ***Definindo o Tema do title Título da Tarefa*** <a id='aula10-DefinindoTemaTítuloTarefa'></a>
 
@@ -2589,6 +2590,22 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
           color: theme.textTheme.labelSmall?.color?.withOpacity(0.5),
         ),
       ),
+    ...
+    ```  
+
+- ***Definindo o Tema do iconData*** <a id='aula10-DefinindoTemaIconData'></a>
+
+  - `color: theme.iconTheme.color?.withOpacity(0.3),`: altera a cor do Componente adicionando uma opacidade de 30% utilizando o `?.withOpacity()`.
+
+    ```dart
+    task_card.dart
+    
+    ...
+        children: [
+          Icon(
+            iconData,
+            color: theme.iconTheme.color?.withOpacity(0.3),
+          ),
     ...
     ```  
 
