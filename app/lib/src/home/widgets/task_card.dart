@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:listinha/src/shared/services/realm/models/task_model.dart';
 
@@ -95,8 +93,9 @@ class TaskCard extends StatelessWidget {
               Text(
                 statusText,
                 style: theme.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.5)),
+                  fontWeight: FontWeight.w700,
+                  color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),
+                ),
               ),
             ],
           ),
@@ -119,7 +118,10 @@ class TaskCard extends StatelessWidget {
           ),
           Text(
             progressText,
-            style: theme.textTheme.labelSmall,
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: theme.textTheme.labelSmall?.color?.withOpacity(0.5),
+            ),
           ),
         ],
       ),

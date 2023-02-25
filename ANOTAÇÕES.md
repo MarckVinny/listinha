@@ -2571,6 +2571,25 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
     ...
     ```  
 
+- ***Definindo o Tema do progressText*** <a id='aula10-DefinindoTemaProgressText'></a>
+
+  - `style: theme.textTheme.labelSmall,`: obtém o tema do texto e atribui o estilo ***.labelSmall*** que deixa o texto maior, mas, poderia usar qualquer outro estilo;
+  - `fontWeight: FontWeight.w700,`: utilizando o `?.copyWith()` podemos adicionar um peso na fonte `FontWeight.w700,` para a fonte não ficar muito fina.
+
+    ```dart
+    task_card.dart
+    
+    ...
+      Text(
+        progressText,
+        style: theme.textTheme.labelSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: theme.textTheme.labelSmall?.color?.withOpacity(0.5),
+        ),
+      ),
+    ...
+    ```  
+
 [^ Sumário ^](#aula-10)
 
 #### Modificando a HomePage()
