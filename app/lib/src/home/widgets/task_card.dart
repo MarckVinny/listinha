@@ -103,7 +103,9 @@ class TaskCard extends StatelessWidget {
           const Spacer(),
           Text(
             title,
-            style: theme.textTheme.titleLarge,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(
             height: 8,
