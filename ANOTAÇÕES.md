@@ -2411,7 +2411,7 @@ Com esse Método, podemos obter os status das tarefas através da lógica a segu
     >>>>  final iconData = status.icon;
     >>>>  final statusText = status.text;
     ...
-    ```  
+    ```
 
 [^ Sumário ^](#aula-10)
 
@@ -2615,7 +2615,7 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
   - Adicione a propriedade `crossAxisAlignment:` com o valor `CrossAxisAlignment.start,` para alinhar os Componentes no ***inicio***.
   - Dentro da ***Column()*** crie a propriedade `children: [];`
   - Dentro da ***Lista*** `[]`, mova os Componentes `LinearProgressIndicator()` e `Text()` para dentro dos colchetes.
-  - Por fim, para que os Componentes fiquem ocultos quando não houver nenhuma tarefa, antes do ***Componente Column()***, adicione a lógica a seguir: 
+  - Por fim, para que os Componentes fiquem ocultos quando não houver nenhuma tarefa, antes do ***Componente Column()***, adicione a lógica a seguir:  
     - `if (board.tasks.isNotEmpty)`, só mostre quando a Lista de Tarefas NÃO for vazia.
   
     ```dart
@@ -2642,6 +2642,71 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
                 ),
               ],
             ),
+    ...
+    ```
+  
+- ***Modificando a Altura da TaskCard Externamente*** <a id='ModificandoAlturaTaskCardExternamente'></a>  
+  - Para finalizar a aula, adicione uma variável final do Tipo double chamada height, referente a altura no inicio da Classe TaskCard e depois a adicione ao Construtor e a defina com o valor de 140.  
+
+    ```dart
+    task_card.dart
+
+    ...
+          class TaskCard extends StatelessWidget {
+            final TaskBoard board;
+    >>>>    final double height;
+
+            TaskCard({super.key, required this.board, this.height = 130});
+    ...
+    ```
+
+  - Agora no Componente Container(), substitua o valor da propriedade height: pela variável que acabou de ser criada.
+
+    ```dart
+    task_card.dart
+
+    ...
+        return Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 16,
+          ),
+    >>>>  height: height,
+    ...
+    ```
+
+  - Com essa modificação, podemos alterar esse valor fora da Classe, que no nosso caso seria na ***home_page.dart***.  
+  Então, precisando alterar a altura do ***Widget TaskCard()*** só precisamos adicionar a propriedade `height:` e atribuir o valor da altura desejada `140,`.
+
+    ```dart
+    home_page.dart
+
+    ...
+      ListView.separated(
+        padding: const EdgeInsets.fromLTRB(20, 50, 20, 90),
+        separatorBuilder: (context, index) {
+          return const SizedBox(
+            height: 20,
+          );
+        },
+        itemCount: 100,
+        itemBuilder: (_, index) {
+          final board = TaskBoard(
+            Uuid.v4(),
+            'Nova Lista de Tarefas',
+            tasks: [
+              Task(Uuid.v4(), '', complete: true),
+              Task(Uuid.v4(), '', complete: true),
+              Task(Uuid.v4(), ''),
+              Task(Uuid.v4(), ''),
+            ],
+          );
+          return TaskCard(
+            board: board,
+    >>>>    height: 140,
+          );
+        },
+      ),
     ...
     ```
 

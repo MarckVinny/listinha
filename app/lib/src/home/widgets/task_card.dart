@@ -14,8 +14,9 @@ enum TaskCardStatus {
 
 class TaskCard extends StatelessWidget {
   final TaskBoard board;
+  final double height;
 
-  const TaskCard({super.key, required this.board});
+  const TaskCard({super.key, required this.board, this.height = 130});
 
   double getProgress(List<Task> tasks) {
     if (tasks.isEmpty) return 0;
@@ -78,7 +79,7 @@ class TaskCard extends StatelessWidget {
         vertical: 12,
         horizontal: 16,
       ),
-      height: 130,
+      height: height,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(20),

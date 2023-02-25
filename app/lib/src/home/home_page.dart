@@ -44,7 +44,10 @@ class HomePage extends StatelessWidget {
                     Task(Uuid.v4(), ''),
                   ],
                 );
-                return TaskCard(board: board);
+                return TaskCard(
+                  board: board,
+                  height: 140,
+                );
               },
             ),
             Align(
