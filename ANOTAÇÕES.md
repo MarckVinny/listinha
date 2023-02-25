@@ -2538,20 +2538,22 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
     > Para alterar um tema que já existe, iremos utilizar o Método `.copyWith()` que possibilita criar/copiar, aproveitando tudo que o Tema possui, mas, irá adicionar uma modificação de sua autoria.  
     > O ***.copyWith()*** só funciona para o Componente onde está sendo utilizado, não faz modificação de forma global.
 
-  - ```dart
+  - `fontWeight: FontWeight.w700,`: Podemos adicionar um peso na fonte `FontWeight.w700,` para a fonte não ficar muito fina.
+    ```dart
     task_card.dart
     
     ...
           Text(
             statusText,
             style: theme.textTheme.bodySmall?.copyWith(
-    >>>>        color: theme.textTheme.bodySmall?.color?.withOpacity(0.5)),
+              fontWeight: FontWeight.w700,
+    >>>>      color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),
+            ),
           ),
     ...
     ```  
 
     Altera a cor do Componente adicionando uma opacidade de 50% *(note que diferente de modificar só o estilo do texto, teve que adicionar o `?.copyWith()` na linha anterior)*  
-  - `fontWeight: FontWeight.w700,`: Podemos adicionar um peso na fonte `FontWeight.w700,` para a fonte não ficar muito fina.
 
 - ***Definindo o Tema do title Título da Tarefa*** <a id='aula10-DefinindoTemaTítuloTarefa'></a>
 
