@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:listinha/src/shared/services/realm/models/task_model.dart';
 
@@ -90,16 +92,33 @@ class TaskCard extends StatelessWidget {
             children: [
               Icon(iconData),
               const Spacer(),
-              Text(statusText),
+              Text(
+                statusText,
+                style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.5)),
+              ),
             ],
           ),
           const Spacer(),
-          Text(title),
+          Text(
+            title,
+            style: theme.textTheme.titleLarge,
+          ),
+          const SizedBox(
+            height: 8,
+          ),
           LinearProgressIndicator(
             color: color,
             value: progress,
           ),
-          Text(progressText),
+          const SizedBox(
+            height: 2,
+          ),
+          Text(
+            progressText,
+            style: theme.textTheme.labelSmall,
+          ),
         ],
       ),
     );

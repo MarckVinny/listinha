@@ -2525,7 +2525,33 @@ task_card.dart
         return completas / tasks.length;
       }
 ...
-```
+```  
+
+#### Configurando o Tema das Tarefas
+
+O próximo passo será configurar o Tema theme para todas as propriedades da Lista de Tarefa.  
+Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível alterar um icon mesmo ele vindo de fora da Classe, mesmo o usuário passado um texto, apenas colocando como pai, o ***ThemeData()***.  
+
+- ***Configurando o Tema do statusText***:<a id='ConfigurandoTemaStatusText'></a>
+  - Abra o arquivo task_card.dart, dentro do ***Componente Text(statusText,)***, adicione a propriedade `style:`, é nela que iremos configurar o estilo do Tema do Componente `Text()`;
+  - `style: theme.textTheme.bodySmall,`: obtém o tema do texto e atribui o estilo ***.bodySmall*** que deixa o texto menor, mas, poderia usar qualquer outro estilo;
+    > Para alterar um tema que já existe, iremos utilizar o Método `.copyWith()` que possibilita criar/copiar, aproveitando tudo que o Tema possui, mas, irá adicionar uma modificação de sua autoria.  
+    > O ***.copyWith()*** só funciona para o Componente onde está sendo utilizado, não faz modificação de forma global.
+
+  - ```dart
+    task_card.dart
+    
+    ...
+          Text(
+            statusText,
+            style: theme.textTheme.bodySmall?.copyWith(
+    >>>>        color: theme.textTheme.bodySmall?.color?.withOpacity(0.5)),
+          ),
+    ...
+    ```  
+
+    Altera a cor do Componente adicionando uma opacidade de 50% *(note que diferente de modificar só o estilo do texto, teve que adicionar o `?.copyWith()` na linha anterior)*  
+  - `fontWeight: FontWeight.w700,`: Podemos adicionar um peso na fonte `FontWeight.w700,` para a fonte não ficar muito fina.
 
 [^ Sumário ^](#aula-10)
 

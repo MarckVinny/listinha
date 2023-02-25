@@ -37,6 +37,12 @@ class HomePage extends StatelessWidget {
                 final board = TaskBoard(
                   Uuid.v4(),
                   'Nova Lista de Tarefas',
+                  tasks: [
+                    Task(Uuid.v4(), '', complete: true),
+                    Task(Uuid.v4(), '', complete: true),
+                    Task(Uuid.v4(), ''),
+                    Task(Uuid.v4(), ''),
+                  ],
                 );
                 return TaskCard(board: board);
               },
