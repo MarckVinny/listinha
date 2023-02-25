@@ -2615,33 +2615,33 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
   - Adicione a propriedade `crossAxisAlignment:` com o valor `CrossAxisAlignment.start,` para alinhar os Componentes no ***inicio***.
   - Dentro da ***Column()*** crie a propriedade `children: [];`
   - Dentro da ***Lista*** `[]`, mova os Componentes `LinearProgressIndicator()` e `Text()` para dentro dos colchetes.
-  - Por fim, para que os Componentes fiquem ocultos quando não houver nenhuma tarefa, antes do ***Componente Column()***, adicione a lógica a seguir:  
-  `if (board.tasks.isNotEmpty)`  
+  - Por fim, para que os Componentes fiquem ocultos quando não houver nenhuma tarefa, antes do ***Componente Column()***, adicione a lógica a seguir: 
+    - `if (board.tasks.isNotEmpty)`, só mostre quando a Lista de Tarefas NÃO for vazia.
   
     ```dart
     task_card.dart
     
     ...
-        if (board.tasks.isNotEmpty)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LinearProgressIndicator(
-              color: color,
-              value: progress,
+    >>>>  if (board.tasks.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LinearProgressIndicator(
+                  color: color,
+                  value: progress,
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  progressText,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: theme.textTheme.labelSmall?.color?.withOpacity(0.5),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 2,
-            ),
-            Text(
-              progressText,
-              style: theme.textTheme.labelSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: theme.textTheme.labelSmall?.color?.withOpacity(0.5),
-              ),
-            ),
-          ],
-        ),
     ...
     ```
 
