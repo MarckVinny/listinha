@@ -2608,6 +2608,42 @@ Quando se trabalha com Flutter, o Tema é sempre herdado, então, é possível a
           ),
     ...
     ```  
+  
+- ***Ocultando Barra de Progresso e progressText*** <a id='OcultandoBarraProgressoProgressText'></a>  
+
+  - Primeiro, identifique no código o ***Componente LinearProgressIndicator()***, antes dele crie um Componente `Column()`;
+  - Adicione a propriedade `crossAxisAlignment:` com o valor `CrossAxisAlignment.start,` para alinhar os Componentes no ***inicio***.
+  - Dentro da ***Column()*** crie a propriedade `children: [];`
+  - Dentro da ***Lista*** `[]`, mova os Componentes `LinearProgressIndicator()` e `Text()` para dentro dos colchetes.
+  - Por fim, para que os Componentes fiquem ocultos quando não houver nenhuma tarefa, antes do ***Componente Column()***, adicione a lógica a seguir:  
+  `if (board.tasks.isNotEmpty)`  
+  
+    ```dart
+    task_card.dart
+    
+    ...
+        if (board.tasks.isNotEmpty)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LinearProgressIndicator(
+              color: color,
+              value: progress,
+            ),
+            const SizedBox(
+              height: 2,
+            ),
+            Text(
+              progressText,
+              style: theme.textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: theme.textTheme.labelSmall?.color?.withOpacity(0.5),
+              ),
+            ),
+          ],
+        ),
+    ...
+    ```
 
 [^ Sumário ^](#aula-10)
 

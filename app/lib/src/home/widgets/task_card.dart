@@ -112,20 +112,26 @@ class TaskCard extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          LinearProgressIndicator(
-            color: color,
-            value: progress,
-          ),
-          const SizedBox(
-            height: 2,
-          ),
-          Text(
-            progressText,
-            style: theme.textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: theme.textTheme.labelSmall?.color?.withOpacity(0.5),
+          if (board.tasks.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LinearProgressIndicator(
+                  color: color,
+                  value: progress,
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  progressText,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: theme.textTheme.labelSmall?.color?.withOpacity(0.5),
+                  ),
+                ),
+              ],
             ),
-          ),
         ],
       ),
     );
