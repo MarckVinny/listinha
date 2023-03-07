@@ -2801,3 +2801,57 @@ Este componente é responsável por empilhar vários componentes um em cima do o
       padding: const EdgeInsets.fromLTRB(20, 50, 20, 90),
   ...
   ```
+
+### Aula 11
+
+### Reorganizando a Estrutura da da Arquitetura do Projeto
+
+Foram observados diversos problemas no projeto referente a arquitetura.  
+Na documentação da [Arquitetura](ARCHITECTURE.md#objetivo) em Regras Iniciais, é informado que cada camada de ter apenas uma responsabilidade respeitando os princípios do SOLID, mas não é isso que vem ocorrendo e é o que iremos corrigir nesta aula.
+O primeiro arquivo que iremos corrigir é o app_store.dart, pois, ele deve cuidar somente do Gerenciamento de Estado.  
+Mas ao invés disso, ele está Gerenciando o Estado, está Distribuindo a Reatividade e ainda está salvando os dados localmente.  
+Mesmo que ele esteja utilizando esses dados, isso não é atribuição do AppStore(), a Store, é somente para Gerenciamento de Estado.  
+Então, precisamos utilizar outro Componente para salvar esses dados, e podemos utilizar o próprio `ConfigurationService()` ***configuration_service.dart*** para isso.  
+Outro problema que temos é em `lib\src\configuration\configuration_page.dart`, na parte de Widgets pois quando precisar escalar, irá dar problema.  
+Se observar bem, estamos Gerenciando o Estado com o .watch() do Modular, apesar de ser muito bom, o Provider() também faz a mesma coisa.  
+Mas o ponto, é que o Modular é para Injeção de Dependência, então, só precisamos recuperar o dado, não precisamos que ele faça assinatura nem nada, só precisamos que recupere as informações, pois neste projeto, isso não é responsabilidade do Modular.  
+Então teremos que abstrair tanto o Modular quando o Store para respeitar a Arquitetura do Projeto.  
+
+#### Adicionando Reatividade Transparente com o RxNotifier()
+
+Iremos utilizar reatividade transparente do RX Notifier para nos auxiliar na resolução dos problemas, para isso, precisamos instala-lo em nosso projeto através do comando `flutter pud add rx_notifier` no terminal.  
+O RX Notifier dá uma turbinada no Value Notifier, pode ser usado como se estivesse usando o Value Notifier, mas a forma de leitura do código pode ser de forma transparente (não se vê o que está acontecendo) ou não, escrevendo o código.  
+Aqui, iremos abordar a forma transparente "invisível", para trabalhar com o RXNotifier da forma correta será preciso fazer duas coisas:  
+
+- Abra o Componente AppStore() localizado em `lib\src\shared\Store\app_store.dart` e modifique o ValueNotifier() para usar o RxNotifier();  
+  
+  ```dart
+  app_store.dart
+  
+  ...
+      class AppStore {
+  >>>>  final themeMode = RxNotifier(ThemeMode.system);
+  >>>>  final syncDate = RxNotifier<DateTime?>(null);
+        final ConfigurationService _configurationService;
+  ...
+  ```
+
+- O próximo passo é ir na raiz do App em `main.dart` e adicionar um Componente assim como foi feito com o Modular.  
+Atribua o Widget `RxRoot()` envolvendo o ***ModularApp()*** `Wrap with widget` do próprio `RxNotifier()` ele irá ajudar a Gerenciar o Estado, igual é feito no Modular.  
+  
+  ```dart
+  main.dart
+  
+  ...
+    void main() {
+      runApp(
+  >>>>  RxRoot(
+          child: ModularApp(
+            module: AppModule(),
+            child: const AppWidget(),
+          ),
+        ),
+      );
+    }
+  ...
+  ```

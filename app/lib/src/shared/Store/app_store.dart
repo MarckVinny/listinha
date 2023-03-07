@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rx_notifier/rx_notifier.dart';
 
 import '../../configuration/services/configuration_service.dart';
 
 class AppStore {
-  final themeMode = ValueNotifier(ThemeMode.system);
-  final syncDate = ValueNotifier<DateTime?>(null);
+  final themeMode = RxNotifier(ThemeMode.system);
+  final syncDate = RxNotifier<DateTime?>(null);
   final ConfigurationService _configurationService;
 
   //*todo: construtor da classe

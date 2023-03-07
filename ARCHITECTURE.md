@@ -6,7 +6,7 @@
 
 Esse documento tem por objetivo principal organizar o processo de desenvolvimento do software.
 
-## Regras iniciais, limite e Análise
+## Regras Iniciais, Limite e Análise  
 
 Pontos a serem levados em consideração antes de introduzir uma nova feature:
 
