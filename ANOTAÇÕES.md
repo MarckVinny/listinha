@@ -2855,6 +2855,3 @@ Atribua o Widget `RxRoot()` envolvendo o ***ModularApp()*** `Wrap with widget` d
     }
   ...
   ```
-
-  <span style="color: red; font-weight: bold;">Texto em Negrito e Vermelho</span>
-
